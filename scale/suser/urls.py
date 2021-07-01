@@ -6,5 +6,6 @@ urlpatterns = [
     path('' , views.index,name="index"),
     path('login',views.loginuser, name="login"),
     path('register',views.register,name="register"),
+    path('api/',include('suser.api.urls')),
 
 ]
