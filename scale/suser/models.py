@@ -18,7 +18,6 @@ class User(AbstractUser):
     number = models.PositiveIntegerField(blank=True, null=True)
     desgination = models.ForeignKey(Desgniation ,null=True,on_delete=models.CASCADE, related_name="Desgination")
     reports_to = models.ForeignKey('self',blank=True,null=True,on_delete=models.CASCADE, related_name="HigherPosition")
-    getting_report = models.ForeignKey('self',blank=True,null=True, on_delete= models.CASCADE, related_name="LowerPosition")
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['first_name' , 'username','number']
@@ -26,3 +25,6 @@ class User(AbstractUser):
 
     def __str__(self):
         return f"{self.first_name} {self.desgination}"
+
+
+# getting_report -remove in models

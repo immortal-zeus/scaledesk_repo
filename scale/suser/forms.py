@@ -5,10 +5,10 @@ from .models import *
 class Usercus(UserCreationForm):
     class Meta:
         model = User
-        fields = ('email', 'desgination' , 'reports_to','getting_report',)
+        fields = ('email', 'desgination' , 'reports_to',)
 
 
 class Userchan(UserChangeForm):
     class Meta:
         model = User
-        fields = ('email', 'desgination', 'reports_to', 'getting_report',)
+        fields = ('email', 'desgination', 'reports_to',)
