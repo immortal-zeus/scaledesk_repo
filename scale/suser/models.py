@@ -20,11 +20,10 @@ class User(AbstractUser):
     reports_to = models.ForeignKey('self',blank=True,null=True,on_delete=models.CASCADE, related_name="HigherPosition")
 
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['first_name' , 'username','number']
+    REQUIRED_FIELDS = ['first_name', 'last_name']
 
 
     def __str__(self):
         return f"{self.first_name} {self.desgination}"
 
 
-# getting_report -remove in models
