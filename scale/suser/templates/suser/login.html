@@ -21,12 +21,20 @@
 
     <!-- Custom styles for this template-->
     <link href=" {% static 'suser/css/sb-admin-2.min.css' %}" rel="stylesheet">
-
+    <style>
+        .msg{
+            color:red;
+            font-size:18px;
+            width:fit-content;
+            margin-bottom:30px;
+            padding:10px;
+        }
+    </style>
 </head>
 
 <body class="bg-gradient-primary">
 
-    <div class="container">
+    <div class="container my-5">
 
         <!-- Outer Row -->
         <div class="row justify-content-center">
@@ -37,10 +45,15 @@
                     <div class="card-body p-0">
                         <!-- Nested Row within Card Body -->
                         <div class="row">
-                            <div class="col-lg-6 d-none d-lg-block bg-login-image"></div>
+                            <div class="col-lg-6 d-none d-lg-block">
+                                <img src="{% static 'suser/img/login_img.svg' %}" style="width:80%;margin:30px;">
+                            </div>
                             <div class="col-lg-6">
                                 <div class="p-5">
                                     <div class="text-center">
+                                    {% if email is not None %}
+                                        <label class="msg">{{email}} does not exist</label>
+                                     {% endif %}   
                                         <h1 class="h4 text-gray-900 mb-4">Welcome Back!</h1>
                                     </div>
                                     <form action="{% url 'login' %}" method="POST" class="user">
@@ -70,7 +83,7 @@
                                         <a class="small" href="forgot-password.html">Forgot Password?</a>
                                     </div>
                                     <div class="text-center">
-                                        <a class="small" href="/suser/register">Create an Account!</a>
+                                        <a class="small" href="/register">Create an Account!</a>
                                     </div>
                                 </div>
                             </div>
