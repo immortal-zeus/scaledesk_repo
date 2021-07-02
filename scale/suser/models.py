@@ -24,6 +24,6 @@ class User(AbstractUser):
 
 
     def __str__(self):
-        return f"{self.first_name} {self.desgination}"
+        return f"{self.first_name} - {self.desgination}"
 
 
