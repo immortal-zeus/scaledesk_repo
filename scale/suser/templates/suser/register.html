@@ -24,11 +24,9 @@
     <style>
         .msg{
             color:red;
-            font-size:18px;
-            width:200px;
-            margin-bottom:30px;
-            padding:10px;
-        }
+            font-size:14px;
+            margin-bottom:0px;
+          }
     </style>
 </head>
 
@@ -47,9 +45,6 @@
                     <div class="col-lg-7">
                         <div class="p-5">
                             <div class="text-center">
-                                {% if message is not None %}
-                                   <label class="msg">{{message}}</label>
-                                {% endif %}   
                                 <h1 class="h4 text-gray-900 mb-4">Create an Account!</h1>
                             </div>
                             <form action="{% url 'register' %}" method="POST" class="user">
@@ -65,8 +60,16 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <input name="email" type="email" required class="form-control form-control-user" id="exampleInputEmail"
+                                    <input  id="email-field" name="email" type="email" required class="form-control form-control-user" id="exampleInputEmail"
                                         placeholder="Email Address">
+                                    {% if message is not None %}
+                                    <style>
+                                        #email-field{
+                                            border:1px solid red;
+                                        }
+                                    </style>
+                                      <label class="msg">*{{message}}</label>
+                                {% endif %}   
                                 </div>
                                 <div class="form-group row">
                                     <div class="col-sm-6 mb-3 mb-sm-0">
@@ -79,7 +82,7 @@
                                     </div>
                                     <label id="error-tooltip" style="font-size:12px;display:none;color:red;margin-top:10px;margin-left:5%;">*Password & Confirm Passowrd don't match</label>
                                 </div>
-                                <button type="submit" id="submit-btn" class="btn btn-primary btn-user btn-block">
+                                <button type="submit" id="submit-btn" class="shadow btn btn-primary btn-user btn-block">
                                     Register Account
                                 </button>
                                 <!-- <hr> -->
@@ -124,6 +127,7 @@
             if(password[0].value!=password[1].value){
                 password[1].borderColor="red"
                 submitBtn.disabled=true;
+                submitBtn.style.background="gray";
                 password[1].style.borderColor="red"
                 password[0].style.borderColor="red"
                 errotTip.style.display="block";
@@ -133,6 +137,7 @@
         password[i].addEventListener("keyup",(e)=>{
            if(password[0].value===password[1].value){
                submitBtn.disabled=false;
+               submitBtn.style.background="#0275d8";
                password[1].style.borderColor="lightgray"
                 password[0].style.borderColor="lightgray"
                 errotTip.style.display="none";
@@ -140,6 +145,7 @@
         })
     }
 
+    
     </script>
 
 </body>
