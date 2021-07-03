@@ -42,7 +42,11 @@ def register(request):
             user.save()
         except IntegrityError:
             return render(request, "suser/register.html",{
-                "message" : "Email already exist."
+                "message" : "Email already exist.",
+                "first_r": first_r,
+                "last_r": last_r,
+                "email_r":email_r,
+                
             })
         login(request, user)
         return HttpResponseRedirect(reverse("index"))
