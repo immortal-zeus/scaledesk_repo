@@ -51,17 +51,35 @@
                                  {% csrf_token %}
                                 <div class="form-group row">
                                     <div class="col-sm-6 mb-3 mb-sm-0">
-                                        <input name="first_name" type="text" required class="form-control form-control-user" id="exampleFirstName"
+                                        {% if message is not None %}
+                                        <input name="first_name" type="text" required class="form-control form-control-user" id="exampleFirstName" value={{first_r}}
                                             placeholder="First Name">
+                                        {% else %}
+                                        <input name="first_name" type="text" required class="form-control form-control-user" id="exampleFirstName" 
+                                        placeholder="First Name">
+                                         {% endif %}   
+                                        
                                     </div>
                                     <div class="col-sm-6">
+                                        {% if message is not None %}
+                                        <input value={{last_r}} name="last_name" type="text" required class="form-control form-control-user" id="exampleLastName"
+                                        placeholder="Last Name">
+                                        {% else %}
                                         <input name="last_name" type="text" required class="form-control form-control-user" id="exampleLastName"
                                             placeholder="Last Name">
+                                         {% endif %}  
+                                       
                                     </div>
                                 </div>
                                 <div class="form-group">
+                                    {% if message is not None %}
+                                    <input value={{email_r}} id="email-field" name="email" type="email" required class="form-control form-control-user" id="exampleInputEmail"
+                                    placeholder="Email Address">
+                                    {% else %}
                                     <input  id="email-field" name="email" type="email" required class="form-control form-control-user" id="exampleInputEmail"
                                         placeholder="Email Address">
+                                     {% endif %}  
+                                    
                                     {% if message is not None %}
                                     <style>
                                         #email-field{

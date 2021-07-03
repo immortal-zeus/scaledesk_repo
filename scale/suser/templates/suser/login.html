@@ -24,11 +24,9 @@
     <style>
         .msg{
             color:red;
-            font-size:18px;
-            width:fit-content;
-            margin-bottom:30px;
-            padding:10px;
-        }
+            font-size:14px;
+            margin-bottom:0px;
+          }
     </style>
 </head>
 
@@ -51,21 +49,34 @@
                             <div class="col-lg-6">
                                 <div class="p-5">
                                     <div class="text-center">
-                                    {% if email is not None %}
-                                        <label class="msg">{{email}} does not exist</label>
-                                     {% endif %}   
                                         <h1 class="h4 text-gray-900 mb-4">Welcome Back!</h1>
                                     </div>
                                     <form action="{% url 'login' %}" method="POST" class="user">
                                          {% csrf_token %}
                                         <div class="form-group">
-                                            <input name="email" type="email" class="form-control form-control-user"
+                                            <input id="email-field" name="email" type="email" class="form-control form-control-user"
                                                 id="exampleInputEmail" aria-describedby="emailHelp"
                                                 placeholder="Enter Email Address...">
+                                            {% if email is not None %}
+                                            <style>
+                                                #email-field{
+                                                    border:1px solid red;
+                                                }
+                                            </style>
+                                                <label class="msg">*Invalid Credentials</label>
+                                             {% endif %}  
                                         </div>
                                         <div class="form-group">
-                                            <input name="password" type="password" class="form-control form-control-user"
+                                            <input id="pass-field" name="password" type="password" class="form-control form-control-user"
                                                 id="exampleInputPassword" placeholder="Password">
+                                                {% if email is not None %}
+                                                <style>
+                                                    #pass-field{
+                                                        border:1px solid red;
+                                                    }
+                                                </style>
+                                                    <label class="msg">*Invalid Credentials</label>
+                                                 {% endif %}  
                                         </div>
                                         <button type="submit" class="btn btn-primary btn-user btn-block">
                                             Login
