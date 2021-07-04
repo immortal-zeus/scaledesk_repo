@@ -27,6 +27,9 @@
             font-size:14px;
             margin-bottom:0px;
           }
+          .view-password{
+              display:none;
+          }
     </style>
 </head>
 
@@ -54,7 +57,7 @@
                                     <form action="{% url 'login' %}" method="POST" class="user">
                                          {% csrf_token %}
                                         <div class="form-group">
-                                            <input id="email-field" name="email" type="email" class="form-control form-control-user"
+                                            <input id="email-field" name="email" required=true type="email" class="form-control form-control-user"
                                                 id="exampleInputEmail" aria-describedby="emailHelp"
                                                 placeholder="Enter Email Address...">
                                             {% if email is not None %}
@@ -67,9 +70,13 @@
                                              {% endif %}  
                                         </div>
                                         <div class="form-group">
-                                            <input id="pass-field" name="password" type="password" class="form-control form-control-user"
+                                            <div class="d-flex align-items-center">
+                                            <input id="pass-field" name="password" type="password" class="form-control form-control-user password"
                                                 id="exampleInputPassword" placeholder="Password">
-                                                {% if email is not None %}
+                                                <i type="button" class="fa fa-eye-slash disclose-password" aria-hidden="true" style="margin-left:-30px;"></i>
+                                                <i type="button" class="fa fa-eye view-password" aria-hidden="true" style="margin-left:-30px;"></i>
+                                            </div>
+                                               {% if email is not None %}
                                                 <style>
                                                     #pass-field{
                                                         border:1px solid red;
@@ -117,6 +124,26 @@
 
     <!-- Custom scripts for all pages-->
     <script src="{% static 'suser/js/sb-admin-2.min.js' %}"></script>
+    <script>
+         /* Password */
+    const viewPasswordBtn = document.querySelector('.view-password');
+    const disclosePasswordBtn = document.querySelector('.disclose-password');
+    const password = document.querySelector('.password')
+    const flag=0;
+    disclosePasswordBtn.addEventListener('click',(e)=>{
+        console.log("clicked")
+        password.type='text';
+        disclosePasswordBtn.style.display="none";
+        viewPasswordBtn.style.display="block";
+    })
+
+    viewPasswordBtn.addEventListener('click',(e)=>{
+        password.type='password';
+        viewPasswordBtn.style.display="none";
+        disclosePasswordBtn.style.display="block";
+
+    })
+    </script>
 
 </body>
 
