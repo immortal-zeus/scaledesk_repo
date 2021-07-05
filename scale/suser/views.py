@@ -52,3 +52,6 @@ def register(request):
 
 
 
+def booklist(request):
+    return render(request,"suser/booklist.html")
+
