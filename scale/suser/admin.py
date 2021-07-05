@@ -4,6 +4,7 @@ from django.contrib.auth.admin import UserAdmin
 from .models import *
 from .forms import Usercus , Userchan
 User = get_user_model()
+from .models import BookLogs, BookInventry, BookModel, BookType
 # Register your models here.
 
 class CustomUserAdmin(UserAdmin):
@@ -30,3 +31,20 @@ class CustomUserAdmin(UserAdmin):
 admin.site.register(User,CustomUserAdmin)
 
 admin.site.register(Desgniation)
+
+
+@admin.register(BookType)
+class BookTypeModel(admin.ModelAdmin):
+    list_display = ['id', 'book_type']
+
+@admin.register(BookInventry)
+class BookInventryModel(admin.ModelAdmin):
+    list_display = ['id', 'book', 'book_id']
+
+@admin.register(BookLogs)
+class BookLogsModel(admin.ModelAdmin):
+    list_display = ['id', 'user_id', 'book_inventry', 'issue_day', 'checkback', 'due_date', 'fees_to_be_added']
+
+@admin.register(BookModel)
+class BookModelAdmin(admin.ModelAdmin):
+    list_display = ['id', 'book_type_id', 'book_name', 'author', 'base_fee', 'current_count', 'no_of_issued']
