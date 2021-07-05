@@ -8,7 +8,4 @@ urlpatterns = [
    path('',views.UserListView.as_view()),
    path('create',views.Userupdate.as_view()),
    path('<int:pk>',views.Userreti.as_view()),
-   path('Desgniation',views.DesListView.as_view()),
-   path('Desgniation/create',views.Desupdate.as_view()),
-   path('Desgniation/<int:pk>',views.Desreti.as_view())
 ]

@@ -32,6 +32,7 @@ def register(request):
         email_r = request.POST['email']
         password_r = request.POST['password']
         password2_r = request.POST['confirm_password']
+        is_what = request.POST['role']
         username_r = email_r.split('@')[0]
         if password_r != password2_r:
             return render(request, "suser/register.html",{
@@ -39,7 +40,13 @@ def register(request):
             })
 
         try:
-            user = User.objects.create_user(first_name = first_r , last_name = last_r, username = username_r ,email = email_r, password = password_r)
+            if is_what == 'student':
+                user = User.objects.create_user(first_name = first_r , last_name = last_r, username = username_r ,email = email_r, password = password_r, Student = True)
+            elif is_what == 'admin ':
+                user = User.objects.create_user(first_name = first_r , last_name = last_r, username = username_r ,email = email_r, password = password_r, is_superuser = True)
+            else:
+                user = User.objects.create_user(first_name = first_r , last_name = last_r, username = username_r ,email = email_r, password = password_r, is_staff = True)
+
             user.save()
         except IntegrityError:
             return render(request, "suser/register.html",{
