@@ -6,6 +6,7 @@ from .models import *
 from django.db import IntegrityError
 # Create your views here.
 
+@decorators.login_required(login_url='/login')
 def index(request):
     return render(request,"suser/index.html")
 
@@ -42,11 +43,7 @@ def register(request):
             user.save()
         except IntegrityError:
             return render(request, "suser/register.html",{
-                "message" : "Email already exist.",
-                "first_r": first_r,
-                "last_r": last_r,
-                "email_r":email_r,
-                
+                "message" : "Email already exist."
             })
         login(request, user)
         return HttpResponseRedirect(reverse("index"))
