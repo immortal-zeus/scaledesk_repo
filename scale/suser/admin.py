@@ -10,12 +10,11 @@ class CustomUserAdmin(UserAdmin):
     add_form = Usercus
     form = Userchan
     model = User
-    list_display = ('email', 'first_name', 'desgination','reports_to',)
-    list_filter = ('email','first_name', 'desgination','reports_to',)
+    list_display = ('email', 'first_name',)
+    list_filter = ('email','first_name',)
     fieldsets = (
         (None, {'fields': ('email', 'password')}),
-        ('Permissions', {'fields': ('is_staff', 'is_active')}),
-        ('Position_Status', {'fields':('desgination','reports_to',)})
+        ('Permissions', {'fields': ('is_staff','is_superuser','Student')}),
     )
     add_fieldsets = (
         (None, {
@@ -23,10 +22,9 @@ class CustomUserAdmin(UserAdmin):
             'fields': ('email', 'password1', 'password2',)}
         ),
     )
-    search_fields = ('email','desgination','reports_to',)
+    search_fields = ('email',)
     ordering = ('email',)
 
 
 admin.site.register(User,CustomUserAdmin)
 
-admin.site.register(Desgniation)

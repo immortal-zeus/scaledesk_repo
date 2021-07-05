@@ -1,7 +1,7 @@
 from rest_framework import generics
 
 from suser.models import *
-from .serializers import UserSerializer , DesgSerializer
+from .serializers import UserSerializer
 
 class UserListView(generics.ListAPIView):
     queryset = User.objects.all()
@@ -17,14 +17,5 @@ class Userreti(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = UserSerializer
 
 
-class DesListView(generics.ListAPIView):
-    queryset = Desgniation.objects.all()
-    serializer_class = DesgSerializer
 
-class Desupdate(generics.CreateAPIView):
-    queryset = Desgniation.objects.all()
-    serializer_class = DesgSerializer
 
-class Desreti(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Desgniation.objects.all()
-    serializer_class = DesgSerializer

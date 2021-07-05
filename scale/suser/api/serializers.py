@@ -6,8 +6,3 @@ class UserSerializer(serializers.ModelSerializer):
        model = User
        fields = "__all__"
 
-
-class DesgSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Desgniation
-        fields = "__all__"
