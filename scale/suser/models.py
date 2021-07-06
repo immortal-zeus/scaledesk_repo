@@ -17,14 +17,14 @@ class User(AbstractUser):
         return f"{self.first_name}"
 
 
-class BookType(models.Model):
-    book_type = models.CharField(max_length = 20, blank=True , null=True)
+class Categories(models.Model):
+    Category = models.CharField(max_length = 20, blank=True , null=True)
 
     def __str__(self):
-        return f"{self.book_type}"
+        return f"{self.Category}"
 
 class BookModel(models.Model):
-    book_type= models.ForeignKey(BookType, on_delete=models.CASCADE, null=True, related_name="Genre")
+    Book_categories= models.ForeignKey(Categories, on_delete=models.CASCADE, null=True, related_name="Genre")
     book_name = models.CharField(max_length = 100, blank=True)
     author = models.CharField(max_length = 30, blank=True, null=True)
     publish_date = models.DateTimeField(blank=True, null=True)
@@ -36,8 +36,8 @@ class BookModel(models.Model):
         return f"{self.book_name, self.book_type, self.author, self.current_count, self.no_of_issued}"
 
 class BookInventry(models.Model):
-    book = models.CharField(max_length = 50, blank=True, null=True)
-    book_id = models.PositiveIntegerField(blank=True, null=True)
+    book = models.ForeignKey(BookModel, on_delete=models.CASCADE, related_name='Book_detail')
+    book_uniqueid = models.CharField(max_length=7, unique=True)
 
     def __str__(self):
         return f"{self.book, self.book_id}"
@@ -59,5 +59,3 @@ class BookLogs(models.Model):
     def __str__(self):
         return f"{self.checkback} , {self.due_date} , {self.fine_fee}"
 
-# book type - catgeor -- -title inside
-# book in - for
