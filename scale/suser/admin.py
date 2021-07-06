@@ -27,5 +27,7 @@ class CustomUserAdmin(UserAdmin):
 
 
 admin.site.register(User,CustomUserAdmin)
-
+admin.site.register(BookModel)
+admin.site.register(BookInventry)
+admin.site.register(Categories)
 admin.site.register(BookLogs)

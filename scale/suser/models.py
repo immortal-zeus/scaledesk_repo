@@ -33,7 +33,7 @@ class BookModel(models.Model):
     no_of_issued = models.PositiveIntegerField(blank=True, null=True)
 
     def __str__(self):
-        return f"{self.book_name, self.book_type, self.author, self.current_count, self.no_of_issued}"
+        return f"{self.book_name, self.Book_categories, self.author, self.current_count, self.no_of_issued}"
 
 class BookInventry(models.Model):
     book = models.ForeignKey(BookModel, on_delete=models.CASCADE, related_name='Book_detail')
