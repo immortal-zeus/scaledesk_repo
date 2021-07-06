@@ -58,7 +58,13 @@ def register(request):
         return render(request,"suser/register.html")
 
 
+def logoutuser(request):
+    logout(request)
+    return HttpResponseRedirect(reverse("index"))
 
 def booklist(request):
-    return render(request,"suser/booklist.html")
+    return render(request,"suser/booklist.html",{
+        # "books": BookModel.objects.all(),
+        "books" : [1,2,3,4,5],
+    })
 

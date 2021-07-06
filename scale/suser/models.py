@@ -9,7 +9,6 @@ class User(AbstractUser):
     email = models.EmailField(unique=True)
     number = models.PositiveIntegerField(blank=True, null=True)
     Student = models.BooleanField(default=False)
-
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['first_name', 'last_name']
 
@@ -25,9 +24,9 @@ class BookType(models.Model):
         return f"{self.book_type}"
 
 class BookModel(models.Model):
-    book_type_id = models.ForeignKey(BookType, on_delete=models.CASCADE, null=True)
+    book_type= models.ForeignKey(BookType, on_delete=models.CASCADE, null=True, related_name="Genre")
     book_name = models.CharField(max_length = 100, blank=True)
-    author = models.CharField(max_length = 50, blank=True, null=True)
+    author = models.CharField(max_length = 30, blank=True, null=True)
     base_fee = models.PositiveIntegerField(blank=True, null=True)
     current_count = models.PositiveIntegerField(blank=True, null=True)
     no_of_issued = models.PositiveIntegerField(blank=True, null=True)
@@ -42,12 +41,19 @@ class BookInventry(models.Model):
     def __str__(self):
         return f"{self.book, self.book_id}"
 
-class BookLogs(models.Model):
-    user_id = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True)
-    book_inventry = models.ForeignKey(BookInventry, on_delete = models.CASCADE)
-    issue_day = models.DateTimeField(blank=True, null=True)
-    checkback = models.CharField(max_length = 50, blank=True, null=True)
-    due_date = models.DateTimeField(blank=True, null=True)
-    # fees_to_be_added = models.DateTimeField(blank=True, null=True)
-    fine_fee = models.IntegerField(blank=True, null=True)
 
+class BookLogs(models.Model):
+    user_id = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True , related_name='issuer')
+    book_inventry = models.ForeignKey(BookInventry, on_delete = models.CASCADE, related_name='id_book')
+    issue_day = models.DateTimeField(auto_now_add=True)
+    checkback = models.DateTimeField(blank=True, null=True)
+    due_date = models.DateTimeField(blank=True, null=True)
+    fine_fee = models.IntegerField(default=0)
+
+    def cal(self):
+        temp = self.checkback.date() - self.due_date.date()
+        c = temp.days
+        return c * self.fine_fee
+
+    def __str__(self):
+        return f"{self.checkback} , {self.due_date} , {self.fine_fee}"

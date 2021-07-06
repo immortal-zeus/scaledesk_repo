@@ -49,15 +49,16 @@
 
                     <!-- Page Heading -->
                     <div class="d-sm-flex flex-column  mb-4">
-                        <h1 class="h1 p-3 mb-0 shadow-lg" style="background-color:#7510f7;font-family:monospace;color:white;">LIBRARY</h1>
+<!--                        <h1 class="h1 p-3 mb-0 shadow-lg" style="background-color:#7510f7;font-family:monospace;color:white;">LIBRARY</h1>-->
                         <!--Book Row-->
                         <div class="row my-5" id="book-row">
                             <!--Single Book -->
+                            {% for i in books %}
                             <div class="col-sm-6 col-md-3">
                                 <div class="Bthree">
                                     <div class="Btwo" style="background-color: #7510f7;">
                                       <p style="font-weight:bold;font-size:1.2rem;padding-top:20px;color:white;">
-                                         Maths
+                                         {{i}}
                                       </p>
                                       <div class="Bone">
                                         <p style="margin:0;color:#204051;font-weight: 500;padding:0 2px;">
@@ -67,80 +68,17 @@
                                     </div>
                                   </div>
                             </div>
-                            <!--Book-->
-                            <div class="col-sm-6 col-md-3">
-                                <div class="Bthree">
-                                    <div class="Btwo" style="background-color: #7510f7;">
-                                      <p style="font-weight:bold;font-size:1.2rem;padding-top:20px;color:white;">
-                                         Maths
-                                      </p>
-                                      <div class="Bone">
-                                        <p style="margin:0;color:#204051;font-weight: 500;padding:0 2px;">
-                                          Aman Dixit
-                                        </p>
-                                      </div>
-                                    </div>
-                                  </div>
-                            </div>
-                            <div class="col-sm-6 col-md-3">
-                                <div class="Bthree">
-                                    <div class="Btwo" style="background-color: #7510f7;">
-                                      <p style="font-weight:bold;font-size:1.2rem;padding-top:20px;color:white;">
-                                        Algebra Maths
-                                      </p>
-                                      <div class="Bone">
-                                        <p style="margin:0;color:#204051;font-weight: 500;padding:0 2px;">
-                                          Aman Dixit
-                                        </p>
-                                      </div>
-                                    </div>
-                                  </div>
-                            </div>
-                            <div class="col-sm-6 col-md-3">
-                                <div class="Bthree">
-                                    <div class="Btwo" style="background-color: #7510f7;">
-                                      <p style="font-weight:bold;font-size:1.2rem;padding-top:20px;color:white;">
-                                         Maths
-                                      </p>
-                                      <div class="Bone">
-                                        <p style="margin:0;color:#204051;font-weight: 500;padding:0 2px;">
-                                          Aman Dixit
-                                        </p>
-                                      </div>
-                                    </div>
-                                  </div>
-                            </div>
-                            <div class="col-sm-6 col-md-3">
-                                <div class="Bthree">
-                                    <div class="Btwo" style="background-color: #7510f7;">
-                                      <p style="font-weight:bold;font-size:1.2rem;padding-top:20px;color:white;">
-                                         Maths
-                                      </p>
-                                      <div class="Bone">
-                                        <p style="margin:0;color:#204051;font-weight: 500;padding:0 2px;">
-                                          Aman Dixit
-                                        </p>
-                                      </div>
-                                    </div>
-                                  </div>
-                            </div>
+                            {% endfor %}
                         </div>
                     </div>
-
-                  
-
                 </div>
                 <!-- /.container-fluid -->
-
             </div>
             <!-- End of Main Content -->
-
             {% include 'suser/footer.html' %}
             <!-- End of Footer -->
-
         </div>
         <!-- End of Content Wrapper -->
-
     </div>
     <!-- End of Page Wrapper -->
 
