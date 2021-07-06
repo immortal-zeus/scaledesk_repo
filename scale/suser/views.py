@@ -68,3 +68,7 @@ def booklist(request):
         "books" : [1,2,3,4,5],
     })
 
+
+def bookdetail(request):
+    #suraj : wrtie code here
+    pass

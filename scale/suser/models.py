@@ -27,6 +27,7 @@ class BookModel(models.Model):
     book_type= models.ForeignKey(BookType, on_delete=models.CASCADE, null=True, related_name="Genre")
     book_name = models.CharField(max_length = 100, blank=True)
     author = models.CharField(max_length = 30, blank=True, null=True)
+    publish_date = models.DateTimeField(blank=True, null=True)
     base_fee = models.PositiveIntegerField(blank=True, null=True)
     current_count = models.PositiveIntegerField(blank=True, null=True)
     no_of_issued = models.PositiveIntegerField(blank=True, null=True)
@@ -43,7 +44,7 @@ class BookInventry(models.Model):
 
 
 class BookLogs(models.Model):
-    user_id = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True , related_name='issuer')
+    user_id = models.ForeignKey(User, on_delete=models.PROTECT, blank=True, null=True , related_name='issuer')
     book_inventry = models.ForeignKey(BookInventry, on_delete = models.CASCADE, related_name='id_book')
     issue_day = models.DateTimeField(auto_now_add=True)
     checkback = models.DateTimeField(blank=True, null=True)
@@ -57,3 +58,6 @@ class BookLogs(models.Model):
 
     def __str__(self):
         return f"{self.checkback} , {self.due_date} , {self.fine_fee}"
+
+# book type - catgeor -- -title inside
+# book in - for

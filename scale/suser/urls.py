@@ -8,6 +8,7 @@ urlpatterns = [
     path('register',views.register,name="register"),
     path('logout', views.loginuser,name="logout"),
     path('booklist',views.booklist,name="booklist"),
+    path('bookdetail', views.booklist, name = 'bookdetail'),
     path('api/',include('suser.api.urls')),
 
 ]
