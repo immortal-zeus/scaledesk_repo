@@ -42,9 +42,10 @@ def register(request):
         try:
             if is_what == 'student':
                 user = User.objects.create_user(first_name = first_r , last_name = last_r, username = username_r ,email = email_r, password = password_r, Student = True)
-            elif is_what == 'admin ':
-                user = User.objects.create_user(first_name = first_r , last_name = last_r, username = username_r ,email = email_r, password = password_r, is_superuser = True)
+            elif is_what == 'admin':
+                user = User.objects.create_user(first_name = first_r , last_name = last_r, username = username_r ,email = email_r, password = password_r, is_staff = True, is_superuser = True)
             else:
+                print(is_what)
                 user = User.objects.create_user(first_name = first_r , last_name = last_r, username = username_r ,email = email_r, password = password_r, is_staff = True)
 
             user.save()
@@ -64,7 +65,12 @@ def logoutuser(request):
 
 def booklist(request):
     return render(request,"suser/booklist.html",{
-        # "books": BookModel.objects.all(),
-        "books" : [1,2,3,4,5],
+        "books": BookModel.objects.all(),
     })
+
+
+def bookdetail(request):
+    #suraj : wrtie code here
+    pass
+
 
