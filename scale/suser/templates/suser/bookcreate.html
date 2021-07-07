@@ -1,6 +1,10 @@
 {% extends 'suser/index.html' %}
+{% load static %}
 {% block content %}
-    <form action = "{% url 'create' %} " method="post">
+  <!-- Custom stylesheet for Book Create-->
+<link href="{% static 'suser/css/bookcreate.css' %}" rel="stylesheet">
+
+    <!-- <form action = "{% url 'create' %} " method="post">
         {% csrf_token %}
         <input type="text" name="book_name" placeholder="book_name">
         <input type="text" name="author" placeholder="author">
@@ -14,6 +18,78 @@
         {% endfor %}
         </select>
         <input type="submit" class="btn btn-primary">
-    </form>
+    </form> -->
+   <div class="row d-flex align-items-center justify-content-center">
+       <div class="col-sm-12 col-md-6 shadow p-5">
+    <form action = "{% url 'create' %} " method="post">
+        {% csrf_token %}
+        <div class="form-group">
+          <label for="name">Book Name</label>
+          <input type="text" required=true name="book_name"  class="form-control" id="name" placeholder="book_name">
+        </div>
+        <div class="form-group">
+            <label for="author">Author Name</label>
+            <input type="text" required=true class="form-control" id="author" name="author" placeholder="author">
+        </div>
+        <div class="form-group">
+            <label for="date">Publish Date</label>
+            <input type="date" required=true name="publish_date" class="form-control" id="date" placeholder="publish date">
+        </div>
+        <div class="form-group">
+            <label for="fee">Base Fee</label>
+            <input type="number" required=true id="fee" class="form-control" name="base_fee" placeholder="base_fee">
+        </div>
+        <div class="form-group">
+            <label for="count">Current Count</label>
+            <input type="number" required=true class="form-control" id="count" name="current_count" placeholder="current_count">
+        </div>
+        <div class="form-group">
+            <label for="categories">Category</label>
+            <select name="categories" required=true id="categories" class="form-select form-select-lg form-control" aria-label="Default select example" style="width:100%;">
+                <option selected>Categories</option>
+                {% for c in categories %}
+                        <option value="{{c.Category}}">{{c.Category}} </option>
+                {% endfor %}
+            </select>
+            <p class="my-3 text-danger display-5">*Not in the List add yours  
+                <a class="btn btn-dark float-right" type="button"  data-toggle="modal" data-target="#exampleModal">
+                    Add New Category
+                </a>
+            </p>
+        </div>
+       
+        <button type="submit" class="btn btn-primary my-4" style="width:100%;">Submit</button>
+      </form>
+      </div>
+    </div>
+
+    <!--Modal for Book Category -->
+    <!-- Button trigger modal -->
+
+  
+  <!-- Modal -->
+  <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Create New Category</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            <form action = " {% url 'category' %}" method="post">
+                {% csrf_token %}
+               <div class="form-group">
+                    <label for="new_category"> Enter Category</label>
+                    <input type="text" class="form-control" id="new_category" name="category" placeholder="Category">
+                </div>
+                <button type="submit" class="btn btn-primary">Create</button>
+            </form>
+        </div>
+        
+      </div>
+    </div>
+  </div>
 
 {% endblock %}

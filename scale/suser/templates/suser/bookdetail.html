@@ -8,9 +8,9 @@
 <div class="d-sm-flex flex-column  mb-4">
     <!-- <h1 class="h1 p-3 mb-0 shadow-lg" style="background-color:#7510f7;font-family:monospace;color:white;">LIBRARY</h1>-->
     <!--Book Row-->
-    <div class="row my-5 justify-content-between" id="book-row">
+    <div class="row my-5 justify-content-flex-start" id="book-row">
         <!--Single Book -->
-        <div class="col-sm-12 col-md-4">
+        <div class="col-sm-12 col-md-4 mx-5">
             <div class="Bthree" style="width:300px;height:420px;">
                 <div class="Btwo" style="background-color: #7510f7;width:250px;height:360px;">
                     <p style="font-weight:bold;font-size:1.2rem;padding-top:20px;color:white;">
@@ -24,12 +24,12 @@
                 </div>
             </div>
         </div>
-        <div class="col-sm-12 col-md-7 p-2 d-flex align-items-center justify-content-between shadow">
+        <div class="col-sm-12 col-md-6 p-2 d-flex align-items-center justify-content-center shadow">
                 <!--Stats-->
-                <div class="card stats p-5">
+                <div class="card stats p-5 mr-3">
                     <h4 class="text-dark text-center">Category <span class="text-info"><hr />{{ book.Book_categories}}</span></h4><hr/>
                     <h4 class="text-dark text-center"> Title<br/> <span class="text-info"><hr />{{ book.book_name }}</span></h4><hr />
-                    <h4 class="text-dark text-center">Base Price:<span class="text-info">${{book.base_fee}}</span></h4>
+                    <h4 class="text-dark text-center">Base Price:<br /><span class="text-info">${{book.base_fee}}</span></h4>
                 </div>
             <!-- Pie Chart -->
                       <div class="card">
