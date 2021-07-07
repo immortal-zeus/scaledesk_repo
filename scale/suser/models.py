@@ -10,7 +10,7 @@ class User(AbstractUser):
     number = models.PositiveIntegerField(blank=True, null=True)
     Student = models.BooleanField(default=False)
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['first_name', 'last_name',]
+    REQUIRED_FIELDS = ['first_name', 'last_name','username']
 
 
     def __str__(self):

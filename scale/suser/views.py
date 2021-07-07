@@ -80,7 +80,6 @@ def bookcategory(request):
 
 def bookcreate(request):
     if request.method == "POST":
-        print("yes")
         Book_categories = request.POST["categories"]
         book_name = request.POST["book_name"]
         author = request.POST["author"]
