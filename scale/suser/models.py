@@ -56,7 +56,7 @@ class BookLogs(models.Model):
         return c * self.book_inventry.book.base_fee
 
     def __str__(self):
-        return f"{self.checkback} , {self.due_date} "
+        return f"{self.checkback} , {self.due_date} ,{self.user_id}"
 
 
 # use basefine-----fine_fee remove

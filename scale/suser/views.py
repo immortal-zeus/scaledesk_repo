@@ -46,7 +46,6 @@ def register(request):
             return render(request, "suser/register.html",{
                 "message": "Passwords must match.",
             })
-
         try:
             if is_what == 'student':
                 user = User.objects.create_user(first_name = first_r , last_name = last_r, username = username_r ,email = email_r, password = password_r, Student = True)

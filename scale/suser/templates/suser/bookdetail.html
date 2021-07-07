@@ -73,14 +73,16 @@
                 <tbody>
 <!--                {{ Logs }}-->
                 {% for l in Logs %}
-                  <tr>
-                    <th scope="row">1</th>
-                    <td>{{ l.user_id.first_name }}</td>
-                    <td>{{ l.user_id.last_name }}</td>
-                    <td>{{ l.issue_day }} </td>
-                    <td>{{ l.due_date}} </td>
-                    <td>{{ l.checkback }}</td>
-                  </tr>
+                    {% for log in l %}
+                      <tr>
+                        <th scope="row">1</th>
+                        <td>{{ log.user_id.first_name }}</td>
+                        <td>{{ log.user_id.last_name }}</td>
+                        <td>{{ log.issue_day }} </td>
+                        <td>{{ log.due_date}} </td>
+                        <td>{{ log.checkback }}</td>
+                      </tr>
+                    {% endfor %}
                 {% empty %}
                     <h2> No inventory. <h2>
                 {% endfor %}
