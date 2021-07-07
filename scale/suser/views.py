@@ -2,10 +2,12 @@ from django.shortcuts import render
 from django.contrib.auth import authenticate, login, logout , decorators
 from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
-from .models import *
+from .models import BookModel, BookInventry, BookLogs, User, Categories
 from django.db import IntegrityError
 import uuid
-from datetime import date
+# import datetime
+from datetime import datetime,date, timedelta
+
 # Create your views here.
 
 def random_string(string_length=7):
@@ -155,3 +157,22 @@ def returnbook(request):
     return render(request,"suser/returnbook.html",{
         "book":inven,
     })
+
+def Checkout(request, id):
+    if request.user.is_authenticated:
+        book = BookInventry.objects.get(pk = id)
+        bookdata = BookModel.objects.get(pk=id)
+        user_name = request.user
+        current_time = date.today()
+        due_Date = date.today() + timedelta(days=7)
+        if bookdata.current_count !=0: 
+            data = BookLogs(user_id = user_name, book_inventry=book, issue_day=current_time, due_date=due_Date)    
+            data.save()
+            bookdata.no_of_issued += 1
+            bookdata.current_count -= 1
+            bookdata.save()
+            return HttpResponseRedirect('/booklist',{'message': 'Successfully book checkout'})
+        else:
+            return HttpResponseRedirect('/booklist', {'message':'No book available at the moment'})
+    else:
+        return HttpResponseRedirect('/')
