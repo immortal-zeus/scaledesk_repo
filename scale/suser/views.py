@@ -7,8 +7,8 @@ from django.db import IntegrityError
 # Create your views here.
 
 @decorators.login_required(login_url='/login')
-def index(request):
-    return render(request,"suser/index.html")
+def dashboard(request):
+    return render(request,"suser/dashboard.html")
 
 def loginuser(request):
     if request.method == "POST":
@@ -68,3 +68,18 @@ def booklist(request):
         "books" : [1,2,3,4,5],
     })
 
+def bookdetail(request):
+    
+    data=[
+        {   "id":"1",
+            "name":"Explore C++",
+            "price":"230",
+            "author":"Aman Dixit",
+            "total_count":"100",
+            "book_availabel":"30"  
+
+        }
+    ]
+    return render(request,"suser/bookdetail.html",{
+        "book_data":data,
+    })

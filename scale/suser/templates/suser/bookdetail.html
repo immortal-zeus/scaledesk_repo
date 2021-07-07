@@ -1,0 +1,110 @@
+{%  extends 'suser/index.html' %}
+{% load static %}
+
+{% block content %}
+<!-- Custom stylesheet for Book List-->
+<link href="{% static 'suser/css/bookdetail.css' %}" rel="stylesheet">
+
+<div class="d-sm-flex flex-column  mb-4">
+    <!-- <h1 class="h1 p-3 mb-0 shadow-lg" style="background-color:#7510f7;font-family:monospace;color:white;">LIBRARY</h1>-->
+    <!--Book Row-->
+    <div class="row my-5 justify-content-between" id="book-row">
+        <!--Single Book -->
+        <div class="col-sm-12 col-md-4">
+            <div class="Bthree" style="width:300px;height:420px;">
+                <div class="Btwo" style="background-color: #7510f7;width:250px;height:360px;">
+                    <p style="font-weight:bold;font-size:1.2rem;padding-top:20px;color:white;">
+                        Python
+                    </p>
+                    <div class="Bone" style="left:20%;">
+                        <p style="margin:0;color:#204051;font-weight: 500;padding:0 2px;">
+                            Aman Dixit
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-12 col-md-7 p-2 d-flex align-items-center justify-content-between shadow">
+                <!--Stats-->
+                <div class="card stats p-5">
+                    <h4 class="text-dark text-center">Category <span class="text-info"><hr />Fiction</span></h4><hr/>
+                    <h4 class="text-dark text-center"> Name<br/> <span class="text-info"><hr />Python Book</span></h4><hr />
+                    <h4 class="text-dark text-center">Price:<span class="text-info">$400</span></h4>                    
+                </div>
+            <!-- Pie Chart -->
+                      <div class="card">
+                            <!-- Card Header - Dropdown -->
+                            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                <h6 class="m-0 font-weight-bold text-primary">Book Detail</h6>
+                            </div>
+                            <!-- Card Body -->
+                            <div class="card-body">
+                                <div class="chart-pie pt-4 pb-2">
+                                    <canvas id="myPieChart"></canvas>
+                                </div>
+                                <div class="mt-4 text-center small">
+                                    <span class="mr-2">
+                                        <i class="fas fa-circle text-primary"></i> Total
+                                    </span>
+                                    <span class="mr-2">
+                                        <i class="fas fa-circle text-success"></i> Check-In
+                                    </span>
+                                    <span class="mr-2">
+                                        <i class="fas fa-circle text-info"></i> Check-Out
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+        </div>
+        <!--List-->
+        <div class="col-12 my-5">
+            <h3 class="text-primary" style="font-size:2.2rem;">Detail List:</h3>
+            <table class="table table-bordered">
+                <thead>
+                  <tr>
+                    <th scope="col">Sr.No</th>
+                    <th scope="col">First</th>
+                    <th scope="col">Last</th>
+                    <th scope="col">Issued Date</th>
+                    <th scope="col">Returned Date</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <th scope="row">1</th>
+                    <td>Mark</td>
+                    <td>Otto</td>
+                    <td>10-02-2021</td>
+                    <td>12-03-2021</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">2</th>
+                    <td>Jacob</td>
+                    <td>Thornton</td>
+                    <td>10-02-2021</td>
+                    <td>12-03-2021</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">3</th>
+                    <td>Jacob</td>
+                    <td>Thornton</td>
+                    <td>10-02-2021</td>
+                    <td>12-03-2021</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">4</th>
+                    <td>Jacob</td>
+                    <td>Thornton</td>
+                    <td>10-02-2021</td>
+                    <td>12-03-2021</td>
+                  </tr>
+                 
+                </tbody>
+              </table>
+        </div>
+       
+    </div>
+</div>
+
+
+{% endblock content %}
