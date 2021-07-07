@@ -1,4 +1,4 @@
-{%  extends 'suser/index.html' %}
+{% extends 'suser/index.html' %}
 {% load static %}
 
 {% block content %}
@@ -25,76 +25,86 @@
             </div>
         </div>
         <div class="col-sm-12 col-md-6 p-2 d-flex align-items-center justify-content-center shadow">
-                <!--Stats-->
-                <div class="card stats p-5 mr-3">
-                    <h4 class="text-dark text-center">Category <span class="text-info"><hr />{{ book.Book_categories}}</span></h4><hr/>
-                    <h4 class="text-dark text-center"> Title<br/> <span class="text-info"><hr />{{ book.book_name }}</span></h4><hr />
-                    <h4 class="text-dark text-center">Base Price:<br /><span class="text-info">${{book.base_fee}}</span></h4>
-                </div>
+            <!--Stats-->
+            <div class="card stats p-4 mr-3">
+                <h4 class="text-dark text-center">Category <span class="text-info">
+                        <hr />{{ book.Book_categories}}
+                    </span></h4>
+                <hr />
+                <h4 class="text-dark text-center"> Title<br /> <span class="text-info">
+                        <hr />{{ book.book_name }}
+                    </span></h4>
+                <hr />
+                <h4 class="text-dark text-center">Base Price:<br /><span class="text-info"><hr />${{book.base_fee}}</span>
+                </h4>
+            </div>
             <!-- Pie Chart -->
-                      <div class="card">
-                            <!-- Card Header - Dropdown -->
-                            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                                <h6 class="m-0 font-weight-bold text-primary">Book Detail</h6>
-                            </div>
-                            <!-- Card Body -->
-                            <div class="card-body">
-                                <div class="chart-pie pt-4 pb-2">
-                                    <canvas id="myPieChart"></canvas>
-                                </div>
-                                <div class="mt-4 text-center small">
-                                    <span class="mr-2">
-                                        <i class="fas fa-circle text-primary"></i> Total
-                                    </span>
-                                    <span class="mr-2">
-                                        <i class="fas fa-circle text-success"></i> Check-In
-                                    </span>
-                                    <span class="mr-2">
-                                        <i class="fas fa-circle text-info"></i> Check-Out
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
+            <div class="card">
+                <!-- Card Header - Dropdown -->
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h6 class="m-0 font-weight-bold text-primary">Book Detail</h6>
+                </div>
+                <!-- Card Body -->
+                <div class="card-body">
+                    <div class="chart-pie pt-4 pb-2">
+                        <canvas id="myPieChart"></canvas>
+                    </div>
+                    <div class="mt-4 text-center small">
+                        <span class="mr-2">
+                            <i class="fas fa-circle text-primary"></i> Total
+                        </span>
+                        <span class="mr-2">
+                            <i class="fas fa-circle text-success"></i> Check-In
+                        </span>
+                        <span class="mr-2">
+                            <i class="fas fa-circle text-info"></i> Check-Out
+                        </span>
+                    </div>
+                </div>
+            </div>
         </div>
         <!--List-->
         <div class="col-12 my-5">
             <h3 class="text-primary" style="font-size:2.2rem;">Detail List:</h3>
             <table class="table table-bordered">
+
+                <!--                {{ Logs }}-->
+                {% for l in Logs %}
                 <thead>
-                  <tr>
-                    <th scope="col">Sr.No</th>
-                    <th scope="col">First</th>
-                    <th scope="col">Last</th>
-                    <th scope="col">Issued Date</th>
-                    <th scope="col">Due Date</th>
-                    <th scope="col">Returned Date</th>
-                  </tr>
+                    <tr>
+                        <th scope="col">Sr.No</th>
+                        <th scope="col">First</th>
+                        <th scope="col">Last</th>
+                        <th scope="col">Issued Date</th>
+                        <th scope="col">Due Date</th>
+                        <th scope="col">Returned Date</th>
+                    </tr>
                 </thead>
                 <tbody>
-<!--                {{ Logs }}-->
-                {% for l in Logs %}
                     {% for log in l %}
-                      <tr>
+                    <tr>
                         <th scope="row">1</th>
                         <td>{{ log.user_id.first_name }}</td>
                         <td>{{ log.user_id.last_name }}</td>
                         <td>{{ log.issue_day }} </td>
                         <td>{{ log.due_date}} </td>
-                          {% if log.checkback is None %}
-                          <td><a href="{% url 'returnB' %}?id={{log.pk}}">Return </a></td>
-                          {% else %}
+                        {% if log.checkback is None %}
+                        <td><a href="{% url 'returnB' %}?id={{log.pk}}">Return </a></td>
+                        {% else %}
                         <td>{{ log.checkback }}</td>
-                          {% endif %}
-                      </tr>
+                        {% endif %}
+                    </tr>
                     {% endfor %}
-                {% empty %}
-                    <h2> No inventory. <h2>
-                {% endfor %}
-                 
+                    {% empty %}
+                    <div class="card p-5">
+                        <h2 class="text-center">No Inventory</h2>
+                    </div>
+                            {% endfor %}
+
                 </tbody>
-              </table>
+            </table>
         </div>
-       
+
     </div>
 </div>
 
