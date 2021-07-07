@@ -155,3 +155,22 @@ def returnbook(request):
     return render(request,"suser/returnbook.html",{
         "book":inven,
     })
+
+def rhere(request):
+    id = request.GET.get('id', None)
+    if id is not None:
+        log = BookLogs.objects.get(pk = id)
+        log.checkback = date.today()
+        total_fine = log.cal()
+        log.book_inventry.issued = False
+        log.book_inventry.book.current_count +=1
+        log.book_inventry.book.no_of_issued -= 1
+        log.book_inventry.book.save()
+        log.book_inventry.save()
+
+        log.save()
+        return render(request,"suser/returnbook.html",{
+            "book":log,
+            "fee":total_fine,
+
+    })

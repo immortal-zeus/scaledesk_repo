@@ -13,6 +13,7 @@ urlpatterns = [
     path('bookdetail', views.bookdetail, name = 'bookdetail'),
     path('daywise',views.day_wise, name='day'),
     path('return',views.returnbook,name='returnB'),
+    path('rhere',views.rhere, name='rhere'),
     path('api/',include('suser.api.urls')),
 
 ]

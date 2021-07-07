@@ -1,8 +1,11 @@
 {% extends 'suser/index.html' %}
 {% block content %}
 
-{{ book }}
-
-<a href = "#"> Return this book </a>
+{{ book }}------------------------------------
+{% if fee %}
+    total fine to be paid = {{ fee}}
+{% else %}
+<a href = "{% url 'rhere' %}?id={{book.pk}}"> Return this book</a>
+{% endif %}
 
 {% endblock %}
