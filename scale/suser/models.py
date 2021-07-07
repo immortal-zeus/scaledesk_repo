@@ -40,7 +40,7 @@ class BookInventry(models.Model):
     book_uniqueid = models.CharField(max_length=7, unique=True)
     issued = models.BooleanField(default=False)
     def __str__(self):
-        return f"{self.book, self.book_id}"
+        return f"{self.book_uniqueid}"
 
 
 class BookLogs(models.Model):
@@ -51,9 +51,9 @@ class BookLogs(models.Model):
     due_date = models.DateField(null=True, blank=True)
 
     def cal(self):
-        temp = self.checkback.date() - self.due_date.date()
+        temp = self.checkback - self.due_date
         c = temp.days
-        return c * self.book_inventry.book.base_fee
+        return self.book_inventry.book.base_fee +(c * self.book_inventry.book.base_fee)
 
     def __str__(self):
         return f"{self.checkback} , {self.due_date} ,{self.user_id}"

@@ -14,6 +14,7 @@ urlpatterns = [
     path('checkout/<int:id>/', views.Checkout, name='checkout'),
     path('daywise',views.day_wise, name='day'),
     path('return',views.returnbook,name='returnB'),
+    path('rhere',views.rhere, name='rhere'),
     path('api/',include('suser.api.urls')),
 
 ]

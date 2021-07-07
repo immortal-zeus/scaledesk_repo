@@ -165,8 +165,8 @@ def Checkout(request, id):
         user_name = request.user
         current_time = date.today()
         due_Date = date.today() + timedelta(days=7)
-        if bookdata.current_count !=0: 
-            data = BookLogs(user_id = user_name, book_inventry=book, issue_day=current_time, due_date=due_Date)    
+        if bookdata.current_count !=0:
+            data = BookLogs(user_id = user_name, book_inventry=book, issue_day=current_time, due_date=due_Date)
             data.save()
             bookdata.no_of_issued += 1
             bookdata.current_count -= 1
@@ -176,3 +176,22 @@ def Checkout(request, id):
             return HttpResponseRedirect('/booklist', {'message':'No book available at the moment'})
     else:
         return HttpResponseRedirect('/')
+
+def rhere(request):
+    id = request.GET.get('id', None)
+    if id is not None:
+        log = BookLogs.objects.get(pk = id)
+        log.checkback = date.today()
+        total_fine = log.cal()
+        log.book_inventry.issued = False
+        log.book_inventry.book.current_count +=1
+        log.book_inventry.book.no_of_issued -= 1
+        log.book_inventry.book.save()
+        log.book_inventry.save()
+
+        log.save()
+        return render(request,"suser/returnbook.html",{
+            "book":log,
+            "fee":total_fine,
+
+    })
