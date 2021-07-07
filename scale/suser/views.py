@@ -150,4 +150,8 @@ def day_wise(request):
     })
 
 def returnbook(request):
-    pass
+    id = request.GET.get('id', None)
+    inven = BookLogs.objects.get(pk = id)
+    return render(request,"suser/returnbook.html",{
+        "book":inven,
+    })

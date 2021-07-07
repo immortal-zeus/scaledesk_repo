@@ -80,7 +80,11 @@
                         <td>{{ log.user_id.last_name }}</td>
                         <td>{{ log.issue_day }} </td>
                         <td>{{ log.due_date}} </td>
+                          {% if log.checkback is None %}
+                          <td><a href="{% url 'returnB' %}?id={{log.pk}}">Return </a></td>
+                          {% else %}
                         <td>{{ log.checkback }}</td>
+                          {% endif %}
                       </tr>
                     {% endfor %}
                 {% empty %}
