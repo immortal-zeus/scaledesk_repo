@@ -10,7 +10,7 @@ class User(AbstractUser):
     number = models.PositiveIntegerField(blank=True, null=True)
     Student = models.BooleanField(default=False)
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['first_name', 'last_name']
+    REQUIRED_FIELDS = ['first_name', 'last_name',]
 
 
     def __str__(self):
@@ -49,13 +49,14 @@ class BookLogs(models.Model):
     issue_day = models.DateTimeField(auto_now_add=True)
     checkback = models.DateTimeField(blank=True, null=True)
     due_date = models.DateTimeField(blank=True, null=True)
-    fine_fee = models.IntegerField(default=0)
 
     def cal(self):
         temp = self.checkback.date() - self.due_date.date()
         c = temp.days
-        return c * self.fine_fee
+        return c * self.book_inventry.book.base_fee
 
     def __str__(self):
         return f"{self.checkback} , {self.due_date} , {self.fine_fee}"
 
+
+# use basefine-----fine_fee remove

@@ -14,11 +14,11 @@
             <div class="Bthree" style="width:300px;height:420px;">
                 <div class="Btwo" style="background-color: #7510f7;width:250px;height:360px;">
                     <p style="font-weight:bold;font-size:1.2rem;padding-top:20px;color:white;">
-                        Python
+                        {{ book.book_name }}
                     </p>
                     <div class="Bone" style="left:20%;">
                         <p style="margin:0;color:#204051;font-weight: 500;padding:0 2px;">
-                            Aman Dixit
+                            {{ book.author }}
                         </p>
                     </div>
                 </div>
@@ -27,9 +27,9 @@
         <div class="col-sm-12 col-md-7 p-2 d-flex align-items-center justify-content-between shadow">
                 <!--Stats-->
                 <div class="card stats p-5">
-                    <h4 class="text-dark text-center">Category <span class="text-info"><hr />Fiction</span></h4><hr/>
-                    <h4 class="text-dark text-center"> Name<br/> <span class="text-info"><hr />Python Book</span></h4><hr />
-                    <h4 class="text-dark text-center">Price:<span class="text-info">$400</span></h4>                    
+                    <h4 class="text-dark text-center">Category <span class="text-info"><hr />{{ book.Book_categories}}</span></h4><hr/>
+                    <h4 class="text-dark text-center"> Title<br/> <span class="text-info"><hr />{{ book.book_name }}</span></h4><hr />
+                    <h4 class="text-dark text-center">Base Price:<span class="text-info">${{book.base_fee}}</span></h4>
                 </div>
             <!-- Pie Chart -->
                       <div class="card">
@@ -66,38 +66,24 @@
                     <th scope="col">First</th>
                     <th scope="col">Last</th>
                     <th scope="col">Issued Date</th>
+                    <th scope="col">Due Date</th>
                     <th scope="col">Returned Date</th>
                   </tr>
                 </thead>
                 <tbody>
+<!--                {{ Logs }}-->
+                {% for l in Logs %}
                   <tr>
                     <th scope="row">1</th>
-                    <td>Mark</td>
-                    <td>Otto</td>
-                    <td>10-02-2021</td>
-                    <td>12-03-2021</td>
+                    <td>{{ l.user_id.first_name }}</td>
+                    <td>{{ l.user_id.last_name }}</td>
+                    <td>{{ l.issue_day }} </td>
+                    <td>{{ l.due_date}} </td>
+                    <td>{{ l.checkback }}</td>
                   </tr>
-                  <tr>
-                    <th scope="row">2</th>
-                    <td>Jacob</td>
-                    <td>Thornton</td>
-                    <td>10-02-2021</td>
-                    <td>12-03-2021</td>
-                  </tr>
-                  <tr>
-                    <th scope="row">3</th>
-                    <td>Jacob</td>
-                    <td>Thornton</td>
-                    <td>10-02-2021</td>
-                    <td>12-03-2021</td>
-                  </tr>
-                  <tr>
-                    <th scope="row">4</th>
-                    <td>Jacob</td>
-                    <td>Thornton</td>
-                    <td>10-02-2021</td>
-                    <td>12-03-2021</td>
-                  </tr>
+                {% empty %}
+                    <h2> No inventory. <h2>
+                {% endfor %}
                  
                 </tbody>
               </table>

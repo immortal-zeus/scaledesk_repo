@@ -1,0 +1,19 @@
+{% extends 'suser/index.html' %}
+{% block content %}
+    <form action = "{% url 'create' %} " method="post">
+        {% csrf_token %}
+        <input type="text" name="book_name" placeholder="book_name">
+        <input type="text" name="author" placeholder="author">
+        <input type="date" name="publish_date" placeholder="publish date">
+        <input type="number" name="base_fee" placeholder="base_fee">
+        <input type="number" name="current_count" placeholder="current_count">
+        <select name = "categories">
+            <option selected>Categories</option>
+        {% for c in categories %}
+                <option value="{{c.Category}}">{{c.Category}} </option>
+        {% endfor %}
+        </select>
+        <input type="submit" class="btn btn-primary">
+    </form>
+
+{% endblock %}
