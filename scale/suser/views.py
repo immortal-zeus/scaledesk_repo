@@ -73,12 +73,9 @@ def logoutuser(request):
 def bookcategory(request):
     if request.method == 'POST':
         cat = request.POST['category']
-        try:
-            cate = Categories(Category = cat)
-        except IntegrityError:
-            return render(request,"HackerMan")
+        cate = Categories(Category = cat)
         cate.save()
-        return bookcreate(request)
+        return HttpResponseRedirect(reverse('create'))
     return render(request,"suser/bookCategory.html")
 
 def bookcreate(request):
