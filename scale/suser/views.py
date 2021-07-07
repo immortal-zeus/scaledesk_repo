@@ -5,6 +5,7 @@ from django.urls import reverse
 from .models import *
 from django.db import IntegrityError
 import uuid
+from datetime import date
 # Create your views here.
 
 def random_string(string_length=7):
@@ -141,3 +142,12 @@ def bookdetail(request):
     })
 
 
+
+def day_wise(request):
+    day = BookLogs.objects.all().filter(due_date= date.today())
+    return render(request, "suser/day.html",{
+        "day": day,
+    })
+
+def returnbook(request):
+    pass
