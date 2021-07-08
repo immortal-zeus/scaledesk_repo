@@ -160,6 +160,7 @@ def returnbook(request):
 
 
 def Checkout(request, id):
+    # adding this to frontend in booklist.html and ask aman where to in form , modify function according to forms and see models are updated you need to change issue bool value as well.
     if request.user.is_authenticated:
         book = BookInventry.objects.get(pk = id)
         bookdata = BookModel.objects.get(pk=id)
