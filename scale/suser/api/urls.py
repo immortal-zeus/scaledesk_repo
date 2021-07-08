@@ -8,4 +8,5 @@ urlpatterns = [
    path('',views.UserListView.as_view()),
    path('create',views.Userupdate.as_view()),
    path('<int:pk>',views.Userreti.as_view()),
+   path ('Category/',views.Cat),
 ]
