@@ -78,7 +78,8 @@ def bookcategory(request):
         cate = Categories(Category = cat)
         cate.save()
         return HttpResponseRedirect(reverse('create'))
-    return render(request,"suser/bookCategory.html")
+    else:
+        return HttpResponseRedirect(reverse('index'))
 
 def bookcreate(request):
     if request.method == "POST":
@@ -142,7 +143,6 @@ def bookdetail(request):
         "Logs": log,
 
     })
-
 
 
 def day_wise(request):

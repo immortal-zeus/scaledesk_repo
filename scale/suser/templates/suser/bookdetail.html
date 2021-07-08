@@ -69,7 +69,6 @@
             <table class="table table-bordered">
 
                 <!--                {{ Logs }}-->
-                {% for l in Logs %}
                 <thead>
                     <tr>
                         <th scope="col">Sr.No</th>
@@ -81,6 +80,7 @@
                     </tr>
                 </thead>
                 <tbody>
+                {% for l in Logs %}
                     {% for log in l %}
                     <tr>
                         <th scope="row">1</th>
