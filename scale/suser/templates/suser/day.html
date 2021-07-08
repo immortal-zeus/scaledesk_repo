@@ -4,7 +4,6 @@
 <table class="table mt-5">
     <thead>
       <tr>
-        <th scope="col">Book_Id</th>
         <th scope="col">Unique_Id</th>
         <th scope="col">Book_Name</th>
         <th scope="col">User</th>
@@ -12,31 +11,23 @@
         <th scope="col">Return</th>
       </tr>
     </thead>
+
     <tbody>
+      {% for j in day %}
       <tr>
-        <th scope="row">1</th>
-        <td>23abc</td>
-        <td>Python</td>
-        <td>Aman</td>
-        <td>07-07-2021</td>
-        <td><a href="" class="btn btn-primary">Return</a></td>
+        <th scope="row">{{ j.book_inventry.book_uniqueid }}</th>
+        <td>{{ j.book_inventry.book.book_name }}</td>
+        <td>{{ j.user_id.first_name }}</td>
+        <td>{{ j.issue_day }}</td>
+        {% if j.checkback is None %}
+        <td><a href="{% url 'returnB' %}?id={{j.pk}}" class="btn btn-primary">Return</a></td>
+        {% else %}
+        <td>Returned</td>
+        {% endif %}
       </tr>
-      <tr>
-        <th scope="row">2</th>
-        <td>23abcd</td>
-        <td>Python</td>
-        <td>Aman</td>
-        <td>07-07-2021</td>
-        <td><a href="" class="btn btn-primary">Return</a></td>
-      </tr>
-      <tr>
-        <th scope="row">2</th>
-        <td>23abce</td>
-        <td>Python</td>
-        <td>Aman</td>
-        <td>07-07-2021</td>
-        <td><a href="" class="btn btn-primary">Return</a></td>
-      </tr>
+      {% empty %}
+      No Books to be collected today.
+    {% endfor %}
     </tbody>
   </table>
 <!-- {{ day }} -->
