@@ -87,6 +87,11 @@ def bookcreate(request):
         book_name = request.POST["book_name"]
         author = request.POST["author"]
         publish_date = request.POST["publish_date"]
+        check = publish_date.split('-')
+        if date(int(check[0]), int(check[1]) , int(check[2])) > date.today():
+            return render(request,"suser/bookcreate.html",{
+                "message": "Publish date can not be in the future. "
+            })
         base_fee = request.POST["base_fee"]
         current_count = request.POST["current_count"]
         cat = Categories.objects.get(Category=Book_categories)
