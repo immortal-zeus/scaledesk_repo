@@ -27,9 +27,12 @@
                 </div>
             </div>
         </div>
-        <div class="col-sm-12 col-md-6 p-2 d-flex align-items-center justify-content-center shadow">
+        <!-- Utility Content -->
+        <p id="num-book-issued" style="display:none;">{{book.no_of_issued}}</p>
+        <p id="check-in" style="display:none;">{{book.current_count}}</p>
+        <div class="col-sm-12 col-md-6 p-2 d-flex align-items-center justify-content-center">
             <!--Stats-->
-            <div class="card stats p-4 mr-3">
+            <div class="card stats  col-md-5 p-3 mr-2">
                 <h4 class="text-dark text-center">Category <span class="text-info">
                         <hr />{{ book.Book_categories}}
                     </span></h4>
@@ -72,6 +75,8 @@
             <table class="table table-bordered">
 
                 <!--                {{ Logs }}-->
+                {% for l in Logs %}
+                
                 <thead>
                     <tr>
                         <th scope="col">Sr.No</th>
@@ -82,6 +87,11 @@
                         <th scope="col">Returned Date</th>
                     </tr>
                 </thead>
+                {% empty %}
+                <div class="card p-5">
+                    <h2 class="text-center">No Inventory</h2>
+                </div>
+                {% endfor %}
                 <tbody>
                 {% for l in Logs %}
                     {% for log in l %}
@@ -98,11 +108,8 @@
                         {% endif %}
                     </tr>
                     {% endfor %}
-                    {% empty %}
-                    <div class="card p-5">
-                        <h2 class="text-center">No Inventory</h2>
-                    </div>
-                            {% endfor %}
+                   
+                   {% endfor %}
 
                 </tbody>
             </table>
@@ -110,6 +117,5 @@
 
     </div>
 </div>
-
 
 {% endblock content %}
