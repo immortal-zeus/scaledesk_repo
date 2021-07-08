@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.contrib.auth import authenticate, login, logout , decorators
 from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
-from .models import BookModel, BookInventry, BookLogs, User, Categories
+from .models import *
 from django.db import IntegrityError
 import uuid
 # import datetime
@@ -157,6 +157,7 @@ def returnbook(request):
     return render(request,"suser/returnbook.html",{
         "book":inven,
     })
+
 
 def Checkout(request, id):
     if request.user.is_authenticated:

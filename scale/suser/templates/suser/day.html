@@ -1,6 +1,44 @@
 {% extends 'suser/index.html' %}
 {% block content %}
-
-{{ day }}
+<h2 class="text-primary my-3">Daywise Details</h2>
+<table class="table mt-5">
+    <thead>
+      <tr>
+        <th scope="col">Book_Id</th>
+        <th scope="col">Unique_Id</th>
+        <th scope="col">Book_Name</th>
+        <th scope="col">User</th>
+        <th scope="col">Issue_Date</th>
+        <th scope="col">Return</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th scope="row">1</th>
+        <td>23abc</td>
+        <td>Python</td>
+        <td>Aman</td>
+        <td>07-07-2021</td>
+        <td><a href="" class="btn btn-primary">Return</a></td>
+      </tr>
+      <tr>
+        <th scope="row">2</th>
+        <td>23abcd</td>
+        <td>Python</td>
+        <td>Aman</td>
+        <td>07-07-2021</td>
+        <td><a href="" class="btn btn-primary">Return</a></td>
+      </tr>
+      <tr>
+        <th scope="row">2</th>
+        <td>23abce</td>
+        <td>Python</td>
+        <td>Aman</td>
+        <td>07-07-2021</td>
+        <td><a href="" class="btn btn-primary">Return</a></td>
+      </tr>
+    </tbody>
+  </table>
+<!-- {{ day }} -->
 
 {% endblock %}
