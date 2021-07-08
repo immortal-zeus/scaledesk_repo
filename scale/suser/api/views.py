@@ -3,6 +3,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from suser.models import *
 from .serializers import UserSerializer
+from django.views.decorators.csrf import csrf_exempt
 
 class UserListView(generics.ListAPIView):
     queryset = User.objects.all()
@@ -41,7 +42,7 @@ class Cat(APIView):
         return Response(response)
 
 
-
+    @csrf_exempt
     def post(self, request):
         response = {}
         response['status'] = 200
