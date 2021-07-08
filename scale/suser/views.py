@@ -123,7 +123,6 @@ def booklist(request):
 
 
 def bookdetail(request):
-    #suraj : wrtie code here
     book_id = request.GET.get('bookid', None)
     book = BookModel.objects.get(pk = book_id)
     book_inven = BookInventry.objects.all().filter(book = book)
