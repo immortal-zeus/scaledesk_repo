@@ -176,13 +176,17 @@ def BookCheckout(request):
         name = User.objects.get(first_name=n_ame)
         bookname = request.POST['book_name']
         bookdata = BookModel.objects.get(book_name=bookname)
-        coded = BookInventry.objects.all().filter(book=bookdata,issued = 'False')
+        code = BookInventry.objects.all().filter(book=bookdata,issued = 'False')
+        coded = code[0]
+        new = BookInventry.objects.get(book_uniqueid=coded)
         bkdata = bookdata.current_count  #for Total Book Available
         current_time = date.today()
         due_Date = date.today() + timedelta(days=7)
         if bookdata.current_count !=0:
-            data = BookLogs(user_id = name, book_inventry=coded[1], issue_day=current_time, due_date=due_Date)
+            data = BookLogs(user_id = name, book_inventry=coded, issue_day=current_time, due_date=due_Date)
             data.save()
+            new.issued = True
+            new.save()
             bookdata.no_of_issued += 1
             bookdata.current_count -= 1
             bookdata.save()
