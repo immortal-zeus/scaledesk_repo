@@ -53,7 +53,10 @@ class BookLogs(models.Model):
     def cal(self):
         temp = self.checkback - self.due_date
         c = temp.days
-        return self.book_inventry.book.base_fee +(c * self.book_inventry.book.base_fee)
+        if c >0:
+            return self.book_inventry.book.base_fee +(c * self.book_inventry.book.base_fee)
+        else:
+            return self.book_inventry.book.base_fee
 
     def __str__(self):
         return f"{self.checkback} , {self.due_date} ,{self.user_id}"
