@@ -184,7 +184,10 @@ def BookCheckout(request):
         name = User.objects.get(first_name=n_ame)
         bookname = request.POST['book_name']
         bookdata = BookModel.objects.get(book_name=bookname)
-        code = BookInventry.objects.all().filter(book=bookdata,issued = 'False')
+        code = BookInventry.objects.all().filter(book=bookdata,issued = False)
+        if code.count() == 0:
+            messages.success(request, 'No book available at the moment !!!')
+            return HttpResponseRedirect('/checkout')
         coded = code[0]
         new = BookInventry.objects.get(book_uniqueid=coded)
         bkdata = bookdata.current_count  #for Total Book Available
