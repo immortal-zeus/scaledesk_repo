@@ -163,26 +163,36 @@ def returnbook(request):
         "book":inven,
     })
 
+def Checkout(request):
+    return render(request, 'suser/checkout.html',{
+    "books": BookModel.objects.all(),
+    "user_name" : User.objects.all(),
+    })
 
-def Checkout(request, id):
-    # adding this to frontend in booklist.html and ask aman where to in form , modify function according to forms and see models are updated you need to change issue bool value as well.
-    if request.user.is_authenticated:
-        book = BookInventry.objects.get(pk = id)
-        bookdata = BookModel.objects.get(pk=id)
-        user_name = request.user
+
+def BookCheckout(request):
+    if request.method == 'POST':
+        n_ame = request.POST['user_name']
+        name = User.objects.get(first_name=n_ame)
+        bookname = request.POST['book_name']
+        bookdata = BookModel.objects.get(book_name=bookname)
+        coded = BookInventry.objects.all().filter(book=bookdata,issued = 'False')
+        bkdata = bookdata.current_count  #for Total Book Available
         current_time = date.today()
         due_Date = date.today() + timedelta(days=7)
         if bookdata.current_count !=0:
-            data = BookLogs(user_id = user_name, book_inventry=book, issue_day=current_time, due_date=due_Date)
+            data = BookLogs(user_id = name, book_inventry=coded[1], issue_day=current_time, due_date=due_Date)
             data.save()
             bookdata.no_of_issued += 1
             bookdata.current_count -= 1
             bookdata.save()
-            return HttpResponseRedirect('/booklist',{'message': 'Successfully book checkout'})
+            return HttpResponseRedirect('/checkoutdone',{'message': 'Successfully book checkout'})
         else:
-            return HttpResponseRedirect('/booklist', {'message':'No book available at the moment'})
-    else:
-        return HttpResponseRedirect('/')
+            return HttpResponseRedirect('/checkout', {'message':'No book available at the moment'})
+
+def Checkoutdone(request):
+
+    return render(request, 'suser/checkoutdone.html')
 
 def rhere(request):
     id = request.GET.get('id', None)
