@@ -5,8 +5,8 @@ from django.urls import reverse
 from .models import *
 from django.db import IntegrityError
 import uuid
-# import datetime
 from datetime import datetime,date, timedelta
+from django.contrib import messages
 
 # Create your views here.
 
@@ -22,19 +22,22 @@ def index(request):
     return render(request,"suser/dashboard.html")
 
 def loginuser(request):
-    if request.method == "POST":
-        email_p = request.POST['email']
-        password_p = request.POST['password']
-        user = authenticate(request, username=email_p, password=password_p)
-        if user is not None:
-            login(request, user)
-            return HttpResponseRedirect(reverse("index"))
-        else:
-            return render(request,"suser/login.html",{
-                "email": email_p,
-                "flag" : True
-            })
-    return render(request,"suser/login.html")
+    if not request.user.is_authenticated:
+        if request.method == "POST":
+            email_p = request.POST['email']
+            password_p = request.POST['password']
+            user = authenticate(request, username=email_p, password=password_p)
+            if user is not None:
+                login(request, user)
+                return HttpResponseRedirect(reverse("index"))
+            else:
+                return render(request, "suser/login.html", {
+                    "email": email_p,
+                    "flag": True
+                })
+        return render(request, "suser/login.html")
+    else:
+        return HttpResponseRedirect(reverse("index"))
 
 def register(request):
     if request.method == "POST":
@@ -72,6 +75,7 @@ def logoutuser(request):
     logout(request)
     return HttpResponseRedirect(reverse("index"))
 
+@decorators.login_required(login_url='/login')
 def bookcategory(request):
     if request.method == 'POST':
         cat = request.POST['category']
@@ -81,6 +85,7 @@ def bookcategory(request):
     else:
         return HttpResponseRedirect(reverse('index'))
 
+@decorators.login_required(login_url='/login')
 def bookcreate(request):
     if request.method == "POST":
         Book_categories = request.POST["categories"]
@@ -106,7 +111,7 @@ def bookcreate(request):
         "categories" : Categories.objects.all(),
     })
 
-
+@decorators.login_required(login_url='/login')
 def create_inven(bookname, author):
     book = BookModel.objects.get(book_name = bookname, author = author)
     i = 0
@@ -123,13 +128,13 @@ def create_inven(bookname, author):
         else:
             continue
 
-
+@decorators.login_required(login_url='/login')
 def booklist(request):
     return render(request,"suser/booklist.html",{
         "books": BookModel.objects.all(),
     })
 
-
+@decorators.login_required(login_url='/login')
 def bookdetail(request):
     #suraj : wrtie code here
     book_id = request.GET.get('bookid', None)
@@ -146,16 +151,18 @@ def bookdetail(request):
     return render(request,"suser/bookdetail.html",{
         "book": book,
         "Logs": log,
+        "count": len(log)
 
     })
 
-
+@decorators.login_required(login_url='/login')
 def day_wise(request):
     day = BookLogs.objects.all().filter(due_date= date.today())
     return render(request, "suser/day.html",{
         "day": day,
     })
 
+@decorators.login_required(login_url='/login')
 def returnbook(request):
     id = request.GET.get('id', None)
     inven = BookLogs.objects.get(pk = id)
@@ -163,27 +170,46 @@ def returnbook(request):
         "book":inven,
     })
 
+@decorators.login_required(login_url='/login')
+def Checkout(request):
+    return render(request, 'suser/checkout.html',{
+    "books": BookModel.objects.all(),
+    "user_name" : User.objects.all(),
+    })
 
-def Checkout(request, id):
-    # adding this to frontend in booklist.html and ask aman where to in form , modify function according to forms and see models are updated you need to change issue bool value as well.
-    if request.user.is_authenticated:
-        book = BookInventry.objects.get(pk = id)
-        bookdata = BookModel.objects.get(pk=id)
-        user_name = request.user
+@decorators.login_required(login_url='/login')
+def BookCheckout(request):
+    if request.method == 'POST':
+        n_ame = request.POST['user_name']
+        name = User.objects.get(first_name=n_ame)
+        bookname = request.POST['book_name']
+        bookdata = BookModel.objects.get(book_name=bookname)
+        code = BookInventry.objects.all().filter(book=bookdata,issued = 'False')
+        if code.count() == 0:
+            messages.success(request, 'No book available at the moment !!!')
+            return HttpResponseRedirect('/checkout')
+        coded = code[0]
+        new = BookInventry.objects.get(book_uniqueid=coded)
+        bkdata = bookdata.current_count  #for Total Book Available
         current_time = date.today()
         due_Date = date.today() + timedelta(days=7)
         if bookdata.current_count !=0:
-            data = BookLogs(user_id = user_name, book_inventry=book, issue_day=current_time, due_date=due_Date)
+            data = BookLogs(user_id = name, book_inventry=coded, issue_day=current_time, due_date=due_Date)
             data.save()
+            new.issued = True
+            new.save()
             bookdata.no_of_issued += 1
             bookdata.current_count -= 1
             bookdata.save()
-            return HttpResponseRedirect('/booklist',{'message': 'Successfully book checkout'})
+            messages.success(request, 'Successfully book checkout !!!')
+            return HttpResponseRedirect('/checkout')
         else:
-            return HttpResponseRedirect('/booklist', {'message':'No book available at the moment'})
-    else:
-        return HttpResponseRedirect('/')
+            messages.success(request, 'Something went wrong !!!')
+            return HttpResponseRedirect('/checkout')
 
+
+
+@decorators.login_required(login_url='/login')
 def rhere(request):
     id = request.GET.get('id', None)
     if id is not None:
