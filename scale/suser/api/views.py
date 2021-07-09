@@ -4,6 +4,7 @@ from rest_framework.response import Response
 from suser.models import *
 from .serializers import UserSerializer
 from django.views.decorators.csrf import csrf_exempt
+from datetime import datetime,date, timedelta
 
 class UserListView(generics.ListAPIView):
     queryset = User.objects.all()
@@ -141,3 +142,48 @@ class Bookapi(APIView):
 
 
 Bookapi = Bookapi.as_view()
+class checkout(APIView):
+
+    def post(self, request):
+        response = {}
+        response['status'] = 200
+        response['message'] = "Something is wrong."
+
+        try :
+            all_data = request.data
+            username = all_data.get('user_name')
+            book = all_data.get('book_name')
+            bookdata = BookModel.objects.get(book_name=book)
+            code = BookInventry.objects.all().filter(book=bookdata, issued=False)
+            if code.count() == 0:
+                response['status'] = 205
+                response['message'] = "Book out of Stock."
+                return Response(response)
+            else:
+                coded = code[0]
+                new = BookInventry.objects.get(book_uniqueid=coded)
+                bkdata = bookdata.current_count  # for Total Book Available
+                current_time = date.today()
+                due_Date = date.today() + timedelta(days=7)
+                if bookdata.current_count != 0:
+                    data = BookLogs(user_id=username, book_inventry=coded, issue_day=current_time, due_date=due_Date)
+                    data.save()
+                    new.issued = True
+                    new.save()
+                    bookdata.no_of_issued += 1
+                    bookdata.current_count -= 1
+                    bookdata.save()
+                    response['status'] = 100
+                    response['message'] = "Saved Successfully ."
+                    return Response(response)
+                else:
+                    response['status'] = 205
+                    response['message'] = "Book out of Stock."
+                    return Response(response)
+
+        except Exception as e:
+            print(e)
+
+        return Response(response)
+
+
