@@ -13,11 +13,6 @@ urlpatterns = [
     path('bookdetail', views.bookdetail, name = 'bookdetail'),
     path('checkout', views.Checkout, name='checkout'),
     path('bookcheckout', views.BookCheckout, name='Bookcheckout'),
-<<<<<<< HEAD
-=======
-    path('checkoutdone', views.Checkoutdone, name='checkoutdone'),
->>>>>>> e023ddda3f9b121b7dde23deaa1c22223ac58cb3
-
     path('daywise',views.day_wise, name='day'),
     path('return',views.returnbook,name='returnB'),
     path('rhere',views.rhere, name='rhere'),
