@@ -59,3 +59,4 @@ class BookLogs(models.Model):
         return f"{self.checkback} , {self.due_date} ,{self.user_id}"
 
 
+# use basefine-----fine_fee remove
