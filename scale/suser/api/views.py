@@ -144,6 +144,7 @@ class Bookapi(APIView):
 Bookapi = Bookapi.as_view()
 class checkout(APIView):
 
+    @csrf_exempt
     def post(self, request):
         response = {}
         response['status'] = 200
