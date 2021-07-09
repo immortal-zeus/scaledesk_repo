@@ -184,7 +184,11 @@ def BookCheckout(request):
         name = User.objects.get(first_name=n_ame)
         bookname = request.POST['book_name']
         bookdata = BookModel.objects.get(book_name=bookname)
+<<<<<<< HEAD
         code = BookInventry.objects.all().filter(book=bookdata,issued = 'False')
+=======
+        code = BookInventry.objects.all().filter(book=bookdata,issued = False)
+>>>>>>> e023ddda3f9b121b7dde23deaa1c22223ac58cb3
         if code.count() == 0:
             messages.success(request, 'No book available at the moment !!!')
             return HttpResponseRedirect('/checkout')
@@ -204,9 +208,20 @@ def BookCheckout(request):
             messages.success(request, 'Successfully book checkout !!!')
             return HttpResponseRedirect('/checkout')
         else:
+<<<<<<< HEAD
             messages.success(request, 'Something went wrong !!!')
             return HttpResponseRedirect('/checkout')
 
+=======
+            messages.success(request, 'No book available at the moment !!!')
+            return HttpResponseRedirect('/checkout')
+
+
+@decorators.login_required(login_url='/login')
+def Checkoutdone(request):
+
+    return render(request, 'suser/checkoutdone.html')
+>>>>>>> e023ddda3f9b121b7dde23deaa1c22223ac58cb3
 
 
 @decorators.login_required(login_url='/login')
