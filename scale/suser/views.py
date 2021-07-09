@@ -5,8 +5,8 @@ from django.urls import reverse
 from .models import *
 from django.db import IntegrityError
 import uuid
-# import datetime
 from datetime import datetime,date, timedelta
+from django.contrib import messages
 
 # Create your views here.
 
@@ -198,9 +198,11 @@ def BookCheckout(request):
             bookdata.no_of_issued += 1
             bookdata.current_count -= 1
             bookdata.save()
-            return HttpResponseRedirect('/checkoutdone',{'message': 'Successfully book checkout'})
+            messages.success(request, 'Successfully book checkout !!!')
+            return HttpResponseRedirect('/checkout')
         else:
-            return HttpResponseRedirect('/checkout', {'message':'No book available at the moment'})
+            messages.success(request, 'No book available at the moment !!!')
+            return HttpResponseRedirect('/checkout')
 
 
 @decorators.login_required(login_url='/login')
