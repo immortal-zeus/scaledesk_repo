@@ -170,13 +170,14 @@ def returnbook(request):
         "book":inven,
     })
 
+@decorators.login_required(login_url='/login')
 def Checkout(request):
     return render(request, 'suser/checkout.html',{
     "books": BookModel.objects.all(),
     "user_name" : User.objects.all(),
     })
 
-
+@decorators.login_required(login_url='/login')
 def BookCheckout(request):
     if request.method == 'POST':
         n_ame = request.POST['user_name']
@@ -201,9 +202,12 @@ def BookCheckout(request):
         else:
             return HttpResponseRedirect('/checkout', {'message':'No book available at the moment'})
 
+
+@decorators.login_required(login_url='/login')
 def Checkoutdone(request):
 
     return render(request, 'suser/checkoutdone.html')
+
 
 @decorators.login_required(login_url='/login')
 def rhere(request):
