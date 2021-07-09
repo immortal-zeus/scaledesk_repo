@@ -21,25 +21,20 @@ def random_string(string_length=7):
 def index(request):
     return render(request,"suser/dashboard.html")
 
-
 def loginuser(request):
-    if not request.user.is_authenticated:
-        if request.method == "POST":
-            email_p = request.POST['email']
-            password_p = request.POST['password']
-            user = authenticate(request, username=email_p, password=password_p)
-            if user is not None:
-                login(request, user)
-                return HttpResponseRedirect(reverse("index"))
-            else:
-                return render(request,"suser/login.html",{
-                    "email": email_p,
-                    "flag" : True
-                })
-        return render(request,"suser/login.html")
-    else:
-        return HttpResponseRedirect(reverse("index"))
-
+    if request.method == "POST":
+        email_p = request.POST['email']
+        password_p = request.POST['password']
+        user = authenticate(request, username=email_p, password=password_p)
+        if user is not None:
+            login(request, user)
+            return HttpResponseRedirect(reverse("index"))
+        else:
+            return render(request,"suser/login.html",{
+                "email": email_p,
+                "flag" : True
+            })
+    return render(request,"suser/login.html")
 
 def register(request):
     if request.method == "POST":
@@ -77,7 +72,6 @@ def logoutuser(request):
     logout(request)
     return HttpResponseRedirect(reverse("index"))
 
-@decorators.login_required(login_url='/login')
 def bookcategory(request):
     if request.method == 'POST':
         cat = request.POST['category']
@@ -87,7 +81,6 @@ def bookcategory(request):
     else:
         return HttpResponseRedirect(reverse('index'))
 
-@decorators.login_required(login_url='/login')
 def bookcreate(request):
     if request.method == "POST":
         Book_categories = request.POST["categories"]
@@ -113,7 +106,7 @@ def bookcreate(request):
         "categories" : Categories.objects.all(),
     })
 
-@decorators.login_required(login_url='/login')
+
 def create_inven(bookname, author):
     book = BookModel.objects.get(book_name = bookname, author = author)
     i = 0
@@ -131,14 +124,12 @@ def create_inven(bookname, author):
             continue
 
 
-@decorators.login_required(login_url='/login')
 def booklist(request):
     return render(request,"suser/booklist.html",{
         "books": BookModel.objects.all(),
     })
 
 
-@decorators.login_required(login_url='/login')
 def bookdetail(request):
     #suraj : wrtie code here
     book_id = request.GET.get('bookid', None)
@@ -159,14 +150,12 @@ def bookdetail(request):
     })
 
 
-@decorators.login_required(login_url='/login')
 def day_wise(request):
     day = BookLogs.objects.all().filter(due_date= date.today())
     return render(request, "suser/day.html",{
         "day": day,
     })
 
-@decorators.login_required(login_url='/login')
 def returnbook(request):
     id = request.GET.get('id', None)
     inven = BookLogs.objects.get(pk = id)
@@ -175,7 +164,6 @@ def returnbook(request):
     })
 
 
-@decorators.login_required(login_url='/login')
 def Checkout(request, id):
     # adding this to frontend in booklist.html and ask aman where to in form , modify function according to forms and see models are updated you need to change issue bool value as well.
     if request.user.is_authenticated:
@@ -196,8 +184,6 @@ def Checkout(request, id):
     else:
         return HttpResponseRedirect('/')
 
-
-@decorators.login_required(login_url='/login')
 def rhere(request):
     id = request.GET.get('id', None)
     if id is not None:
