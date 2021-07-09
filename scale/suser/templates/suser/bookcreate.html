@@ -51,7 +51,7 @@
             <select name="categories" required=true id="categories" class="form-select form-select-lg form-control" aria-label="Default select example" style="width:100%;">
             </select>
             <p class="my-3 text-danger display-5">*Not in the List add yours  
-                <a class="btn btn-dark float-right" type="button"  data-toggle="modal" data-target="#exampleModal">
+                <a class="btn btn-dark float-right add-btn" type="button"  data-toggle="modal" data-target="#exampleModal">
                     Add New Category
                 </a>
             </p>
@@ -81,7 +81,7 @@
                 {% csrf_token %}
                <div class="form-group">
                     <label for="new_category"> Enter Category</label>
-                    <input value="" type="text" class="form-control" id="new_category" name="category" placeholder="Category">
+                    <input  type="text" class="form-control" id="new_category" name="category" placeholder="Category">
                 </div>
                 <button type="button" class="btn btn-primary create-category-btn">Create</button>
             </form>
@@ -97,18 +97,19 @@
 
 <script>
   const createCategoryBtn = document.querySelector('.create-category-btn');
-  const categoryInput = document.getElementById('new_category')
+  let cInput = document.getElementById('new_category')
   const closeBtn = document.querySelector('.close');
   const categories = document.getElementById('categories');
   
   
 
   /* Function to get Updated Category */
+  
   const updateCategory = async() =>{
+    let result="";
     categories.innerHTML='';
     console.log("here")
-    categories.innerHTML =`<option selected>Categories</option>`;
-    let result="";
+    categories.innerHTML =``;
     axios.get('/api/Category/') // 4
      .then(res => 
      {
@@ -123,22 +124,44 @@
 
     
   }
+  const getCategory = async() =>{
+      let result="";
+    categories.innerHTML='';
+    console.log("here")
+    categories.innerHTML =``;
+    axios.get('/api/Category/') // 4
+     .then(res => 
+     {
+      console.log(res.data.data);
+      result = res.data.data; 
+      for(let i=0;i<result.length;i++){
+        if(i!=result.length-1)
+        categories.innerHTML +=`<option value="${result[i].Category}">${result[i].Category} </option>`
+        else  categories.innerHTML +=`<option value="${result[i].Category}" selected>${result[i].Category} </option>`
+      }
+      
+    }
+     ) // 5
+     .catch(errors => console.log(errors)) // 6
+
+    
+  }
   
-  createCategoryBtn.addEventListener('click',async(e)=>{
-  let categoryInput = document.getElementById('new_category').value
-   
+  
+  /* Create Category Button */
+   createCategoryBtn.addEventListener('click',async(e)=>{
+    let categoryInput = document.getElementById('new_category').value
     let data = new FormData(); // 2
     
     data.append('Category',categoryInput)
     data.append("csrfmiddlewaretoken", '{{csrf_token}}') // 3
-    
-    axios.post('/api/Category/', data) // 4
+     axios.post('/api/Category/', data) // 4
      .then(res => 
      {console.log(res);
-      closeBtn.click();
       categoryInput="";
-      updateCategory();
-    }
+      closeBtn.click();
+      getCategory();
+     }
      ) // 5
      .catch(errors => console.log(errors)) // 6
     
@@ -146,5 +169,13 @@
 
   /* Calling a function when page loads for the first time */ 
   updateCategory();
+  // Add Category Button 
+  const addBtn = document.querySelector('.add-btn');
+ 
+  addBtn.addEventListener('click',(e)=>{
+    console.log("it")
+    cInput.value="";
+    console.log(cInput.value)
+  })
 </script>
 {% endblock %}
