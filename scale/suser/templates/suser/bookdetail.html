@@ -75,8 +75,8 @@
             <table class="table table-bordered">
 
                 <!--                {{ Logs }}-->
-                {% for l in Logs %}
-                
+                {% if count > 0 %}
+
                 <thead>
                     <tr>
                         <th scope="col">Sr.No</th>
@@ -87,11 +87,11 @@
                         <th scope="col">Returned Date</th>
                     </tr>
                 </thead>
-                {% empty %}
+                {% else  %}
                 <div class="card p-5">
                     <h2 class="text-center">No Inventory</h2>
                 </div>
-                {% endfor %}
+                {% endif %}
                 <tbody>
                 {% for l in Logs %}
                     {% for log in l %}

@@ -155,6 +155,7 @@ def bookdetail(request):
     return render(request,"suser/bookdetail.html",{
         "book": book,
         "Logs": log,
+        "count": len(log)
 
     })
 
