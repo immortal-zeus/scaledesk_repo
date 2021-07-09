@@ -18,7 +18,7 @@
             <select name="user_name" required=true id="user_name" class="form-select form-select-lg form-control" aria-label="Default select example" style="width:100%;">
                 <option selected>User Name</option>
                 {% for c in user_name %}
-                        <option value="{{c.first_name}}">{{c.first_name}} </option>
+                        <option value="{{c.pk}}">{{c.first_name}} </option>
                 {% endfor %}
             </select>
         </div>

@@ -181,7 +181,7 @@ def Checkout(request):
 def BookCheckout(request):
     if request.method == 'POST':
         n_ame = request.POST['user_name']
-        name = User.objects.get(first_name=n_ame)
+        name = User.objects.get(pk=n_ame)
         bookname = request.POST['book_name']
         bookdata = BookModel.objects.get(book_name=bookname)
         code = BookInventry.objects.all().filter(book=bookdata,issued = False)

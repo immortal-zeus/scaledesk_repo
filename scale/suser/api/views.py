@@ -153,6 +153,7 @@ class checkout(APIView):
         try :
             all_data = request.data
             username = all_data.get('user_name')
+            user_n = User.objects.get(pk = username)
             book = all_data.get('book_name')
             bookdata = BookModel.objects.get(book_name=book)
             code = BookInventry.objects.all().filter(book=bookdata, issued=False)
@@ -167,7 +168,7 @@ class checkout(APIView):
                 current_time = date.today()
                 due_Date = date.today() + timedelta(days=7)
                 if bookdata.current_count != 0:
-                    data = BookLogs(user_id=username, book_inventry=coded, issue_day=current_time, due_date=due_Date)
+                    data = BookLogs(user_id=user_n, book_inventry=coded, issue_day=current_time, due_date=due_Date)
                     data.save()
                     new.issued = True
                     new.save()
@@ -188,3 +189,5 @@ class checkout(APIView):
         return Response(response)
 
 
+
+checkout = checkout.as_view()
