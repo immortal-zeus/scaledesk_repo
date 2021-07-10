@@ -10,5 +10,7 @@ urlpatterns = [
    path('<int:pk>',views.Userreti.as_view()),
    path ('Category/',views.Cat),
    path('Book/',views.Bookapi),
-   path('checkout/',views.checkout)
+   path('checkout/',views.checkout),
+   path('getbook/', views.getbook),
+   path('returnbook/' , views.returnbook),
 ]

@@ -8,6 +8,7 @@
         <th scope="col">Book_Name</th>
         <th scope="col">User</th>
         <th scope="col">Issue_Date</th>
+        <th scope="col">Total fee</th>
         <th scope="col">Return</th>
       </tr>
     </thead>
@@ -19,17 +20,34 @@
         <td>{{ j.book_inventry.book.book_name }}</td>
         <td>{{ j.user_id.first_name }}</td>
         <td>{{ j.issue_day }}</td>
+        <td> {{ j.cal }}</td>
         {% if j.checkback is None %}
         <td><a href="{% url 'returnB' %}?id={{j.pk}}" class="btn btn-primary">Return</a></td>
         {% else %}
         <td>Returned</td>
         {% endif %}
       </tr>
-      {% empty %}
-      No Books to be collected today.
     {% endfor %}
+
+<!--Aman these below are late book need to be in different color -->
+    {% for j in afterdate %}
+      <tr>
+        <th scope="row">{{ j.book_inventry.book_uniqueid }}</th>
+        <td>{{ j.book_inventry.book.book_name }}</td>
+        <td>{{ j.user_id.first_name }}</td>
+        <td>{{ j.issue_day }}</td>
+        <td> {{ j.cal }}</td>
+        {% if j.checkback is None %}
+        <td><a href="{% url 'returnB' %}?id={{j.pk}}" class="btn btn-primary">Return</a></td>
+        {% else %}
+        <td>Returned</td>
+        {% endif %}
+      </tr>
+    {% endfor %}
+
+
     </tbody>
   </table>
-<!-- {{ day }} -->
+
 
 {% endblock %}

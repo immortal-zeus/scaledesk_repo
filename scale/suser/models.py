@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
+from datetime import datetime,date, timedelta
 # Create your models here.
 
 class User(AbstractUser):
@@ -21,7 +22,7 @@ class Categories(models.Model):
     Category = models.CharField(max_length = 20, blank=True , null=True)
 
     def __str__(self):
-        return f"{self.Category}"
+        return f"{self.Category} -{ self.pk}"
 
 class BookModel(models.Model):
     Book_categories= models.ForeignKey(Categories, on_delete=models.CASCADE, null=True, related_name="Genre")
@@ -51,7 +52,7 @@ class BookLogs(models.Model):
     due_date = models.DateField(null=True, blank=True)
 
     def cal(self):
-        temp = self.checkback - self.due_date
+        temp = date.today() - self.due_date
         c = temp.days
         if c >0:
             return self.book_inventry.book.base_fee +(c * self.book_inventry.book.base_fee)
@@ -59,7 +60,7 @@ class BookLogs(models.Model):
             return self.book_inventry.book.base_fee
 
     def __str__(self):
-        return f"{self.checkback} , {self.due_date} ,{self.user_id}"
+        return f"{self.checkback} , {self.due_date} ,{self.user_id} , {self.pk}"
 
 
 # use basefine-----fine_fee remove
