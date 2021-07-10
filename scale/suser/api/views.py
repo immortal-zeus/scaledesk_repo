@@ -149,7 +149,6 @@ class checkout(APIView):
         response = {}
         response['status'] = 200
         response['message'] = "Something is wrong."
-
         try :
             all_data = request.data
             username = all_data.get('user_name')

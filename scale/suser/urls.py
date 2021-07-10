@@ -13,8 +13,6 @@ urlpatterns = [
     path('bookdetail', views.bookdetail, name = 'bookdetail'),
     path('checkout', views.Checkout, name='checkout'),
     path('bookcheckout', views.BookCheckout, name='Bookcheckout'),
-    path('checkoutdone', views.Checkoutdone, name='checkoutdone'),
-
     path('daywise',views.day_wise, name='day'),
     path('return',views.returnbook,name='returnB'),
     path('rhere',views.rhere, name='rhere'),

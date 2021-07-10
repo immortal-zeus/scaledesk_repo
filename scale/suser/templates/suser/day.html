@@ -4,10 +4,12 @@
 <table class="table mt-5 shadow">
     <thead>
       <tr>
-        <th scope="col">Unique_Id</th>
-        <th scope="col">Book_Name</th>
+        <th scope="col">Unique ID</th>
+        <th scope="col">Book Name</th>
         <th scope="col">User</th>
-        <th scope="col">Issue_Date</th>
+        <th scope="col">Issue Date</th>
+        <th scope="col">Return Date</th>
+        <th scope="col">Fine</th>
         <th scope="col">Return</th>
       </tr>
     </thead>
@@ -19,6 +21,8 @@
         <td>{{ j.book_inventry.book.book_name }}</td>
         <td>{{ j.user_id.first_name }}</td>
         <td>{{ j.issue_day }}</td>
+        <td>Adding soon</td>
+        <td>None</td>
         {% if j.checkback is None %}
         <td><a href="{% url 'returnB' %}?id={{j.pk}}" class="btn btn-primary">Return</a></td>
         {% else %}
@@ -29,7 +33,31 @@
       No Books to be collected today.
     {% endfor %}
     </tbody>
-  </table>
+
 <!-- {{ day }} -->
+  <hr><hr>
+
+    <tbody>
+      {% for k in afterdate %}
+      <tr>
+        <th scope="row">{{ k.book_inventry.book_uniqueid }}</th>
+        <td>{{ k.book_inventry.book.book_name }}</td>
+        <td>{{ k.user_id.first_name }}</td>
+        <td>{{ k.issue_day }}</td>
+        <td>Adding soon</td>
+        <td>None</td>
+        {% if k.checkback is None %}
+        <td><a href="{% url 'returnB' %}?id={{k.pk}}" class="btn btn-primary">Return</a></td>
+        {% else %}
+        <td>Returned</td>
+        {% endif %}
+      </tr>
+      {% empty %}
+      No Books to be collected today.
+    {% endfor %}
+    </tbody>
+
+</table>
+
 
 {% endblock %}

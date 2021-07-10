@@ -157,9 +157,14 @@ def bookdetail(request):
 
 @decorators.login_required(login_url='/login')
 def day_wise(request):
-    day = BookLogs.objects.all().filter(due_date= date.today())
+    today = date.today()
+    yesterday = date.today() - timedelta(days=1)
+    start = date.today() + timedelta(days=-30) # future change
+    day = BookLogs.objects.all().filter(due_date= today)
+    afterdate = BookLogs.objects.all().filter(checkback__isnull=True, due_date__range=[start, yesterday])
     return render(request, "suser/day.html",{
-        "day": day,
+        "day": day, 
+        "afterdate": afterdate
     })
 
 @decorators.login_required(login_url='/login')
@@ -206,12 +211,6 @@ def BookCheckout(request):
         else:
             messages.success(request, 'No book available at the moment !!!')
             return HttpResponseRedirect('/checkout')
-
-
-@decorators.login_required(login_url='/login')
-def Checkoutdone(request):
-
-    return render(request, 'suser/checkoutdone.html')
 
 
 @decorators.login_required(login_url='/login')
