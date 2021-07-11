@@ -267,6 +267,7 @@ class returnbook(APIView):
                 log.save()
                 response['status'] = 100
                 response['message'] = "Return Successful."
+                response['checkback'] = log.checkback
                 return Response(response)
 
             else:
