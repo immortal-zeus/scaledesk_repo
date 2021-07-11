@@ -152,10 +152,9 @@ class checkout(APIView):
 
         try :
             all_data = request.data
-            print(all_data)
             username = all_data.get('user_name')
             user_n = User.objects.get(pk = username)
-            book_pk = all_data.get('book_id')
+            book_pk = all_data.get('book_name')
             bookdata = BookModel.objects.get(pk=book_pk)
             code = BookInventry.objects.all().filter(book=bookdata, issued=False)
             if code.count() == 0:

@@ -61,7 +61,7 @@
                     aria-label="Default select example" style="width:100%;">
                     <option selected>Categories</option>
                     {% for c in books %}
-                    <option value="{{c.pk}}">{{c.Book_categories.Category}} </option>
+                    <option value="{{c.pk}}">{{c.Category}} </option>
                     {% endfor %}
                 </select>
                 <p class="error-label">*Select Proper Category</p>

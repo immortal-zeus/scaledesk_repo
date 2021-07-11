@@ -111,7 +111,6 @@ def bookcreate(request):
         "categories" : Categories.objects.all(),
     })
 
-@decorators.login_required(login_url='/login')
 def create_inven(bookname, author):
     book = BookModel.objects.get(book_name = bookname, author = author)
     i = 0
@@ -178,7 +177,7 @@ def returnbook(request):
 @decorators.login_required(login_url='/login')
 def Checkout(request):
     return render(request, 'suser/checkout.html',{
-    "books": BookModel.objects.all(),
+    "books": Categories.objects.all(),
     "user_name" : User.objects.all(),
     })
 
