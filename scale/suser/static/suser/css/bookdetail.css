@@ -1,6 +1,6 @@
 .Bthree{
     margin:0px;
-     box-shadow: none;
+    box-shadow: 0px 0px 10px 0px black;
 }
 .book-detail{
     height:600px;

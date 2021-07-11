@@ -185,6 +185,7 @@
                     errorLabel[1].style.display = "none";
                     bookName.style.display = 'block';
                     flag = 1;
+                    bookName.innerHTML='<option selected>Book Name</option>'
                     res.data.payload.map(item =>
                         bookName.innerHTML += `<option value="${item.pk}">${item.book_name} </option>`
                     );
