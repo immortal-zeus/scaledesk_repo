@@ -41,7 +41,9 @@
                         <hr />{{ book.book_name }}
                     </span></h4>
                 <hr />
-                <h4 class="text-dark text-center">Base Price:<br /><span class="text-info"><hr />${{book.base_fee}}</span>
+                <h4 class="text-dark text-center">Base Price:<br /><span class="text-info">
+                        <hr />${{book.base_fee}}
+                    </span>
                 </h4>
             </div>
             <!-- Pie Chart -->
@@ -87,13 +89,13 @@
                         <th scope="col">Returned Date</th>
                     </tr>
                 </thead>
-                {% else  %}
+                {% else %}
                 <div class="card p-5">
                     <h2 class="text-center">No Inventory</h2>
                 </div>
                 {% endif %}
                 <tbody>
-                {% for l in Logs %}
+                    {% for l in Logs %}
                     {% for log in l %}
                     <tr>
                         <th scope="row">1</th>
@@ -102,14 +104,16 @@
                         <td>{{ log.issue_day }} </td>
                         <td>{{ log.due_date}} </td>
                         {% if log.checkback is None %}
-                        <td><a href="{% url 'returnB' %}?id={{log.pk}}">Return </a></td>
+                        <td><button class='btn btn-primary return_btn'>Return
+                                <span class="book_id" style='display:none;'>{{log.pk}}</span>
+                            </button></td>
                         {% else %}
                         <td>{{ log.checkback }}</td>
                         {% endif %}
                     </tr>
                     {% endfor %}
-                   
-                   {% endfor %}
+
+                    {% endfor %}
 
                 </tbody>
             </table>
@@ -117,5 +121,39 @@
 
     </div>
 </div>
+ <!-- Adding axios script tag here-->
+
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
+
+<!--Custom Javascript File -->
+<script>
+
+    let bookId = document.querySelectorAll('.book_id');
+    console.log(bookId);
+    const returnBtn = document.querySelectorAll('.return_btn');
+    const date = new Date();
+   for (let i = 0; i < returnBtn.length; i++) {
+        returnBtn[i].addEventListener('click', (e) => {
+            let data = new FormData(); // 2
+
+            data.append('pk', bookId[i].innerHTML)
+            data.append("csrfmiddlewaretoken", '{{csrf_token}}') // 3
+            axios.post('/api/returnbook/', data) // 4
+                .then(res => {
+                    console.log(res);
+                    if(res.data.status==100){
+                        console.log('here')
+                        returnBtn[i].style.display='none';
+                        bookId[i].innerHTML='Retuned Successfully';
+                    }
+                }
+                ) // 5
+                .catch(errors => console.log(errors)) // 6
+
+        })
+
+    
+    }
+</script>
 
 {% endblock content %}
