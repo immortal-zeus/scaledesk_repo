@@ -104,9 +104,10 @@
                         <td>{{ log.issue_day }} </td>
                         <td>{{ log.due_date}} </td>
                         {% if log.checkback is None %}
-                        <td><button class='btn btn-primary return_btn'>Return
+                        <td class="before_checkback"><button class='btn btn-primary return_btn'>Return
                                 <span class="book_id" style='display:none;'>{{log.pk}}</span>
                             </button></td>
+                        <td class="after_checkback" style="display:none;"></td>
                         {% else %}
                         <td>{{ log.checkback }}</td>
                         {% endif %}
@@ -130,6 +131,8 @@
 
     let bookId = document.querySelectorAll('.book_id');
     console.log(bookId);
+    let beforeCheckback = document.querySelectorAll('.before_checkback')
+    let afterCheckback = document.querySelectorAll('.after_checkback')
     const returnBtn = document.querySelectorAll('.return_btn');
     const date = new Date();
    for (let i = 0; i < returnBtn.length; i++) {
@@ -143,8 +146,9 @@
                     console.log(res);
                     if(res.data.status==100){
                         console.log('here')
-                        returnBtn[i].style.display='none';
-                        bookId[i].innerHTML='Retuned Successfully';
+                         beforeCheckback[i].style.display='none';
+                         afterCheckback[i].style.display='block';
+                         afterCheckback[i].innerHTML=res.data.checkback;
                     }
                 }
                 ) // 5
