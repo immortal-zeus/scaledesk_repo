@@ -155,8 +155,8 @@ class checkout(APIView):
             print(all_data)
             username = all_data.get('user_name')
             user_n = User.objects.get(pk = username)
-            book = all_data.get('book_name')
-            bookdata = BookModel.objects.get(book_name=book)
+            book_pk = all_data.get('book_id')
+            bookdata = BookModel.objects.get(pk=book_pk)
             code = BookInventry.objects.all().filter(book=bookdata, issued=False)
             if code.count() == 0:
                 response['status'] = 205
