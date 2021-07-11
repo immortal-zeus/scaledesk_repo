@@ -152,6 +152,7 @@ class checkout(APIView):
 
         try :
             all_data = request.data
+            print(all_data)
             username = all_data.get('user_name')
             user_n = User.objects.get(pk = username)
             book = all_data.get('book_name')
@@ -203,6 +204,7 @@ class getbook(APIView):
         try:
             all_data = request.data
             Category = all_data.get('Category')
+            print(Category)
             if Category is None:
                 response['status'] = 404
                 response['message'] = "Category is required ."
