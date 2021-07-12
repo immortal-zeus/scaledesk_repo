@@ -13,7 +13,57 @@ from django.contrib import messages
 
 @decorators.login_required(login_url='/login')
 def index(request):
-    return render(request,"suser/dashboard.html")
+    books = BookLogs.objects.all()
+    cnt = books.count()
+
+    book_list = []
+    i = 0
+    while i < cnt:
+        b = books[i]
+        name = b.book_inventry
+        book_list.append(name)
+        i = i + 1
+    book_list = list(set(book_list))
+    print(book_list)
+    # for bb in book_list:
+    #     code = BookInventry.objects.all().filter(book_uniqueid = bb)
+
+
+    data = BookLogs.objects.all()
+
+    checkin = data.filter(checkback__isnull=True)
+    issued = checkin.count()
+
+    checkout = data.filter(checkback__isnull=False)
+    Returned = checkout.count()
+
+    lable = []   #date
+
+    now = datetime.now()
+    for x in range(7):
+        d = now - timedelta(days=x)
+        lable.append(d.date())
+    
+    data1 = []   #issued
+    data2 = []   #returnd
+
+    for day in lable:
+        try:
+            x = data.filter(checkback__isnull=True, due_date=day) #non-returned
+            data1.append(x.count())
+            y = data.filter(checkback__isnull=False, due_date=day) #returned
+            data2.append(y.count())
+        except:
+            pass
+
+    return render(request,"suser/dashboard.html",{
+        'issued': issued,
+        'Returned': Returned,
+        'lable': lable,
+        'data1': data1,
+        'data2': data2,
+    })
+
 
 def loginuser(request):
     if not request.user.is_authenticated:
