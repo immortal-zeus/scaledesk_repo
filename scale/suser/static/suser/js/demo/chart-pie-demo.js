@@ -11,9 +11,9 @@ checkIn = Number(checkIn)
 var myPieChart = new Chart(ctx, {
   type: 'doughnut',
   data: {
-    labels: ["Total", "Check-In", "Check-Out"],
+    labels: ["Check-In", "Check-Out"],
     datasets: [{
-      data: [numberIssued+checkIn, checkIn, numberIssued],
+      data: [checkIn, numberIssued],
       backgroundColor: ['#4e73df', '#1cc88a', '#36b9cc'],
       hoverBackgroundColor: ['#2e59d9', '#17a673', '#2c9faf'],
       hoverBorderColor: "rgba(234, 236, 244, 1)",
