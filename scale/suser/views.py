@@ -118,19 +118,33 @@ def bookdetail(request):
     #suraj : wrtie code here
     book_id = request.GET.get('bookid', None)
     book = BookModel.objects.get(pk = book_id)
-    book_inven = BookInventry.objects.all().filter(book = book)
-    log = []
+    book_inven = BookInventry.objects.all().filter(book = book, issued = True )
+    log_true = []
     for b in book_inven:
         temp = BookLogs.objects.all().filter(book_inventry = b)
         if temp.count() ==0:
             continue
         else:
-            log.append(temp)
+            # log_true.append(temp)
+            for i in temp:
+                log_true.append(i)
+
+
+    book_inven_false = BookInventry.objects.all().filter(book=book, issued=False)
+    log_false = []
+    for b in book_inven_false:
+        temp = BookLogs.objects.all().filter(book_inventry = b)
+        if temp.count() ==0:
+            continue
+        else:
+            # log_true.append(temp)
+            for i in temp:
+                log_false.append(i)
 
     return render(request,"suser/bookdetail.html",{
         "book": book,
-        "Logs": log,
-        "count": len(log)
+        "Logs": sort_this(log_true) + sort_this(log_false),
+        "count": len(log_true) + len(log_false)
 
     })
 

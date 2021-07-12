@@ -23,3 +23,11 @@ def create_inven(bookname, author):
             continue
         else:
             continue
+
+
+def sort_this(log):
+    temp = sorted(log , key= lambda x : x.due_date )
+    return temp
+
+
+

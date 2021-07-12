@@ -93,8 +93,8 @@
                 </div>
                 {% endif %}
                 <tbody>
-                    {% for l in Logs %}
-                    {% for log in l %}
+<!--                {{ Logs }}-->
+                    {% for log in Logs %}
                     <tr>
                         <th scope="row">{{ log.Transaction }}</th>
                         <td>{{ log.user_id.first_name }}</td>
@@ -111,8 +111,6 @@
                         {% endif %}
                         <td> {{ log.cal }}</td>
                     </tr>
-                    {% endfor %}
-
                     {% endfor %}
 
                 </tbody>
