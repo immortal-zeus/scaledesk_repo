@@ -35,7 +35,7 @@ def index(request):
     issued = checkin.count()
 
     checkout = data.filter(checkback__isnull=False)
-    Returned = checkout.count()
+    returnd = checkout.count()
 
     lable = []   #date
 
@@ -58,7 +58,7 @@ def index(request):
 
     return render(request,"suser/dashboard.html",{
         'issued': issued,
-        'Returned': Returned,
+        'returnd': returnd,
         'lable': lable,
         'data1': data1,
         'data2': data2,
