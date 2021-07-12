@@ -7,42 +7,26 @@
         display: none;
         color: red;
     }
+    .alert{
+        width:100%;
+        margin-left:auto;
+        padding:10px;
+        z-index:3;
+    }
 </style>
 
-{% if messages %}
-{% for message in messages %}
-<p {% if message.tags %} class="alert alert-{{message.tags}} mb-5" {% endif %}>{{message}}</p>
-{% endfor %}
-{% endif %}
-<!-- Modal For Success -->
-<!-- Button trigger modal -->
-<button style="display:none;" type="button" class="btn btn-primary modal-btn" data-toggle="modal"
-    data-target="#exampleModal">
-    Launch demo modal
-</button>
 
-<!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-    aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Successful</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                You Successfully Purchased the Book
-            </div>
-
-        </div>
-    </div>
-</div>
-<hr>
 
 <div class="row d-flex align-items-center">
+    
     <div class="col-sm-12 col-md-4 shadow p-5">
+        <!--Alerts to show msg -->
+        <div class="alert alert-success correct" role="alert" style='display:none;'>
+            A simple success alert—check it out!
+        </div>
+        <div class="alert alert-danger wrong" role="alert" style='display:none;'>
+            A simple danger alert—check it out!
+        </div>
         <form>
             {% csrf_token %}
             <div class="form-group">
@@ -87,8 +71,8 @@
     let categories = document.getElementById('categories')
     let bookName = document.getElementById('book_name')
     const errorLabel = document.querySelectorAll('.error-label');
-    const modalBtn = document.querySelector('.modal-btn');
-    let modalBody = document.querySelector('.modal-body');
+    const error = document.querySelector('.wrong');
+    const success = document.querySelector('.correct');
     let flag = 0;
     submitBtn.addEventListener('click', (e) => {
         let user_name_verified = false;
@@ -147,14 +131,18 @@
                     bookName.value = "Book Name"
                     categories.value = "Categories"
                     if (res.data.status == 100) {
-                        modalBtn.click();
-                        modalBody.innerHTML = ''
-                        modalBody.innerHTML += 'Congrats You Successfully Purchased the book'
+                        success.innerHTML='Congrats! You Successfully Purchased the book'
+                        success.style.display='block';
+                        setTimeout(()=>{
+                          success.style.display='none';
+                        },3000)
                     }
                     else {
-                        modalBtn.click();
-                        modalBody.innerHTML = ''
-                        modalBody.innerHTML += 'Error!!!, Book Checkout Cancelled'
+                       error.innerHTML=res.data.message;
+                       error.style.display='block';
+                       setTimeout(()=>{
+                          error.style.display='none';
+                        },3000)
                     }
 
                 }

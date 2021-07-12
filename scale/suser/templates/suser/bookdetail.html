@@ -3,6 +3,11 @@
 
 {% block content %}
 <!-- Custom stylesheet for Book List-->
+<style>
+    .remove{
+        display:none;
+    }
+</style>
 
 <!--checkout :book.no_of_issued---------- check in: book.current_count -->
 
@@ -58,7 +63,7 @@
                         <canvas id="myPieChart"></canvas>
                     </div>
                     <div class="mt-4 text-center small">
-                       <span class="mr-2">
+                        <span class="mr-2">
                             <i class="fas fa-circle text-success"></i> Check-In
                         </span>
                         <span class="mr-2">
@@ -70,8 +75,15 @@
         </div>
         <!--List-->
         <div class="col-12 my-5">
-            <h3 class="text-primary" style="font-size:2.2rem;">Detail List:</h3>
-            <table class="table table-bordered">
+            <div class='d-flex justify-content-between mb-4'>
+                <h3 class="text-primary" style="font-size:2.2rem;">Detail List:</h3>
+                <div class='search-box d-flex'>
+                    <input style='width:100%;padding:20px;' type='text' class='form-control transaction-id' value=''
+                        placeholder='Enter Transaction Id'>
+                    <button class='search-btn btn btn-primary' style='height:40px;'>Search</button>
+                </div>
+            </div>
+            <table class="table table-bordered default-table">
 
                 <!--                {{ Logs }}-->
                 {% if count > 0 %}
@@ -93,7 +105,7 @@
                 </div>
                 {% endif %}
                 <tbody>
-<!--                {{ Logs }}-->
+                    <!--                {{ Logs }}-->
                     {% for log in Logs %}
                     <tr>
                         <th scope="row">{{ log.Transaction }}</th>
@@ -101,6 +113,7 @@
                         <td>{{ log.user_id.last_name }}</td>
                         <td>{{ log.issue_day }} </td>
                         <td>{{ log.due_date}} </td>
+                        <td> {{ log.cal }}</td>
                         {% if log.checkback is None %}
                         <td class="before_checkback"><button class='btn btn-primary return_btn'>Return
                                 <span class="book_id" style='display:none;'>{{log.pk}}</span>
@@ -109,19 +122,42 @@
                         {% else %}
                         <td>{{ log.checkback }}</td>
                         {% endif %}
-                        <td> {{ log.cal }}</td>
+
                     </tr>
                     {% endfor %}
 
                 </tbody>
             </table>
+            <!-- On Transaction Filter -->
+            <table class="table table-bordered filter-table remove">
+                <thead>
+                  <tr>
+                    <th scope="col">Transaction ID</th>
+                        <th scope="col">Username</th>
+                        <th scope="col">Issued Date</th>
+                        <th scope="col">Due Date</th>
+                        <th scope="col">Fee</th>
+                        <th scope="col">Returned Date</th>
+                  </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th scope="row" class='f_col'></th>
+                         <td class='f_col'>Ashutosh</td>
+                         <td class='f_col'></td>
+                         <td class='f_col'></td>
+                         <td class='f_col'>Hello</td>
+                         <td class='f_col'>
+                         </td>
+                         </tr>
+                </tbody>
+              </table>
         </div>
 
     </div>
 </div>
- <!-- Adding axios script tag here-->
-
- <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
+<!-- Adding axios script tag here-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
 
 <!--Custom Javascript File -->
 <script>
@@ -131,21 +167,26 @@
     let beforeCheckback = document.querySelectorAll('.before_checkback')
     let afterCheckback = document.querySelectorAll('.after_checkback')
     const returnBtn = document.querySelectorAll('.return_btn');
+    const searchBtn = document.querySelector('.search-btn')
+    const transactionId = document.querySelector('.transaction-id')
+    const defaultTable = document.querySelector('.default-table');
+    const filterTable = document.querySelector('.filter-table');
+    const dataTable = document.querySelector('.data-table');
+    const emptyTable = document.querySelector('.empty-table');
     const date = new Date();
-   for (let i = 0; i < returnBtn.length; i++) {
+    for (let i = 0; i < returnBtn.length; i++) {
         returnBtn[i].addEventListener('click', (e) => {
             let data = new FormData(); // 2
-
             data.append('pk', bookId[i].innerHTML)
             data.append("csrfmiddlewaretoken", '{{csrf_token}}') // 3
             axios.post('/api/returnbook/', data) // 4
                 .then(res => {
                     console.log(res);
-                    if(res.data.status==100){
+                    if (res.data.status == 100) {
                         console.log('here')
-                         beforeCheckback[i].style.display='none';
-                         afterCheckback[i].style.display='block';
-                         afterCheckback[i].innerHTML=res.data.checkback;
+                        beforeCheckback[i].style.display = 'none';
+                        afterCheckback[i].style.display = 'block';
+                        afterCheckback[i].innerHTML = res.data.checkback;
                     }
                 }
                 ) // 5
@@ -153,8 +194,61 @@
 
         })
 
-    
+
     }
+
+    /* Search Btn (Find By Transaction) */
+    const fCol = document.querySelectorAll('.f_col');
+    searchBtn.addEventListener('click', (e) => {
+        let data = new FormData(); // 2 
+       
+        console.log(transactionId.value)
+        data.append('trans', transactionId.value)
+        data.append("csrfmiddlewaretoken", '{{csrf_token}}') // 3
+        axios.post('/api/trans', data) // 4
+            .then(res => {
+                console.log(res);
+                if(res.data.message=='Found.'){
+                defaultTable.style.display='none';
+                filterTable.classList.remove('remove');
+                fCol[0].innerHTML=res.data.payload.Transaction;
+                fCol[1].innerHTML=res.data.payload.username
+                fCol[2].innerHTML=res.data.payload.issue_day
+                fCol[3].innerHTML=res.data.payload.due_date
+                
+                if(res.data.payload.checkback==null) 
+                  fCol[5].innerHTML=`<button class='btn btn-primary' onclick=f_return()>Return
+                                     <span id='f_book_id' style='display:none;'>${res.data.payload.book_id}</span>
+                                     </button>
+                       `
+                else fCol[5].innerHTML=res.data.payload.checkback;
+                
+                console.log(returnBtn)
+                }
+            }) // 5
+            .catch(errors => console.log(errors)) // 6
+
+    })
+   // Return Book code in Case of Filter
+   function f_return(){
+       let fBookId=document.getElementById('f_book_id');
+       console.log(fBookId.innerHTML)
+           let data = new FormData(); // 2
+            alert('cli')
+            data.append('pk', fBookId.innerHTML)
+            data.append("csrfmiddlewaretoken", '{{csrf_token}}') // 3
+            axios.post('/api/returnbook/', data) // 4
+                .then(res => {
+                    console.log(res);
+                    if (res.data.status == 100) {
+                        console.log('here')
+                        fCol[5].innerHTML=res.data.checkback;
+                    }
+                }
+                ) // 5
+                .catch(errors => console.log(errors)) // 6
+
+   }
 </script>
 
 {% endblock content %}

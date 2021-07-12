@@ -16,167 +16,20 @@
 </style>
 <div class="d-sm-flex align-items-center justify-content-between mb-4">
     <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
-    <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
-            class="fas fa-download fa-sm text-white-50"></i> Generate Report</a>
+    <a href="{% url 'register' %}" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
+            class="fas fa-download fa-sm text-white-100"></i> Create User</a>
+
+    
 </div>
 <div class="card user-card" style="width: 18rem;">
-     <div class="card-body">
-        <img class="img-profile rounded-circle d-block mx-auto" style="width:50%"
-        src="{% static 'suser/img/undraw_profile.svg' %}">
-      <h5 class="card-title text-center my-3">Create New User</h5>
-      <button  class="btn btn-primary add-btn" style="width:100%;">
-        Create User</button>
-    </div>
-  </div>
-  <div class="row">
-       <!-- Nested Row within Card Body -->
-         <div class="col-lg-5 shadow" id="form-card">
-                  <div class="px-2 py-5">
-                      <div class="text-center">
-                          <h1 class="h4 text-gray-900 mb-4">Create an Account!</h1>
-                      </div>
-                      <form action="{% url 'register' %}" method="POST" class="user">
-                           {% csrf_token %}
-                          <div class="form-group row">
-                              <div class="col-sm-6 mb-3 mb-sm-0">
-                                  {% if message is not None %}
-                                  <input name="first_name" type="text" required class="form-control form-control-user" id="exampleFirstName" value={{first_r}}
-                                      placeholder="First Name">
-                                  {% else %}
-                                  <input name="first_name" type="text" required class="form-control form-control-user" id="exampleFirstName" 
-                                  placeholder="First Name">
-                                   {% endif %}   
-                                  
-                              </div>
-                              <div class="col-sm-6">
-                                  {% if message is not None %}
-                                  <input value={{last_r}} name="last_name" type="text" required class="form-control form-control-user" id="exampleLastName"
-                                  placeholder="Last Name">
-                                  {% else %}
-                                  <input name="last_name" type="text" required class="form-control form-control-user" id="exampleLastName"
-                                      placeholder="Last Name">
-                                   {% endif %}  
-                                 
-                              </div>
-                          </div>
-                          <div class="form-group">
-                              {% if message is not None %}
-                              <input value={{email_r}} id="email-field" name="email" type="email" required class="form-control form-control-user" id="exampleInputEmail"
-                              placeholder="Email Address">
-                              {% else %}
-                              <input  id="email-field" name="email" type="email" required class="form-control form-control-user" id="exampleInputEmail"
-                                  placeholder="Email Address">
-                               {% endif %}  
-                              
-                              {% if message is not None %}
-                              <style>
-                                  #email-field{
-                                      border:1px solid red;
-                                  }
-                              </style>
-                                <label class="msg">*{{message}}</label>
-                          {% endif %}   
-                          </div>
-                          <div class="form-group">
-                              <select name="role" class="form-select form-select-lg form-control" aria-label="Default select example" style="width:100%;">
-                                  <option selected>User Type</option>
-                                  <option value="student">Student</option>
-                                  <option value="admin">Admin</option>
-                                  <option value="librarian">Librarian</option>
-                              </select>
-                          </div>
-                          <div class="form-group row">
-                              <div class="col-sm-6 mb-3 mb-sm-0 d-flex align-items-center">
-                                  <input name="password" minlength="8" type="password" required class="password form-control form-control-user"
-                                      id="exampleInputPassword" placeholder="Password">
-                                  <i type="button" class="fa fa-eye-slash disclose-password" aria-hidden="true" style="margin-left:-30px;"></i>
-                                  <i type="button" class="fa fa-eye view-password" aria-hidden="true" style="margin-left:-30px;"></i>
-                              </div>
-                              <div class="col-sm-6">
-                                  <input name="confirm_password" type="password" required class="password form-control form-control-user"
-                                      id="exampleRepeatPassword" placeholder="Repeat Password">
-                              </div>
-                              <label id="error-tooltip" style="font-size:12px;display:none;color:red;margin-top:10px;margin-left:5%;">*Password & Confirm Passowrd don't match</label>
-                          </div>
-                          <button type="submit" id="submit-btn" class="shadow btn btn-primary btn-user btn-block">
-                              Register Account
-                          </button>
-                          <!-- <hr> -->
-                          <!-- <a href="index.html" class="btn btn-google btn-user btn-block">
-                              <i class="fab fa-google fa-fw"></i> Register with Google
-                          </a>
-                          <a href="index.html" class="btn btn-facebook btn-user btn-block">
-                              <i class="fab fa-facebook-f fa-fw"></i> Register with Facebook
-                          </a> -->
-                      </form>
-                      <hr>
-                      <div class="text-center">
-                          <a class="small" href="forgot-password.html">Forgot Password?</a>
-                      </div>
-                      <div class="text-center">
-                          <a class="small" href="{% url 'login' %}">Already have an account? Login!</a>
-                      </div>
-                  </div>
-              </div>
-          
-      </div>
+    <div class="card-body">
+       <img class="img-profile rounded-circle d-block mx-auto" style="width:50%"
+       src="{% static 'suser/img/undraw_profile.svg' %}">
+     <h5 class="card-title text-center my-3">Create New User</h5>
+     <a href="{% url 'register' %}"  class="btn btn-primary add-btn" style="width:100%;">
+       Create User</a>
+   </div>
+ </div>
  
- <script>
-    const addBtn = document.querySelector('.add-btn')
-   const userCard = document.querySelector('.user-card')
-   const formCard = document.getElementById('form-card')
-   formCard.style.display='none';
-   addBtn.addEventListener('click',(e)=>{
-     userCard.style.display="none";
-     formCard.style.display='block';
-   })
-        const password = document.querySelectorAll(".password")
-        const submitBtn = document.getElementById("submit-btn")
-        const errotTip = document.getElementById("error-tooltip")
-        console.log(password[0])
-       
-        submitBtn.addEventListener("click",(e)=>{
-            if(password[0].value!=password[1].value){
-                password[1].borderColor="red"
-                submitBtn.disabled=true;
-                submitBtn.style.background="gray";
-                password[1].style.borderColor="red"
-                password[0].style.borderColor="red"
-                errotTip.style.display="block";
-            }
-        })
-        for(let i=0;i<password.length;i++){
-        password[i].addEventListener("keyup",(e)=>{
-           if(password[0].value===password[1].value){
-               submitBtn.disabled=false;
-               submitBtn.style.background="#0275d8";
-               password[1].style.borderColor="lightgray"
-                password[0].style.borderColor="lightgray"
-                errotTip.style.display="none";
-           }
-        })
-    }
-
-    /* Password */
-    const viewPasswordBtn = document.querySelector('.view-password');
-    const disclosePasswordBtn = document.querySelector('.disclose-password');
-   
-    const flag=0;
-    disclosePasswordBtn.addEventListener('click',(e)=>{
-        console.log("clicked")
-        password[0].type='text';
-        password[1].type='text';
-        disclosePasswordBtn.style.display="none";
-        viewPasswordBtn.style.display="block";
-    })
-
-    viewPasswordBtn.addEventListener('click',(e)=>{
-        password[0].type='password';
-        password[1].type='password';
-        viewPasswordBtn.style.display="none";
-        disclosePasswordBtn.style.display="block";
-
-    })
-    </script>
 
 {% endblock content %}

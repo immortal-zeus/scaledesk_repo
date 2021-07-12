@@ -25,7 +25,10 @@ Book Returned
         <td>{{ j.issue_day }}</td>
         <td> {{ j.cal }}</td>
         {% if j.checkback is None %}
-        <td><a href="{% url 'rhere' %}?id={{j.pk}}" class="btn btn-primary">Return</a></td>
+        <td class="before_checkback"><button class='btn btn-primary return_btn'>Return
+            <span class="book_id" style='display:none;'>{{j.pk}}</span>
+        </button></td>
+        <td class="after_checkback" style="display:none;"></td>
         {% else %}
         <td>Returned</td>
         {% endif %}
@@ -51,6 +54,36 @@ Book Returned
 
     </tbody>
   </table>
+<!-- Adding axios script tag here-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
+<script>
+    let bookId = document.querySelectorAll('.book_id');
+    let beforeCheckback = document.querySelectorAll('.before_checkback')
+    let afterCheckback = document.querySelectorAll('.after_checkback')
+    const returnBtn = document.querySelectorAll('.return_btn');
+    for (let i = 0; i < returnBtn.length; i++) {
+        returnBtn[i].addEventListener('click', (e) => {
+            let data = new FormData(); // 2
+            data.append('pk', bookId[i].innerHTML)
+            data.append("csrfmiddlewaretoken", '{{csrf_token}}') // 3
+            axios.post('/api/returnbook/', data) // 4
+                .then(res => {
+                    console.log(res);
+                    if (res.data.status == 100) {
+                        console.log('here')
+                        beforeCheckback[i].style.display = 'none';
+                        afterCheckback[i].style.display = 'block';
+                        afterCheckback[i].innerHTML = res.data.checkback;
+                    }
+                }
+                ) // 5
+                .catch(errors => console.log(errors)) // 6
 
+        })
+
+
+    }
+
+  </script>
 
 {% endblock %}
