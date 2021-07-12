@@ -13,20 +13,34 @@ from django.contrib import messages
 
 @decorators.login_required(login_url='/login')
 def index(request):
+
     books = BookLogs.objects.all()
     cnt = books.count()
 
-    book_list = []
+    book_code = []
     i = 0
     while i < cnt:
         b = books[i]
         name = b.book_inventry
-        book_list.append(name)
+        book_code.append(name)
         i = i + 1
-    book_list = list(set(book_list))
-    print(book_list)
-    # for bb in book_list:
-    #     code = BookInventry.objects.all().filter(book_uniqueid = bb)
+    book_code = list(set(book_code))
+    print(book_code)
+
+    dict = {}
+    for bb in book_code:
+        code = BookInventry.objects.all().filter(book_uniqueid = bb)
+        one = code[0]
+        book_book = one.book
+        book_nme = book_book.book_name
+        print(book_nme)
+
+        #if condiction for append in dict{} and value increase 
+        # if book_nme = 
+        dict[book_nme].append()
+
+
+
 
 
     data = BookLogs.objects.all()
@@ -35,30 +49,29 @@ def index(request):
     issued = checkin.count()
 
     checkout = data.filter(checkback__isnull=False)
-    returnd = checkout.count()
+    returned = checkout.count()
 
     lable = []   #date
+    data1 = []   #issued
+    data2 = []   #returnd
 
     now = datetime.now()
     for x in range(7):
         d = now - timedelta(days=x)
         lable.append(d.date())
-    
-    data1 = []   #issued
-    data2 = []   #returnd
 
     for day in lable:
         try:
-            x = data.filter(checkback__isnull=True, due_date=day) #non-returned
+            x = BookLogs.objects.all().filter(checkback__isnull=True, due_date=day) #non-returned
             data1.append(x.count())
-            y = data.filter(checkback__isnull=False, due_date=day) #returned
+            y = BookLogs.objects.all().filter(checkback__isnull=False, due_date=day) #returned
             data2.append(y.count())
         except:
             pass
 
     return render(request,"suser/dashboard.html",{
         'issued': issued,
-        'returnd': returnd,
+        'returned': returned,
         'lable': lable,
         'data1': data1,
         'data2': data2,
