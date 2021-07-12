@@ -4,18 +4,12 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
 from .models import *
 from django.db import IntegrityError
-import uuid
+from .helper import *
 from datetime import datetime,date, timedelta
 from django.contrib import messages
 
 # Create your views here.
 
-def random_string(string_length=7):
-    """Returns a random string of length string_length."""
-    random = str(uuid.uuid4())
-    random = random.upper()
-    random = random.replace("-","")
-    return random[0:string_length]
 
 @decorators.login_required(login_url='/login')
 def index(request):
@@ -111,21 +105,7 @@ def bookcreate(request):
         "categories" : Categories.objects.all(),
     })
 
-def create_inven(bookname, author):
-    book = BookModel.objects.get(book_name = bookname, author = author)
-    i = 0
-    while(True):
-        if i== book.current_count:
-            break
-        temp = random_string()
-        a = BookInventry.objects.all().filter(book_uniqueid=temp)
-        if a.count() ==0:
-            inven = BookInventry(book= book ,book_uniqueid = temp)
-            inven.save()
-            i +=1
-            continue
-        else:
-            continue
+
 
 @decorators.login_required(login_url='/login')
 def booklist(request):
@@ -198,7 +178,7 @@ def BookCheckout(request):
         current_time = date.today()
         due_Date = date.today() + timedelta(days=7)
         if bookdata.current_count !=0:
-            data = BookLogs(user_id = name, book_inventry=coded, issue_day=current_time, due_date=due_Date)
+            data = BookLogs(user_id = name, book_inventry=coded, issue_day=current_time, due_date=due_Date , Transaction = str(date.today())[-1]+random_string(8)+str(date.today())[-2])
             data.save()
             new.issued = True
             new.save()

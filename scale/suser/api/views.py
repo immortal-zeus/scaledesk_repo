@@ -2,6 +2,7 @@ from rest_framework import generics
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from suser.models import *
+from suser.helper import *
 from .serializers import UserSerializer
 from django.views.decorators.csrf import csrf_exempt
 from datetime import datetime,date, timedelta
@@ -168,7 +169,7 @@ class checkout(APIView):
                 current_time = date.today()
                 due_Date = date.today() + timedelta(days=7)
                 if bookdata.current_count != 0:
-                    data = BookLogs(user_id=user_n, book_inventry=coded, issue_day=current_time, due_date=due_Date)
+                    data = BookLogs(user_id=user_n, book_inventry=coded, issue_day=current_time, due_date=due_Date ,Transaction= str(date.today())[-1]+random_string(8)+str(date.today())[-2])
                     data.save()
                     new.issued = True
                     new.save()
@@ -285,11 +286,49 @@ class returnbook(APIView):
 
 returnbook = returnbook.as_view()
 
-# date
+class trans(APIView):
+
+    @csrf_exempt
+    def post(self, request):
+        response = {}
+        response['status'] = 200
+        response['message'] = "Something is wrong."
+
+        try:
+            all_data = request.data
+            Transaction = all_data.get('trans')
+            if Transaction is not None:
+                bookt =BookLogs.objects.get(Transaction = Transaction)
+                payload = {
+                    "user_id" : bookt.user_id.pk,
+                    "username" : bookt.user_id.first_name + bookt.user_id.last_name,
+                    "book_id" : bookt.book_inventry.book.pk,
+                    "bookname" : bookt.book_inventry.book.book_name,
+                    "category" : bookt.book_inventry.book.Book_categories.Category,
+                    "issue_day" : bookt.issue_day,
+                    "checkback" : bookt.checkback,
+                    "due_date" : bookt.due_date,
+                    "Transaction" : bookt.Transaction
+                }
+
+                response['status'] = 100
+                response['message'] = "Found."
+                response['payload']= payload
+
+                return Response(response)
+
+            else:
+                response['status'] = 404
+                response['message'] = "Not Found."
+
+                return Response(response)
 
 
-# pie for whole inven .(all checkin , all checkout )--suraj
-# bar - top 5 book ---
-# last sven days (all check for 7 past days, all checkout for 7 past days  )---suraj
-# message toast -- check book
-# transction id
+        except Exception as e:
+            print(e)
+
+            return Response(response)
+
+
+
+trans = trans.as_view()

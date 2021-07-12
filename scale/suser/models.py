@@ -50,7 +50,7 @@ class BookLogs(models.Model):
     issue_day = models.DateField(auto_now_add=True)
     checkback = models.DateField(blank=True, null=True)
     due_date = models.DateField(null=True, blank=True)
-    # trans id
+    Transaction = models.CharField(max_length=10, unique=True)
 
     def cal(self):
         temp = date.today() - self.due_date

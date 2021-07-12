@@ -13,4 +13,5 @@ urlpatterns = [
    path('checkout/',views.checkout),
    path('getbook/', views.getbook),
    path('returnbook/' , views.returnbook),
+   path('trans',views.trans),
 ]

@@ -78,7 +78,7 @@
 
                 <thead>
                     <tr>
-                        <th scope="col">Sr.No</th>
+                        <th scope="col">Transaction ID</th>
                         <th scope="col">First</th>
                         <th scope="col">Last</th>
                         <th scope="col">Issued Date</th>
@@ -96,7 +96,7 @@
                     {% for l in Logs %}
                     {% for log in l %}
                     <tr>
-                        <th scope="row">1</th>
+                        <th scope="row">{{ log.Transaction }}</th>
                         <td>{{ log.user_id.first_name }}</td>
                         <td>{{ log.user_id.last_name }}</td>
                         <td>{{ log.issue_day }} </td>

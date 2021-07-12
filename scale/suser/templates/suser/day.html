@@ -7,7 +7,7 @@ Book Returned
 <table class="table mt-5 shadow">
     <thead>
       <tr>
-        <th scope="col">Unique_Id</th>
+        <th scope="col">Transaction ID</th>
         <th scope="col">Book_Name</th>
         <th scope="col">User</th>
         <th scope="col">Issue_Date</th>
@@ -19,7 +19,7 @@ Book Returned
     <tbody>
       {% for j in day %}
       <tr>
-        <th scope="row">{{ j.book_inventry.book_uniqueid }}</th>
+        <th scope="row">{{ j.Transaction }}</th>
         <td>{{ j.book_inventry.book.book_name }}</td>
         <td>{{ j.user_id.first_name }}</td>
         <td>{{ j.issue_day }}</td>
