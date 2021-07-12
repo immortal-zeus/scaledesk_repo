@@ -50,6 +50,7 @@ class BookLogs(models.Model):
     issue_day = models.DateField(auto_now_add=True)
     checkback = models.DateField(blank=True, null=True)
     due_date = models.DateField(null=True, blank=True)
+    # trans id
 
     def cal(self):
         temp = date.today() - self.due_date
@@ -63,4 +64,4 @@ class BookLogs(models.Model):
         return f"{self.checkback} , {self.due_date} ,{self.user_id} , {self.pk}"
 
 
-# use basefine-----fine_fee remove
+# trans id --- book return api

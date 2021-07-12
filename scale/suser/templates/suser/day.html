@@ -1,6 +1,9 @@
 {% extends 'suser/index.html' %}
 {% block content %}
 <h2 class="text-primary my-3">Daywise Details</h2>
+{% if flag %}
+Book Returned
+{% endif %}
 <table class="table mt-5 shadow">
     <thead>
       <tr>
@@ -22,7 +25,7 @@
         <td>{{ j.issue_day }}</td>
         <td> {{ j.cal }}</td>
         {% if j.checkback is None %}
-        <td><a href="{% url 'returnB' %}?id={{j.pk}}" class="btn btn-primary">Return</a></td>
+        <td><a href="{% url 'rhere' %}?id={{j.pk}}" class="btn btn-primary">Return</a></td>
         {% else %}
         <td>Returned</td>
         {% endif %}

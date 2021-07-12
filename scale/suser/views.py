@@ -232,9 +232,10 @@ def rhere(request):
         log.book_inventry.save()
 
         log.save()
-        return render(request,"suser/returnbook.html",{
+        return render(request,"suser/day.html",{
             "book":log,
             "fee":total_fine,
+            "flag":True,
 
     })
 

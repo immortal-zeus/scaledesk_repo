@@ -284,3 +284,12 @@ class returnbook(APIView):
 
 
 returnbook = returnbook.as_view()
+
+# date
+
+
+# pie for whole inven .(all checkin , all checkout )--suraj
+# bar - top 5 book ---
+# last sven days (all check for 7 past days, all checkout for 7 past days  )---suraj
+# message toast -- check book
+# transction id
