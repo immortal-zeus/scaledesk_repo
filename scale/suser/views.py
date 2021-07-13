@@ -28,27 +28,25 @@ def index(request):
     print(book_code)
 
     dict = {}
+    ne_books = []
     for bb in book_code:
         code = BookInventry.objects.all().filter(book_uniqueid = bb)
         one = code[0]
         book_book = one.book
         book_nme = book_book.book_name
-        print(book_nme)
+        ne_books.append(book_nme)
 
-        #if condiction for append in dict{} and value increase 
-        # if book_nme = 
-        dict[book_nme].append()
+    dict = {item:ne_books.count(item) for item in ne_books}
+    # print(dict)
+    topy = list(dict.values())
+    topx = list(dict.keys())
+    # print(topx,topy)
 
 
-
-
-
-    data = BookLogs.objects.all()
-
-    checkin = data.filter(checkback__isnull=True)
+    checkin = books.filter(checkback__isnull=True)
     issued = checkin.count()
 
-    checkout = data.filter(checkback__isnull=False)
+    checkout = books.filter(checkback__isnull=False)
     returned = checkout.count()
 
     lable = []   #date
@@ -72,6 +70,8 @@ def index(request):
     return render(request,"suser/dashboard.html",{
         'issued': issued,
         'returned': returned,
+        'topx':topx,
+        'topy': topy,
         'lable': lable,
         'data1': data1,
         'data2': data2,
