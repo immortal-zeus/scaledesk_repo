@@ -77,17 +77,10 @@
         <div class="col-12 my-5">
             <div class='d-flex justify-content-between mb-4'>
                 <h3 class="text-primary" style="font-size:2.2rem;">Detail List:</h3>
-                <div class='search-box d-flex'>
-                    <input style='width:100%;padding:20px;' type='text' class='form-control transaction-id' value=''
-                        placeholder='Enter Transaction Id'>
-                    <button class='search-btn btn btn-primary' style='height:40px;'>Search</button>
-                </div>
             </div>
-            <table class="table table-bordered default-table">
-
-                <!--                {{ Logs }}-->
+            <table class="table table-bordered default-table display" id="example"  style="width:100%">
+                <!--{{ Logs }}-->
                 {% if count > 0 %}
-
                 <thead>
                     <tr>
                         <th scope="col">Transaction ID</th>
@@ -128,35 +121,12 @@
 
                 </tbody>
             </table>
-            <!-- On Transaction Filter -->
-            <table class="table table-bordered filter-table remove">
-                <thead>
-                  <tr>
-                    <th scope="col">Transaction ID</th>
-                        <th scope="col">Username</th>
-                        <th scope="col">Issued Date</th>
-                        <th scope="col">Due Date</th>
-                        <th scope="col">Fee</th>
-                        <th scope="col">Returned Date</th>
-                  </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <th scope="row" class='f_col'></th>
-                         <td class='f_col'>Ashutosh</td>
-                         <td class='f_col'></td>
-                         <td class='f_col'></td>
-                         <td class='f_col'>Hello</td>
-                         <td class='f_col'>
-                         </td>
-                         </tr>
-                </tbody>
-              </table>
+          
         </div>
 
     </div>
 </div>
-<!-- Adding axios script tag here-->
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
 
 <!--Custom Javascript File -->
@@ -168,9 +138,7 @@
     let afterCheckback = document.querySelectorAll('.after_checkback')
     const returnBtn = document.querySelectorAll('.return_btn');
     const searchBtn = document.querySelector('.search-btn')
-    const transactionId = document.querySelector('.transaction-id')
     const defaultTable = document.querySelector('.default-table');
-    const filterTable = document.querySelector('.filter-table');
     const dataTable = document.querySelector('.data-table');
     const emptyTable = document.querySelector('.empty-table');
     const date = new Date();
@@ -197,58 +165,7 @@
 
     }
 
-    /* Search Btn (Find By Transaction) */
-    const fCol = document.querySelectorAll('.f_col');
-    searchBtn.addEventListener('click', (e) => {
-        let data = new FormData(); // 2 
-       
-        console.log(transactionId.value)
-        data.append('trans', transactionId.value)
-        data.append("csrfmiddlewaretoken", '{{csrf_token}}') // 3
-        axios.post('/api/trans', data) // 4
-            .then(res => {
-                console.log(res);
-                if(res.data.message=='Found.'){
-                defaultTable.style.display='none';
-                filterTable.classList.remove('remove');
-                fCol[0].innerHTML=res.data.payload.Transaction;
-                fCol[1].innerHTML=res.data.payload.username
-                fCol[2].innerHTML=res.data.payload.issue_day
-                fCol[3].innerHTML=res.data.payload.due_date
-                
-                if(res.data.payload.checkback==null) 
-                  fCol[5].innerHTML=`<button class='btn btn-primary' onclick=f_return()>Return
-                                     <span id='f_book_id' style='display:none;'>${res.data.payload.book_id}</span>
-                                     </button>
-                       `
-                else fCol[5].innerHTML=res.data.payload.checkback;
-                
-                console.log(returnBtn)
-                }
-            }) // 5
-            .catch(errors => console.log(errors)) // 6
-
-    })
-   // Return Book code in Case of Filter
-   function f_return(){
-       let fBookId=document.getElementById('f_book_id');
-       console.log(fBookId.innerHTML)
-           let data = new FormData(); // 2
-            alert('cli')
-            data.append('pk', fBookId.innerHTML)
-            data.append("csrfmiddlewaretoken", '{{csrf_token}}') // 3
-            axios.post('/api/returnbook/', data) // 4
-                .then(res => {
-                    console.log(res);
-                    if (res.data.status == 100) {
-                        console.log('here')
-                        fCol[5].innerHTML=res.data.checkback;
-                    }
-                }
-                ) // 5
-                .catch(errors => console.log(errors)) // 6
-
-   }
+   
 </script>
 
 {% endblock content %}
