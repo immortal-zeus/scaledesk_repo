@@ -298,3 +298,22 @@ def rhere(request):
     })
 
 
+def userlist(request):
+    return render(request, "suser/userlist.html",{
+        'all_users': User.objects.all(),
+    })
+
+
+def userdetail(request):
+    id = request.GET.get('id', None)
+    if id is not None:
+        usr = User.objects.get(pk = id)
+        all_books = BookLogs.objects.all().filter(user_id = usr)
+
+        return render(request,"suser/userdetail.html",{
+            "userq": usr,
+            "booksu":all_books,
+        })
+
+
+
