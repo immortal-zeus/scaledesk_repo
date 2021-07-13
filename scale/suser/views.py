@@ -13,7 +13,70 @@ from django.contrib import messages
 
 @decorators.login_required(login_url='/login')
 def index(request):
-    return render(request,"suser/dashboard.html")
+
+    books = BookLogs.objects.all()
+    cnt = books.count()
+
+    book_code = []
+    i = 0
+    while i < cnt:
+        b = books[i]
+        name = b.book_inventry
+        book_code.append(name)
+        i = i + 1
+    book_code = list(set(book_code))
+    print(book_code)
+
+    dict = {}
+    for bb in book_code:
+        code = BookInventry.objects.all().filter(book_uniqueid = bb)
+        one = code[0]
+        book_book = one.book
+        book_nme = book_book.book_name
+        print(book_nme)
+
+        #if condiction for append in dict{} and value increase 
+        # if book_nme = 
+        dict[book_nme].append()
+
+
+
+
+
+    data = BookLogs.objects.all()
+
+    checkin = data.filter(checkback__isnull=True)
+    issued = checkin.count()
+
+    checkout = data.filter(checkback__isnull=False)
+    returned = checkout.count()
+
+    lable = []   #date
+    data1 = []   #issued
+    data2 = []   #returnd
+
+    now = datetime.now()
+    for x in range(7):
+        d = now - timedelta(days=x)
+        lable.append(d.date())
+
+    for day in lable:
+        try:
+            x = BookLogs.objects.all().filter(checkback__isnull=True, due_date=day) #non-returned
+            data1.append(x.count())
+            y = BookLogs.objects.all().filter(checkback__isnull=False, due_date=day) #returned
+            data2.append(y.count())
+        except:
+            pass
+
+    return render(request,"suser/dashboard.html",{
+        'issued': issued,
+        'returned': returned,
+        'lable': lable,
+        'data1': data1,
+        'data2': data2,
+    })
+
 
 def loginuser(request):
     if not request.user.is_authenticated:
