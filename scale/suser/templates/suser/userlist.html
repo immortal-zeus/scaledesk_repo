@@ -3,8 +3,19 @@
 
 {% block content %}
 
-Hello man
-
+<div class='row'>
+{% for i in all_users %}
+  <div class='col-sm-6 col-md-3 d-flex flex-column align-items-center justify-content-center'>
+    <div class="card p-3" style="width: 18rem;">
+        <img  src="{% static 'suser/img/undraw_profile.svg' %}" style='width:50%;' class="card-img-top mx-auto" alt="...">
+        <h3 class='text-primary text-center mt-2'>{{i.username}}</h3>
+        <div class="card-body">
+           <a href="{% url 'userdetail' %}?id={{i.pk}}" class='btn btn-primary mt-1 w-100'>Details</a>
+        </div>
+      </div>
+  </div>
+  {% endfor %}
+</div>
 {{ all_users }}
 
 {% endblock %}

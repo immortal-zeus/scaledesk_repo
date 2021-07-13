@@ -23,23 +23,23 @@
 
 
 </div>
- <!-- Utility Content -->
+<!-- Utility Content -->
 <p id="num-book-issued" style='display:none;'>{{issued}}</p>
 <p id="check-in" style='display:none;'>{{returned}}</p>
 <!--Graphs -->
 <div class='row'>
   <div class="col-sm-12 col-md-8">
-      <!-- Area Chart -->
-      <div class="card shadow mb-4">
-        <div class="card-header py-3">
-            <h6 class="m-0 font-weight-bold text-primary">Area Chart</h6>
+    <!-- Area Chart -->
+    <div class="card shadow mb-4">
+      <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">Area Chart</h6>
+      </div>
+      <div class="card-body">
+        <div class="chart-area">
+          <canvas id="myAreaChart"></canvas>
         </div>
-        <div class="card-body">
-            <div class="chart-area">
-                <canvas id="myAreaChart"></canvas>
-            </div>
-          
-        </div>
+
+      </div>
     </div>
   </div>
   <div class="col-sm-12 col-md-4">
@@ -65,7 +65,7 @@
       </div>
     </div>
   </div>
-  
+
   <div class='col-sm-12 col-md-8'>
     <!-- Bar Chart -->
     <div class="card shadow mb-4">
@@ -76,11 +76,8 @@
         <div class="chart-bar">
           <canvas id="myBarChart"></canvas>
         </div>
-       </div>
+      </div>
     </div>
   </div>
 </div>
-
-<canvas id="myChart" width="400" height="400"></canvas>
-
 {% endblock content %}
