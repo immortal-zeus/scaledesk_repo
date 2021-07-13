@@ -10,6 +10,7 @@ from django.contrib import messages
 
 # Create your views here.
 
+# data table aman
 
 @decorators.login_required(login_url='/login')
 def index(request):
