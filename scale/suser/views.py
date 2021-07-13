@@ -26,7 +26,7 @@ def index(request):
         book_code.append(name)
         i = i + 1
     book_code = list(set(book_code))
-    print(book_code)
+    # print(book_code)
 
     dict = {}
     ne_books = []
@@ -50,16 +50,17 @@ def index(request):
     checkout = books.filter(checkback__isnull=False)
     returned = checkout.count()
 
-    lable = []   #date
+    # Past 7 days checkin and checkout
+    aa = []   #date
     data1 = []   #issued
     data2 = []   #returnd
 
     now = datetime.now()
     for x in range(7):
         d = now - timedelta(days=x)
-        lable.append(d.date())
+        aa.append(d.date())
 
-    for day in lable:
+    for day in aa:
         try:
             x = BookLogs.objects.all().filter(checkback__isnull=True, due_date=day) #non-returned
             data1.append(x.count())
@@ -67,15 +68,38 @@ def index(request):
             data2.append(y.count())
         except:
             pass
+    lable = [l.strftime('%Y-%m-%d') for l in aa]
+    # print(lable,data1,data2)
+
+
+    #Past 5 Non-Returned books
+    log = BookLogs.objects.all().filter(checkback__isnull=True).order_by('-due_date')
+    aaa = []  # due date book return past
+    freq = []  # total book remaing
+    for x in range(5):
+        try:
+            logg = log[x].due_date
+            aaa.append(logg)
+            c = log.filter(due_date = logg).count()
+            freq.append(c)
+        except:
+            pass
+    date = [l.strftime('%Y-%m-%d') for l in aaa]
+    print(date,freq)
 
     return render(request,"suser/dashboard.html",{
         'issued': issued,
         'returned': returned,
+    #top 5 books purchase 
         'topx':topx,
         'topy': topy,
+    # Past 7 days checkin and checkout
         'lable': lable,
         'data1': data1,
         'data2': data2,
+    # Past Non-Returned books
+        'date': date,
+        'freq': freq,
     })
 
 
