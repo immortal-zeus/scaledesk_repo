@@ -297,13 +297,13 @@ def rhere(request):
 
     })
 
-
+@decorators.login_required(login_url='/login')
 def userlist(request):
     return render(request, "suser/userlist.html",{
         'all_users': User.objects.all(),
     })
 
-
+@decorators.login_required(login_url='/login')
 def userdetail(request):
     id = request.GET.get('id', None)
     if id is not None:
