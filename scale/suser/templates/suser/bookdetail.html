@@ -64,10 +64,10 @@
                     </div>
                     <div class="mt-4 text-center small">
                         <span class="mr-2">
-                            <i class="fas fa-circle text-success"></i> Check-In
+                            <i class="fas fa-circle text-success"></i> Check-Out
                         </span>
                         <span class="mr-2">
-                            <i class="fas fa-circle text-info"></i> Check-Out
+                            <i class="fas fa-circle text-info"></i> Check-In
                         </span>
                     </div>
                 </div>
@@ -78,48 +78,42 @@
             <div class='d-flex justify-content-between mb-4'>
                 <h3 class="text-primary" style="font-size:2.2rem;">Detail List:</h3>
             </div>
-            <table class="table table-bordered default-table display" id="example"  style="width:100%">
-                <!--{{ Logs }}-->
-                {% if count > 0 %}
-                <thead>
+            <table class="table mt-5 shadow display" id="example" style="width:100%">
+               <thead>
                     <tr>
-                        <th scope="col">Transaction ID</th>
-                        <th scope="col">First</th>
-                        <th scope="col">Last</th>
-                        <th scope="col">Issued Date</th>
-                        <th scope="col">Due Date</th>
-                        <th scope="col">Fee</th>
-                        <th scope="col">Returned Date</th>
+                        <th>Transaction ID</th>
+                        <th>First</th>
+                        <th>Last</th>
+                        <th>Issued Date</th>
+                        <th>Due Date</th>
+                        <th>Fee</th>
+                        <th>Returned Date</th>
                     </tr>
                 </thead>
-                {% else %}
-                <div class="card p-5">
-                    <h2 class="text-center">No Inventory</h2>
-                </div>
-                {% endif %}
                 <tbody>
                     <!--                {{ Logs }}-->
                     {% for log in Logs %}
                     <tr>
-                        <th scope="row">{{ log.Transaction }}</th>
+                        <td>{{ log.Transaction }}</td>
                         <td>{{ log.user_id.first_name }}</td>
                         <td>{{ log.user_id.last_name }}</td>
                         <td>{{ log.issue_day }} </td>
                         <td>{{ log.due_date}} </td>
                         <td> {{ log.cal }}</td>
                         {% if log.checkback is None %}
-                        <td class="before_checkback"><button class='btn btn-primary return_btn'>Return
+                        <td class="before_checkback">
+                            <button class='btn btn-primary return_btn'>Return
                                 <span class="book_id" style='display:none;'>{{log.pk}}</span>
                             </button></td>
-                        <td class="after_checkback" style="display:none;"></td>
+                         
                         {% else %}
                         <td>{{ log.checkback }}</td>
                         {% endif %}
-
                     </tr>
                     {% endfor %}
 
                 </tbody>
+                
             </table>
           
         </div>
@@ -128,20 +122,14 @@
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
-
 <!--Custom Javascript File -->
 <script>
-
-    let bookId = document.querySelectorAll('.book_id');
+  let bookId = document.querySelectorAll('.book_id');
     console.log(bookId);
     let beforeCheckback = document.querySelectorAll('.before_checkback')
-    let afterCheckback = document.querySelectorAll('.after_checkback')
+    // let afterCheckback = document.querySelectorAll('.after_checkback')
     const returnBtn = document.querySelectorAll('.return_btn');
-    const searchBtn = document.querySelector('.search-btn')
-    const defaultTable = document.querySelector('.default-table');
-    const dataTable = document.querySelector('.data-table');
-    const emptyTable = document.querySelector('.empty-table');
-    const date = new Date();
+  const date = new Date();
     for (let i = 0; i < returnBtn.length; i++) {
         returnBtn[i].addEventListener('click', (e) => {
             let data = new FormData(); // 2
@@ -152,9 +140,10 @@
                     console.log(res);
                     if (res.data.status == 100) {
                         console.log('here')
-                        beforeCheckback[i].style.display = 'none';
-                        afterCheckback[i].style.display = 'block';
-                        afterCheckback[i].innerHTML = res.data.checkback;
+                        beforeCheckback[i].innerHTML='';
+                        beforeCheckback[i].innerHTML=res.data.checkback;
+                        // afterCheckback[i].style.display = 'block';
+                        // afterCheckback[i].innerHTML = res.data.checkback;
                     }
                 }
                 ) // 5
