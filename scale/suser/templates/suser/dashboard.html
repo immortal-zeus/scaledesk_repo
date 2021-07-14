@@ -85,24 +85,39 @@
     <div class="card">
       <!-- Card Header - Dropdown -->
       <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-        <h6 class="m-0 font-weight-bold text-primary">Top 5 Purchase Books</h6>
+        <h6 class="m-0 font-weight-bold text-primary">Books Info</h6>
       </div>
       <!-- Card Body -->
       <div class="card-body">
         <div class="chart-pie pt-4 pb-2">
-          <canvas id="pie-chart"></canvas>
+          <canvas id="PieChart"></canvas>
         </div>
-        <!-- <div class="mt-4 text-center small">
+        <div class="mt-4 text-center small">
           <span class="mr-2">
-            <i class="fas fa-circle text-success"></i> Date
+            <i class="fas fa-circle text-success"></i> Check-In
           </span>
           <span class="mr-2">
-            <i class="fas fa-circle text-info"></i> Count
+            <i class="fas fa-circle text-info"></i> Check-Out
           </span>
-        </div> -->
+        </div>
       </div>
     </div>
   </div>
 
 </div>
+
+
+<!--Axios CDN -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
+<!--Custom Javascript File -->
+<script>
+  console.log('requ')
+axios.get('/api/dashchart/') // 4
+     .then(res => 
+     {console.log(res)}
+     ) // 5
+     .catch(errors => console.log(errors)) // 6
+
+    
+</script>
 {% endblock content %}

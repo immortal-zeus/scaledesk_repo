@@ -38,7 +38,7 @@
 <script src="{% static 'suser/vendor/chart.js/Chart.min.js' %}"></script>
 
 <!-- Page level custom scripts -->
-<!--<script src="{% static 'suser/js/demo/chart-area-demo.js' %}"></script>-->
+<script src="{% static 'suser/js/demo/chart-area-demo.js' %}"></script>
 <script src="{% static 'suser/js/demo/chart-pie-demo.js' %}"></script>
 <!--<script src="{% static 'suser/js/demo/chart-bar-demo.js' %}"></script>-->
 
@@ -50,137 +50,47 @@
     });
 </script>
 
-<!-- Past 5 Non-Returned books -->
 <script>
-    var ctx = document.getElementById('myAreaChart').getContext('2d');
-    var myChart = new Chart(ctx, {
-        type: 'bar',
-        data: {
-            // labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
-            labels: {{date|safe}},
-            datasets: [{
-                label: '# Books',
-                data: {{freq|safe}},
-                // data: {{freq|safe}},
-                backgroundColor: [
-                    'rgba(255, 99, 132, 0.2)',
-                    'rgba(54, 162, 235, 0.2)',
-                    'rgba(255, 206, 86, 0.2)',
-                    'rgba(75, 192, 192, 0.2)',
-                    'rgba(153, 102, 255, 0.2)',
-                    'rgba(255, 159, 64, 0.2)'
-                ],
-                borderColor: [
-                    'rgba(255, 99, 132, 1)',
-                    'rgba(54, 162, 235, 1)',
-                    'rgba(255, 206, 86, 1)',
-                    'rgba(75, 192, 192, 1)',
-                    'rgba(153, 102, 255, 1)',
-                    'rgba(255, 159, 64, 1)'
-                ],
-                borderWidth: 1
-            }]
-        },
-        options: {
-            maintainAspectRatio: false,
-    layout: {
-      padding: {
-        left: 10,
-        right: 25,
-        top: 25,
-        bottom: 0
-      }
+    alert('hello')
+    // Set new default font family and font color to mimic Bootstrap's default styling
+  Chart.defaults.global.defaultFontFamily = 'Nunito', '-apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif';
+  Chart.defaults.global.defaultFontColor = '#858796';
+  
+  // Pie Chart Example
+  let ctx1 = document.getElementById("PieChart");
+  
+  var PieChart = new Chart(ctx1, {
+    type: 'doughnut',
+    data: {
+      labels: ["Check-In", "Check-Out"],
+      datasets: [{
+        data: [2, numberIssued],
+        backgroundColor: ['#4e73df', '#1cc88a', '#36b9cc'],
+        hoverBackgroundColor: ['#2e59d9', '#17a673', '#2c9faf'],
+        hoverBorderColor: "rgba(234, 236, 244, 1)",
+      }],
     },
-            scales: {
-                y: {
-                    beginAtZero: true
-                }
-            }
-        }
-    });
-  </script>
-  
-  <!-- Past 7 days Check-In and Check-Out -->
-  <script>
-  var ctx = document.getElementById('myBarChart').getContext('2d');
-  var myBarChart = new Chart(ctx, {
-      type: 'bar',
-      data: {
-          // labels: [2021-7-7,2021-7-8,2021-7-9,2021-7-10,2021-7-11,2021-7-12,2021-7-13],
-          labels: {{lable|safe}},
-          datasets: [{
-                  // data: [10, 2, 6, 5, 9, 3, 2],
-                  data: {{data1|safe}},
-                  label: "Check-In",
-                  borderColor: "#3767ed",
-                  // backgroundColor: '#a9bae8',
-                  fill: false
-              }
-                , {
-                  // data: [7, 4, 6, 5, 10, 8, 6],
-                  data: {{data2|safe}},
-                  label: "check-Out",
-                  borderColor: "#8f09e3",
-                  backgroundColor: '#edf3f5',
-                  fill: true
-              }
-  
-          ]
+    options: {
+      maintainAspectRatio: false,
+      tooltips: {
+        backgroundColor: "rgb(255,255,255)",
+        bodyFontColor: "#858796",
+        borderColor: '#dddfeb',
+        borderWidth: 1,
+        xPadding: 15,
+        yPadding: 15,
+        displayColors: false,
+        caretPadding: 10,
       },
-      options: {
-        maintainAspectRatio: false,
-    layout: {
-      padding: {
-        left: 10,
-        right: 25,
-        top: 25,
-        bottom: 0
-      }
-    },
-          scales: {
-              yAxes: [{
-                  ticks: {
-                      beginAtZero: true
-                  }
-              }]
-          }
-          // legend: {
-          // display: false
-          // },
-  
-      }
-  });
-  </script>
-  
-  <!-- Top 5 Purchase Books -->
-  <script>
-  new Chart(document.getElementById("pie-chart"), {
-      type: 'pie',
-      data: {
-        labels: {{topx|safe}},
-        datasets: [{
-          label: "Population (millions)",
-          backgroundColor: ["#3e95cd", "#8e5ea2","#3cba9f","#e8c3b9","#c45850"],
-          data: {{topy|safe}}
-        }]
+      legend: {
+        display: false
       },
-      options: {
-        maintainAspectRatio: false,
-    layout: {
-      padding: {
-        left: 10,
-        right: 25,
-        top: 25,
-        bottom: 0
-      }
+      cutoutPercentage: 80,
     },
-        title: {
-          display: true,
-          text: 'Most purchase books as per the users'
-        }
-      }
   });
+  
   </script>
+
       
 
 </body>
