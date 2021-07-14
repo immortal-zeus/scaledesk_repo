@@ -337,39 +337,35 @@ class DashChart(APIView):
     def get(self, request, format=None):
         
         books = BookLogs.objects.all()
-        cnt = books.count()
 
         book_code = []
-        i = 0
-        while i < cnt:
+        for i in range(len(books)):
             b = books[i]
             name = b.book_inventry
             book_code.append(name)
-            i = i + 1
         book_code = list(set(book_code))
         # print(book_code)
 
-        dict = {}
         ne_books = []
         for bb in book_code:
             code = BookInventry.objects.all().filter(book_uniqueid = bb)
-            one = code[0]
-            book_book = one.book
-            book_nme = book_book.book_name
-            ne_books.append(book_nme)
+            book_book = code[0].book.book_name
+            ne_books.append(book_book)
 
         dict = {item:ne_books.count(item) for item in ne_books}
         # print(dict)
-        topy = list(dict.values())
+        topy = list(dict.values()) 
         topx = list(dict.keys())
-        # print(topx,topy)
+        # print(topx,topy)  ########################
 
 
+        # Total issued & returned
         checkin = books.filter(checkback__isnull=True)
         issued = checkin.count()
 
         checkout = books.filter(checkback__isnull=False)
         returned = checkout.count()
+        # print(issued,returned)  ######################
 
         # Past 7 days checkin and checkout
         aa = []   #date
@@ -379,33 +375,40 @@ class DashChart(APIView):
         for x in range(7):
             d = now - timedelta(days=x)
             aa.append(d.date())
-
+        # print(aa)
         for day in aa:
-            try:
-                x = BookLogs.objects.all().filter(checkback__isnull=True, due_date=day) #non-returned
-                data1.append(x.count())
-                y = BookLogs.objects.all().filter(checkback__isnull=False, due_date=day) #returned
-                data2.append(y.count())
-            except:
-                pass
-        lable = [l.strftime('%Y-%m-%d') for l in aa]
-        # print(lable,data1,data2)
+            # try:
+            x = books.filter(issue_day=day) #issued
+            data1.append(x.count())
+            y = books.filter(checkback=day) #returned
+            data2.append(y.count())
+            # except:
+            #     pass
+        lable = [l.strftime('%Y-%m-%d') for l in aa] 
+        # print(lable,data1,data2)     ######################
 
 
         #Past 5 Non-Returned books
         log = BookLogs.objects.all().filter(checkback__isnull=True).order_by('-due_date')
         aaa = []  # due date book return past
         freq = []  # total book remaing
-        for x in range(7):
-            try:
-                logg = log[x].due_date
-                aaa.append(logg)
-                c = log.filter(due_date = logg).count()
-                freq.append(c)
-            except:
-                pass
-        date = [l.strftime('%Y-%m-%d') for l in aaa]
-        # print(date,freq)
+
+        for x in range(len(log)):
+            logg = log[x].due_date
+            aaa.append(logg)
+
+        aaa = list(set(aaa))
+        aaa = sorted(aaa)
+        aa = []
+        for i in range(5):
+            logg = aaa[i]
+            aa.append(aaa[i])
+            c = log.filter(due_date = logg).count()
+            freq.append(c)
+
+        date = [l.strftime('%Y-%m-%d') for l in aa]
+        # print(date,freq) ############################
+
 
         #converting json data format
 
