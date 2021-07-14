@@ -8,10 +8,11 @@ urlpatterns = [
    path('',views.UserListView.as_view()),
    path('create',views.Userupdate.as_view()),
    path('<int:pk>',views.Userreti.as_view()),
+   path('dashchart',views.DashChart.as_view()),
    path ('Category/',views.Cat),
    path('Book/',views.Bookapi),
    path('checkout/',views.checkout),
    path('getbook/', views.getbook),
-   path('returnbook/' , views.returnbook),
+   path('returnbook/', views.returnbook),
    path('trans',views.trans),
 ]
