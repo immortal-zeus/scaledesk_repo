@@ -54,7 +54,6 @@ def index(request):
     aa = []   #date
     data1 = []   #issued
     data2 = []   #returnd
-
     now = datetime.now()
     for x in range(7):
         d = now - timedelta(days=x)
