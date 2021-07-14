@@ -407,24 +407,31 @@ class DashChart(APIView):
         date = [l.strftime('%Y-%m-%d') for l in aaa]
         # print(date,freq)
 
-        # data1 = []
-        # for 
+        #converting json data format
 
+        Books_info = [{'issued': issued,'returned':returned}]
+
+        Top_books = []
+        for i in range(len(topx)):
+            Top_books.append({'topx': topx[i],'topy':topy[i]})
+        # print(Top_books)
+
+        Past_seven_days = []
+        for i in range(len(lable)):
+            Past_seven_days.append({'lable': lable[i],'data1':data1[i],'data2':data2[i]})
+        # print(Past_seven_days)
+
+        Past_Non_Returned = []
+        for i in range(len(date)):
+            Past_Non_Returned.append({'date': date[i],'freq':freq[i]})
+        # print(Past_Non_Returned)
 
         context = {
-            'issued': issued,
-            'returned': returned,
-        #top 5 books purchase 
-            'topx':topx,
-            'topy': topy,
-        # Past 7 days checkin and checkout
-            'lable': lable,
-            'data1': data1,
-            'data2': data2,
-        # Past Non-Returned books
-            'date': date,
-            'freq': freq,
-            # "dict" : dict
+            'Past_Non_Returned': Past_Non_Returned,
+            'Books_info': Books_info,
+            'Top_books' : Top_books,
+            'Past_seven_days' : Past_seven_days
         }
+
 
         return Response(context) 
