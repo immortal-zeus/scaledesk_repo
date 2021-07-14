@@ -333,9 +333,9 @@ trans = trans.as_view()
 
 
 class DashChart(APIView):
-
+    @csrf_exempt
     def get(self, request, format=None):
-        
+        print('here')
         books = BookLogs.objects.all()
 
         book_code = []
@@ -400,7 +400,7 @@ class DashChart(APIView):
         aaa = list(set(aaa))
         aaa = sorted(aaa)
         aa = []
-        for i in range(5):
+        for i in range(len(aaa)):
             logg = aaa[i]
             aa.append(aaa[i])
             c = log.filter(due_date = logg).count()

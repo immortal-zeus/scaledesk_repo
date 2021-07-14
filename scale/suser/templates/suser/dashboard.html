@@ -74,7 +74,7 @@
       </div>
       <div class="card-body">
         <div class="chart-bar">
-          <canvas id="myBarChart"></canvas>
+          <canvas id="ThirdChart"></canvas>
         </div>
       </div>
     </div>
@@ -163,6 +163,9 @@
   let booksInfoIssued = 0;
   let topX = [];
   let topY=[];
+  let lastSevenDaysLabel=[];
+  let lastSevenDaysCheckIn=[];
+  let lastSevenDaysCheckOut=[];
   // Pie Chart Example
   const ctx2 = document.getElementById("myPieChart");
   const ctx4 = document.getElementById('PieChart')
@@ -180,6 +183,11 @@
         booksInfoIssued = res.data.Books_info[0].issued;
         booksInfoReturned = res.data.Books_info[0].returned;
         /* Third Graph */
+        res.data.Past_seven_days.map(j => {
+          lastSevenDaysLabel.push(j.lable);
+          lastSevenDaysCheckIn.push(j.data1);
+          lastSevenDaysCheckOut.push(j.data2);
+        })
         /* Fourth Graph */
         res.data.Top_books.map(i=>{
           topX.push(i.topx)
@@ -199,9 +207,10 @@
 
   /* First Chart */
   function firstChart() {
-
+    Chart.defaults.global.legend.labels.usePointStyle = true;
     // First Chart Example
     const ctx1 = document.getElementById('myChart');
+    const ctx3 = document.getElementById('ThirdChart');
     const ctx4 = document.getElementById('PieChart');
     const xlabels = ['1', '2', '3', '4', '5', '6']
     const myChart = new Chart(ctx1, {
@@ -297,6 +306,63 @@
         cutoutPercentage: 80,
       },
     });
+    /* Chart 3 */
+    const ThirdChart = new Chart(ctx3, {
+      type: 'bar',
+      data: {
+        labels: lastSevenDaysLabel,
+        datasets: [{
+          label: 'Check-In',
+          data: lastSevenDaysCheckIn,
+          backgroundColor: 'rgba(255, 99, 132, 0.2)',
+          borderColor: 'rgba(255, 99, 132, 1)',
+          borderWidth: 1
+        },
+        {
+          label: 'Check-Out',
+          data: lastSevenDaysCheckOut,
+          backgroundColor:'rgba(54, 162, 235, 0.2)',
+          borderColor: 'rgba(54, 162, 235, 1)',
+          borderWidth: 1
+        }]
+      },
+      options: {
+        maintainAspectRatio: false,
+        layout: {
+          padding: {
+            left: 10,
+            right: 25,
+            top: 0,
+            bottom: 0
+          }
+        },
+        scales: {
+          yAxes: [{
+            ticks: {
+              min: 0,
+              // maxTicksLimit: 5,
+              stepSize: 1,
+              padding: 10,
+              // Include a dollar sign in the ticks
+
+            },
+
+          }],
+        },
+        legend: {
+          display: true
+        },
+        // title: {
+        //   display: true,
+        //   text: 'Custom Chart Title'
+        //         },
+        // legend: {
+        //   display: true
+        // },
+
+
+      }
+    });
     /* Chart 4 */
     var PieChart = new Chart(ctx4, {
     type: 'pie',
@@ -325,6 +391,9 @@
     },
     options: {
         maintainAspectRatio: false,
+        legend: {
+          display: true
+        },
     }
 });
   }
