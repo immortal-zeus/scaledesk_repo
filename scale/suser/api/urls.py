@@ -13,6 +13,6 @@ urlpatterns = [
    path('Book/',views.Bookapi),
    path('checkout/',views.checkout),
    path('getbook/', views.getbook),
-   path('returnbook/' , views.returnbook),
+   path('returnbook/', views.returnbook),
    path('trans',views.trans),
 ]
