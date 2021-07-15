@@ -335,7 +335,7 @@ trans = trans.as_view()
 class DashChart(APIView):
     @csrf_exempt
     def get(self, request, format=None):
-        print('here')
+        # print('here')
         books = BookLogs.objects.all()
 
         book_code = []
@@ -355,7 +355,9 @@ class DashChart(APIView):
         dict = {item:ne_books.count(item) for item in ne_books}
         # print(dict)
         topy = list(dict.values()) 
+        topy = topy[:5]
         topx = list(dict.keys())
+        topx = topx[:5]
         # print(topx,topy)  ########################
 
 
@@ -407,7 +409,9 @@ class DashChart(APIView):
             freq.append(c)
 
         date = [l.strftime('%Y-%m-%d') for l in aa]
-        # print(date,freq) ############################
+        date = date[:7]
+        freq = freq[:7]
+        print(date,freq) ############################
 
 
         #converting json data format
