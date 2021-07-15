@@ -411,7 +411,7 @@ class DashChart(APIView):
         date = [l.strftime('%Y-%m-%d') for l in aa]
         date = date[:7]
         freq = freq[:7]
-        print(date,freq) ############################
+        # print(date,freq) ############################
 
 
         #converting json data format
