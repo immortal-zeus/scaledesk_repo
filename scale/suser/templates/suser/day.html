@@ -1,6 +1,6 @@
 {% extends 'suser/index.html' %}
 {% block content %}
-<h2 class="text-primary my-3">Daywise Details</h2>
+<h2 class="text-primary my-3 mb-5">Daywise Book To Be Returned</h2>
 {% if flag %}
 Book Returned
 {% endif %}
@@ -37,14 +37,17 @@ Book Returned
 
 <!--Aman these below are late book need to be in different color -->
     {% for j in afterdate %}
-      <tr class='bg-dark'>
+      <tr class='bg-info text-light'>
         <th scope="row">{{ j.book_inventry.book_uniqueid }}</th>
         <td>{{ j.book_inventry.book.book_name }}</td>
         <td>{{ j.user_id.first_name }}</td>
         <td>{{ j.issue_day }}</td>
         <td> {{ j.cal }}</td>
         {% if j.checkback is None %}
-        <td><a href="{% url 'returnB' %}?id={{j.pk}}" class="btn btn-primary">Return</a></td>
+        <td class="before_checkback"><button class='btn btn-primary return_btn'>Return
+            <span class="book_id" style='display:none;'>{{j.pk}}</span>
+        </button></td>
+        <td class="after_checkback" style="display:none;"></td>
         {% else %}
         <td>Returned</td>
         {% endif %}
