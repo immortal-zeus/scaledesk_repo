@@ -74,17 +74,21 @@ def index(request):
     #Past 5 Non-Returned books
     log = BookLogs.objects.all().filter(checkback__isnull=True).order_by('-due_date')
     aaa = []  # due date book return past
-    freq = []  # total book remaing
-    for x in range(5):
-        try:
-            logg = log[x].due_date
-            aaa.append(logg)
-            c = log.filter(due_date = logg).count()
-            freq.append(c)
-        except:
-            pass
+    for x in range(len(log)):
+        aaa.append(log[x].due_date)
+
     date = [l.strftime('%Y-%m-%d') for l in aaa]
-    print(date,freq)
+    date = list(set(aaa))
+    date.sort()
+
+    freq = []  # total book remaing
+    for x in range(len(date)):
+        freq.append(log.filter(due_date = aaa[x]).count())
+
+    # print(date,freq)
+
+
+
 
     return render(request,"suser/dashboard.html",{
         'issued': issued,
@@ -97,8 +101,8 @@ def index(request):
         'data1': data1,
         'data2': data2,
     # Past Non-Returned books
-        'date': date,
-        'freq': freq,
+        'date': date[:5],
+        'freq': freq[:5],
     })
 
 

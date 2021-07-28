@@ -341,16 +341,14 @@ class DashChart(APIView):
         book_code = []
         for i in range(len(books)):
             b = books[i]
-            name = b.book_inventry
-            book_code.append(name)
+            book_code.append(b.book_inventry)
         book_code = list(set(book_code))
         # print(book_code)
 
         ne_books = []
         for bb in book_code:
             code = BookInventry.objects.all().filter(book_uniqueid = bb)
-            book_book = code[0].book.book_name
-            ne_books.append(book_book)
+            ne_books.append(code[0].book.book_name)
 
         dict = {item:ne_books.count(item) for item in ne_books}
         # print(dict)
@@ -379,13 +377,11 @@ class DashChart(APIView):
             aa.append(d.date())
         # print(aa)
         for day in aa:
-            # try:
             x = books.filter(issue_day=day) #issued
             data1.append(x.count())
             y = books.filter(checkback=day) #returned
             data2.append(y.count())
-            # except:
-            #     pass
+
         lable = [l.strftime('%Y-%m-%d') for l in aa] 
         # print(lable,data1,data2)     ######################
 
@@ -396,17 +392,14 @@ class DashChart(APIView):
         freq = []  # total book remaing
 
         for x in range(len(log)):
-            logg = log[x].due_date
-            aaa.append(logg)
+            aaa.append(log[x].due_date)
 
         aaa = list(set(aaa))
         aaa = sorted(aaa)
         aa = []
         for i in range(len(aaa)):
-            logg = aaa[i]
             aa.append(aaa[i])
-            c = log.filter(due_date = logg).count()
-            freq.append(c)
+            freq.append(log.filter(due_date = aaa[i]).count())
 
         date = [l.strftime('%Y-%m-%d') for l in aa]
         date = date[:7]
