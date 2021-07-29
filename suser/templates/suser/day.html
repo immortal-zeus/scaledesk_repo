@@ -1,0 +1,92 @@
+{% extends 'suser/index.html' %}
+{% block content %}
+<h2 class="text-primary my-3 mb-5">Daywise Book To Be Returned</h2>
+{% if flag %}
+Book Returned
+{% endif %}
+<table class="table mt-5 shadow" id="example" class="display" style="width:100%">
+    <thead>
+      <tr>
+        <th scope="col">Transaction ID</th>
+        <th scope="col">Book_Name</th>
+        <th scope="col">User</th>
+        <th scope="col">Issue_Date</th>
+        <th scope="col">Total fee</th>
+        <th scope="col">Return</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      {% for j in day %}
+      <tr>
+        <th scope="row">{{ j.Transaction }}</th>
+        <td>{{ j.book_inventry.book.book_name }}</td>
+        <td>{{ j.user_id.first_name }}</td>
+        <td>{{ j.issue_day }}</td>
+        <td> {{ j.cal }}</td>
+        {% if j.checkback is None %}
+        <td class="before_checkback"><button class='btn btn-primary return_btn'>Return
+            <span class="book_id" style='display:none;'>{{j.pk}}</span>
+        </button></td>
+        <td class="after_checkback" style="display:none;"></td>
+        {% else %}
+        <td>Returned</td>
+        {% endif %}
+      </tr>
+    {% endfor %}
+
+<!--Aman these below are late book need to be in different color -->
+    {% for j in afterdate %}
+      <tr class='bg-info text-light'>
+        <th scope="row">{{ j.book_inventry.book_uniqueid }}</th>
+        <td>{{ j.book_inventry.book.book_name }}</td>
+        <td>{{ j.user_id.first_name }}</td>
+        <td>{{ j.issue_day }}</td>
+        <td> {{ j.cal }}</td>
+        {% if j.checkback is None %}
+        <td class="before_checkback"><button class='btn btn-primary return_btn'>Return
+            <span class="book_id" style='display:none;'>{{j.pk}}</span>
+        </button></td>
+        <td class="after_checkback" style="display:none;"></td>
+        {% else %}
+        <td>Returned</td>
+        {% endif %}
+      </tr>
+    {% endfor %}
+
+
+    </tbody>
+  </table>
+<!-- Adding axios script tag here-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
+<script>
+    let bookId = document.querySelectorAll('.book_id');
+    let beforeCheckback = document.querySelectorAll('.before_checkback')
+    let afterCheckback = document.querySelectorAll('.after_checkback')
+    const returnBtn = document.querySelectorAll('.return_btn');
+    for (let i = 0; i < returnBtn.length; i++) {
+        returnBtn[i].addEventListener('click', (e) => {
+            let data = new FormData(); // 2
+            data.append('pk', bookId[i].innerHTML)
+            data.append("csrfmiddlewaretoken", '{{csrf_token}}') // 3
+            axios.post('/api/returnbook/', data) // 4
+                .then(res => {
+                    console.log(res);
+                    if (res.data.status == 100) {
+                        console.log('here')
+                        beforeCheckback[i].style.display = 'none';
+                        afterCheckback[i].style.display = 'block';
+                        afterCheckback[i].innerHTML = res.data.checkback;
+                    }
+                }
+                ) // 5
+                .catch(errors => console.log(errors)) // 6
+
+        })
+
+
+    }
+
+  </script>
+
+{% endblock %}

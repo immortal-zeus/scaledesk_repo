@@ -1,0 +1,181 @@
+{% extends 'suser/index.html' %}
+{% load static %}
+{% block content %}
+  
+
+    <!-- <form action = "{% url 'create' %} " method="post">
+        {% csrf_token %}
+        <input type="text" name="book_name" placeholder="book_name">
+        <input type="text" name="author" placeholder="author">
+        <input type="date" name="publish_date" placeholder="publish date">
+        <input type="number" name="base_fee" placeholder="base_fee">
+        <input type="number" name="current_count" placeholder="current_count">
+        <select name = "categories">
+            <option selected>Categories</option>
+        {% for c in categories %}
+                <option value="{{c.Category}}">{{c.Category}} </option>
+        {% endfor %}
+        </select>
+        <input type="submit" class="btn btn-primary">
+    </form> -->
+   <div class="row d-flex align-items-center">
+       <div class="col-sm-12 col-md-4 shadow p-5">
+    <form action = "{% url 'create' %} " method="post">
+        {% csrf_token %}
+        <div class="form-group">
+          <label for="name">Book Name</label>
+          <input type="text" required=true name="book_name"  class="form-control" id="name" placeholder="book_name">
+        </div>
+        <div class="form-group">
+            <label for="author">Author Name</label>
+            <input type="text" required=true class="form-control" id="author" name="author" placeholder="author">
+        </div>
+        <div class="form-group">
+            <label for="date">Publish Date</label>
+            <input type="date" required=true name="publish_date" class="form-control" id="date" placeholder="publish date">
+        </div>
+        {% if message is not None%}
+        <red> {{message}}</red>
+        {% else %}
+        {% endif %}
+        <div class="form-group">
+            <label for="fee">Base Fee</label>
+            <input type="number" required=true id="fee" class="form-control" name="base_fee" placeholder="base_fee">
+        </div>
+        <div class="form-group">
+            <label for="count">Current Count</label>
+            <input type="number" required=true class="form-control" id="count" name="current_count" placeholder="current_count">
+        </div>
+        <div class="form-group">
+            <label for="categories">Category</label>
+            <select name="categories" required=true id="categories" class="form-select form-select-lg form-control" aria-label="Default select example" style="width:100%;">
+            </select>
+            <p class="my-3 text-danger display-5">*Not in the List add yours  
+                <a class="btn btn-dark float-right add-btn" type="button"  data-toggle="modal" data-target="#exampleModal">
+                    Add New Category
+                </a>
+            </p>
+        </div>
+       
+        <button type="submit" class="btn btn-primary my-4" style="width:100%;">Submit</button>
+      </form>
+      </div>
+    </div>
+
+    <!--Modal for Book Category -->
+    <!-- Button trigger modal -->
+
+  
+  <!-- Modal -->
+  <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Create New Category</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            <form>
+                {% csrf_token %}
+               <div class="form-group">
+                    <label for="new_category"> Enter Category</label>
+                    <input  type="text" class="form-control" id="new_category" name="category" placeholder="Category">
+                </div>
+                <button type="button" class="btn btn-primary create-category-btn">Create</button>
+            </form>
+        </div>
+        
+      </div>
+    </div>
+  </div>
+  <!-- Adding axios script tag here-->
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
+
+
+<script>
+  const createCategoryBtn = document.querySelector('.create-category-btn');
+  let cInput = document.getElementById('new_category')
+  const closeBtn = document.querySelector('.close');
+  const categories = document.getElementById('categories');
+  
+  
+
+  /* Function to get Updated Category */
+  
+  const updateCategory = async() =>{
+    let result="";
+    categories.innerHTML='';
+    console.log("here")
+    categories.innerHTML =``;
+    axios.get('/api/Category/') // 4
+     .then(res => 
+     {
+       console.log(res.data.data);
+      result = res.data.data; 
+      for(let i=0;i<result.length;i++){
+        categories.innerHTML +=` <option value="${result[i].Category}">${result[i].Category} </option>`
+     }
+    }
+     ) // 5
+     .catch(errors => console.log(errors)) // 6
+
+    
+  }
+  const getCategory = async() =>{
+      let result="";
+    categories.innerHTML='';
+    console.log("here")
+    categories.innerHTML =``;
+    axios.get('/api/Category/') // 4
+     .then(res => 
+     {
+      console.log(res.data.data);
+      result = res.data.data; 
+      for(let i=0;i<result.length;i++){
+        if(i!=result.length-1)
+        categories.innerHTML +=`<option value="${result[i].Category}">${result[i].Category} </option>`
+        else  categories.innerHTML +=`<option value="${result[i].Category}" selected>${result[i].Category} </option>`
+      }
+      
+    }
+     ) // 5
+     .catch(errors => console.log(errors)) // 6
+
+    
+  }
+  
+  
+  /* Create Category Button */
+   createCategoryBtn.addEventListener('click',async(e)=>{
+    let categoryInput = document.getElementById('new_category').value
+    let data = new FormData(); // 2
+    
+    data.append('Category',categoryInput)
+    data.append("csrfmiddlewaretoken", '{{csrf_token}}') // 3
+     axios.post('/api/Category/', data) // 4
+     .then(res => 
+     {console.log(res);
+      categoryInput="";
+      closeBtn.click();
+      getCategory();
+     }
+     ) // 5
+     .catch(errors => console.log(errors)) // 6
+    
+  })
+
+  /* Calling a function when page loads for the first time */ 
+  updateCategory();
+  // Add Category Button 
+  const addBtn = document.querySelector('.add-btn');
+ 
+  addBtn.addEventListener('click',(e)=>{
+    console.log("it")
+    cInput.value="";
+    console.log(cInput.value)
+  })
+</script>
+{% endblock %}

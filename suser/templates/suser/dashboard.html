@@ -1,0 +1,399 @@
+{% extends 'suser/index.html' %}
+{% load static %}
+{% block content %}
+<style>
+  .msg {
+    color: red;
+    font-size: 14px;
+    margin-bottom: 0px;
+  }
+
+  .view-password {
+    display: none;
+  }
+
+  #form-card {
+    display: none;
+  }
+</style>
+<div class="d-sm-flex align-items-center justify-content-between mb-4">
+  <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
+  <a href="{% url 'register' %}" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
+      class="fas fa-download fa-sm text-white-100"></i> Create User</a>
+
+
+</div>
+<!-- Utility Content -->
+<p id="num-book-issued" style='display:none;'>{{issued}}</p>
+<p id="check-in" style='display:none;'>{{returned}}</p>
+<!--Graphs -->
+<div class='row'>
+  <div class="col-sm-12 col-md-8">
+    <!-- Area Chart -->
+    <div class="card shadow mb-4">
+      <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">Past Non-Returned books</h6>
+      </div>
+      <div class="card-body">
+        <div class="chart-area">
+          <canvas id="myChart"></canvas>
+        </div>
+
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-12 col-md-4">
+    <!-- Pie Chart -->
+    <div class="card">
+      <!-- Card Header - Dropdown -->
+      <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+        <h6 class="m-0 font-weight-bold text-primary">Books Info</h6>
+      </div>
+      <!-- Card Body -->
+      <div class="card-body shadow">
+        <div class="chart-pie pt-4 pb-2">
+          <canvas id="MyPieChart"></canvas>
+        </div>
+        <div class="mt-4 text-center small" style='visibility:hidden;'>
+          <span class="mr-2">
+            <i class="fas fa-circle text-success"></i> Check-Out
+          </span>
+          <span class="mr-2">
+            <i class="fas fa-circle text-info"></i> Check-In
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class='col-sm-12 col-md-8'>
+    <!-- Bar Chart -->
+    <div class="card shadow mb-4">
+      <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">Past 7 days Check-In and Check-Out</h6>
+      </div>
+      <div class="card-body">
+        <div class="chart-bar">
+          <canvas id="ThirdChart"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-sm-12 col-md-4">
+    <!-- Pie Chart -->
+    <div class="card">
+      <!-- Card Header - Dropdown -->
+      <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+        <h6 class="m-0 font-weight-bold text-primary">Top Books</h6>
+      </div>
+      <!-- Card Body -->
+      <div class="card-body shadow">
+        <div class="chart-pie pt-4 pb-2">
+          <canvas id="PieChart" width='50' height='50'></canvas>
+        </div>
+        <div class="mt-4 text-center small" style='visibility:hidden'>
+          <span class="mr-2">
+            <i class="fas fa-circle text-success"></i> Check-Out
+          </span>
+          <span class="mr-2">
+            <i class="fas fa-circle text-info"></i> Check-In
+          </span>
+        </div>
+      
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- <script>
+  const ctx3 = document.getElementById('myChart');
+  const xlabels=['1','2','3','4','5','6']
+  const myChart = new Chart(ctx3, {
+      type: 'bar',
+      data: {
+          labels: xlabels,
+          datasets: [{
+              label: '# of Votes',
+              data: [122, 19, -3, 5, 2, 3],
+              backgroundColor: [
+                  'rgba(255, 99, 132, 0.2)',
+                  'rgba(54, 162, 235, 0.2)',
+                  'rgba(255, 206, 86, 0.2)',
+                  'rgba(75, 192, 192, 0.2)',
+                  'rgba(153, 102, 255, 0.2)',
+                  'rgba(255, 159, 64, 0.2)'
+              ],
+              borderColor: [
+                  'rgba(255, 99, 132, 1)',
+                  'rgba(54, 162, 235, 1)',
+                  'rgba(255, 206, 86, 1)',
+                  'rgba(75, 192, 192, 1)',
+                  'rgba(153, 102, 255, 1)',
+                  'rgba(255, 159, 64, 1)'
+              ],
+              borderWidth: 1
+          }]
+      },
+      options:{
+        plugins:{
+        title:{
+          display:true,
+          text:'Aman'
+        },
+        legend:{
+          position:'top',
+          labels:{
+            color:'blue'
+          }
+        }
+      }
+      }
+  });
+  </script>
+    -->
+<!--Axios CDN -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
+<!--Custom Javascript File -->
+<script>
+  let nonReturnedXLabel = [];
+  let nonReturnedYLabel = [];
+  let booksInfoReturned = 0;
+  let booksInfoIssued = 0;
+  let topX = [];
+  let topY=[];
+  let lastSevenDaysLabel=[];
+  let lastSevenDaysCheckIn=[];
+  let lastSevenDaysCheckOut=[];
+  // Pie Chart Example
+  const ctx1 = document.getElementById('myChart');
+  const ctx3 = document.getElementById('ThirdChart');
+  const ctx2 = document.getElementById("MyPieChart");
+  const ctx4 = document.getElementById('PieChart');
+  const getData = async () => {
+    axios.get('/api/dashchart') // 4
+      .then(res => {
+        console.log(res)
+        /* First Graph */
+        res.data.Past_Non_Returned.map(item => {
+          nonReturnedXLabel.push(item.date);
+          nonReturnedYLabel.push(item.freq)
+        })
+
+        /* Second Graph */
+        booksInfoIssued = res.data.Books_info[0].issued;
+        booksInfoReturned = res.data.Books_info[0].returned;
+        /* Third Graph */
+        res.data.Past_seven_days.map(j => {
+          lastSevenDaysLabel.push(j.lable);
+          lastSevenDaysCheckIn.push(j.data1);
+          lastSevenDaysCheckOut.push(j.data2);
+        })
+        /* Fourth Graph */
+        res.data.Top_books.map(i=>{
+          topX.push(i.topx)
+          topY.push(i.topy)
+        })
+        setTimeout(() => {
+          firstChart();
+        }, 100)
+        /* Second Graph */
+
+      }
+      ) // 5
+      .catch(errors => console.log(errors)) // 6
+
+  }
+  getData();
+
+  /* First Chart */
+  function firstChart() {
+    Chart.defaults.global.legend.labels.usePointStyle = true;
+    // First Chart Example
+     const myChart = new Chart(ctx1, {
+      type: 'bar',
+      data: {
+        labels: nonReturnedXLabel,
+        datasets: [{
+          label: '',
+          data: nonReturnedYLabel,
+          backgroundColor: [
+            'rgba(255, 99, 132, 0.2)',
+            'rgba(54, 162, 235, 0.2)',
+            'rgba(255, 206, 86, 0.2)',
+            'rgba(75, 192, 192, 0.2)',
+            'rgba(153, 102, 255, 0.2)',
+            'rgba(255, 159, 64, 0.2)'
+          ],
+          borderColor: [
+            'rgba(255, 99, 132, 1)',
+            'rgba(54, 162, 235, 1)',
+            'rgba(255, 206, 86, 1)',
+            'rgba(75, 192, 192, 1)',
+            'rgba(153, 102, 255, 1)',
+            'rgba(255, 159, 64, 1)'
+          ],
+          borderWidth: 1
+        }]
+      },
+      options: {
+        maintainAspectRatio: false,
+        layout: {
+          padding: {
+            left: 10,
+            right: 25,
+            top: 0,
+            bottom: 0
+          }
+        },
+        scales: {
+          yAxes: [{
+            ticks: {
+              min: 0,
+              // maxTicksLimit: 5,
+              stepSize: 1,
+              padding: 10,
+              // Include a dollar sign in the ticks
+
+            },
+
+          }],
+        },
+        legend: {
+          display: false
+        },
+        // title: {
+        //   display: true,
+        //   text: 'Custom Chart Title'
+        //         },
+        // legend: {
+        //   display: true
+        // },
+
+
+      }
+    });
+    /* Second Chart  */
+    var MyPieChart = new Chart(ctx2, {
+      type: 'doughnut',
+      data: {
+        labels: ["Check-In", "Check-Out"],
+        datasets: [{
+          data: [booksInfoReturned, booksInfoIssued],
+          backgroundColor: ['rgba(255, 99, 132, 0.2)', 'rgba(54, 162, 235, 0.2)', '#36b9cc'],
+          hoverBackgroundColor: ['rgba(255, 99, 132, 0.2)', 'rgba(54, 162, 235, 0.2)', '#2c9faf'],
+          hoverBorderColor: "rgba(234, 236, 244, 1)",
+        }],
+      },
+      options: {
+        maintainAspectRatio: false,
+        tooltips: {
+          backgroundColor: "rgb(255,255,255)",
+          bodyFontColor: "#858796",
+          borderColor: '#dddfeb',
+          borderWidth: 1,
+          xPadding: 15,
+          yPadding: 15,
+          displayColors: false,
+          caretPadding: 10,
+        },
+        legend: {
+          display: true
+        },
+        cutoutPercentage: 80,
+      },
+    });
+    /* Chart 3 */
+    const ThirdChart = new Chart(ctx3, {
+      type: 'bar',
+      data: {
+        labels: lastSevenDaysLabel,
+        datasets: [{
+          label: 'Check-In',
+          data: lastSevenDaysCheckIn,
+          backgroundColor: 'rgba(255, 99, 132, 0.2)',
+          borderColor: 'rgba(255, 99, 132, 1)',
+          borderWidth: 1
+        },
+        {
+          label: 'Check-Out',
+          data: lastSevenDaysCheckOut,
+          backgroundColor:'rgba(54, 162, 235, 0.2)',
+          borderColor: 'rgba(54, 162, 235, 1)',
+          borderWidth: 1
+        }]
+      },
+      options: {
+        maintainAspectRatio: false,
+        layout: {
+          padding: {
+            left: 10,
+            right: 25,
+            top: 0,
+            bottom: 0
+          }
+        },
+        scales: {
+          yAxes: [{
+            ticks: {
+              min: 0,
+              // maxTicksLimit: 5,
+              stepSize: 1,
+              padding: 10,
+              // Include a dollar sign in the ticks
+
+            },
+
+          }],
+        },
+        legend: {
+          display: true
+        },
+        // title: {
+        //   display: true,
+        //   text: 'Custom Chart Title'
+        //         },
+        // legend: {
+        //   display: true
+        // },
+
+
+      }
+    });
+    /* Chart 4 */
+    var PieChart = new Chart(ctx4, {
+    type: 'pie',
+    data: {
+        labels: topX,
+        datasets: [{
+            data:topY,
+            backgroundColor: [
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(255, 206, 86, 0.2)',
+                'rgba(75, 192, 192, 0.2)',
+                'rgba(153, 102, 255, 0.2)',
+                'rgba(255, 159, 64, 0.2)'
+            ],
+            borderColor: [
+                'rgba(255, 99, 132, 1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(153, 102, 255, 1)',
+                'rgba(255, 159, 64, 1)'
+            ],
+            borderWidth: 1
+        }]
+    },
+    options: {
+        maintainAspectRatio: false,
+        legend: {
+          display: true
+        },
+    }
+});
+  }
+</script>
+{% endblock content %}

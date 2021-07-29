@@ -1,0 +1,161 @@
+{% extends 'suser/index.html' %}
+{% load static %}
+
+{% block content %}
+<!-- Custom stylesheet for Book List-->
+<style>
+    .remove{
+        display:none;
+    }
+</style>
+
+<!--checkout :book.no_of_issued---------- check in: book.current_count -->
+
+<link href="{% static 'suser/css/bookdetail.css' %}" rel="stylesheet">
+
+<div class="d-sm-flex flex-column mb-4">
+    <!-- <h1 class="h1 p-3 mb-0 shadow-lg" style="background-color:#7510f7;font-family:monospace;color:white;">LIBRARY</h1>-->
+    <!--Book Row-->
+    <div class="row my-5 justify-content-start align-items-center" id="book-row">
+        <!--Single Book -->
+        <div class="col-sm-12 col-md-3">
+            <div class="Bthree" style="width:300px;height:395px;box-shadow: 0px 0px 10px 0px black;">
+                <div class="Btwo" style="background-color: #7510f7;width:250px;height:360px;">
+                    <p style="font-weight:bold;font-size:1.2rem;padding-top:20px;color:white;">
+                        {{ book.book_name }}
+                    </p>
+                    <div class="Bone" style="left:20%;">
+                        <p style="margin:0;color:#204051;font-weight: 500;padding:0 2px;">
+                            {{ book.author }}
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Utility Content -->
+        <p id="num-book-issued" style="display:none;">{{book.no_of_issued}}</p>
+        <p id="check-in" style="display:none;">{{book.current_count}}</p>
+        <div class="col-sm-12 col-md-6 d-flex align-items-center">
+            <!--Stats-->
+            <div class="card stats  col-md-6 p-4 mr-1" style="width:300px;height:395px;">
+                <h4 class="text-dark text-center">Category <span class="text-info">
+                        <hr />{{ book.Book_categories.Category }}
+                    </span></h4>
+                <hr />
+                <h4 class="text-dark text-center"> Title<br /> <span class="text-info">
+                        <hr />{{ book.book_name }}
+                    </span></h4>
+                <hr />
+                <h4 class="text-dark text-center">Base Price:<br /><span class="text-info">
+                        <hr />${{book.base_fee}}
+                    </span>
+                </h4>
+            </div>
+            <!-- Pie Chart -->
+            <div class="card" style="width:300px;height:395px;">
+                <!-- Card Header - Dropdown -->
+                <div class="card-header py-2 d-flex flex-row align-items-center justify-content-between">
+                    <h6 class="m-0 font-weight-bold text-primary">Book Detail</h6>
+                </div>
+                <!-- Card Body -->
+                <div class="card-body">
+                    <div class="chart-pie pt-4 pb-2">
+                        <canvas id="myPieChart"></canvas>
+                    </div>
+                    <div class="mt-4 text-center small">
+                        <span class="mr-2">
+                            <i class="fas fa-circle text-success"></i> Check-Out
+                        </span>
+                        <span class="mr-2">
+                            <i class="fas fa-circle text-info"></i> Check-In
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--List-->
+        {% if request.user.is_staff %}
+        <div class="col-12 my-5">
+            <div class='d-flex justify-content-between mb-4'>
+                <h3 class="text-primary" style="font-size:2.2rem;">Detail List:</h3>
+            </div>
+            <table class="table mt-5 shadow display" id="example" style="width:100%">
+               <thead>
+                    <tr>
+                        <th>Transaction ID</th>
+                        <th>First</th>
+                        <th>Last</th>
+                        <th>Issued Date</th>
+                        <th>Due Date</th>
+                        <th>Fee</th>
+                        <th>Returned Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!--                {{ Logs }}-->
+                    {% for log in Logs %}
+                    <tr>
+                        <td>{{ log.Transaction }}</td>
+                        <td>{{ log.user_id.first_name }}</td>
+                        <td>{{ log.user_id.last_name }}</td>
+                        <td>{{ log.issue_day }} </td>
+                        <td>{{ log.due_date}} </td>
+                        <td> {{ log.cal }}</td>
+                        {% if log.checkback is None %}
+                        <td class="before_checkback">
+                            <button class='btn btn-primary return_btn'>Return
+                                <span class="book_id" style='display:none;'>{{log.pk}}</span>
+                            </button></td>
+                         
+                        {% else %}
+                        <td>{{ log.checkback }}</td>
+                        {% endif %}
+                    </tr>
+                    {% endfor %}
+
+                </tbody>
+                
+            </table>
+          
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
+<!--Custom Javascript File -->
+<script>
+  let bookId = document.querySelectorAll('.book_id');
+    console.log(bookId);
+    let beforeCheckback = document.querySelectorAll('.before_checkback')
+    // let afterCheckback = document.querySelectorAll('.after_checkback')
+    const returnBtn = document.querySelectorAll('.return_btn');
+  const date = new Date();
+    for (let i = 0; i < returnBtn.length; i++) {
+        returnBtn[i].addEventListener('click', (e) => {
+            let data = new FormData(); // 2
+            data.append('pk', bookId[i].innerHTML)
+            data.append("csrfmiddlewaretoken", '{{csrf_token}}') // 3
+            axios.post('/api/returnbook/', data) // 4
+                .then(res => {
+                    console.log(res);
+                    if (res.data.status == 100) {
+                        console.log('here')
+                        beforeCheckback[i].innerHTML='';
+                        beforeCheckback[i].innerHTML=res.data.checkback;
+                        // afterCheckback[i].style.display = 'block';
+                        // afterCheckback[i].innerHTML = res.data.checkback;
+                    }
+                }
+                ) // 5
+                .catch(errors => console.log(errors)) // 6
+
+        })
+
+
+    }
+
+   
+</script>
+
+{% endblock content %}
