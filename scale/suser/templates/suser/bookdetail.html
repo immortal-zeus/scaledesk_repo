@@ -39,7 +39,7 @@
             <!--Stats-->
             <div class="card stats  col-md-6 p-4 mr-1" style="width:300px;height:395px;">
                 <h4 class="text-dark text-center">Category <span class="text-info">
-                        <hr />{{ book.Book_categories}}
+                        <hr />{{ book.Book_categories.Category }}
                     </span></h4>
                 <hr />
                 <h4 class="text-dark text-center"> Title<br /> <span class="text-info">
@@ -74,6 +74,7 @@
             </div>
         </div>
         <!--List-->
+        {% if request.user.is_staff %}
         <div class="col-12 my-5">
             <div class='d-flex justify-content-between mb-4'>
                 <h3 class="text-primary" style="font-size:2.2rem;">Detail List:</h3>
@@ -117,7 +118,7 @@
             </table>
           
         </div>
-
+        {% endif %}
     </div>
 </div>
 

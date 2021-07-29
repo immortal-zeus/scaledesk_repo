@@ -37,6 +37,7 @@
                 <a class="collapse-item" href="{% url 'booklist' %}">
                     <i class="fas fa-fw fa-chart-area"></i>
                     <span>Book List</span></a>
+                {% if request.user.is_staff %}
                 <a class="collapse-item" href="{% url 'create' %}">
                     <i class="fas fa-fw fa-chart-area"></i>
                     <span>Book Create</span></a>
@@ -46,10 +47,13 @@
                 <a class="collapse-item" href="{% url 'day' %}">
                     <i class="fas fa-fw fa-chart-area"></i>
                     <span>Daywise Data</span></a>
+                {% endif %}
             </div>
         </div>
     </li>
     <!--User List -->
+
+    {% if request.user.is_staff %}
     <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseThree" aria-expanded="true"
             aria-controls="collapseTwo">
@@ -67,6 +71,7 @@
               </div>
         </div>
     </li>
+    {% endif %}
 
 
 

@@ -15,4 +15,5 @@ urlpatterns = [
    path('getbook/', views.getbook),
    path('returnbook/', views.returnbook),
    path('trans',views.trans),
+   # path('chart', views.chartall),
 ]

@@ -1,3 +1,4 @@
+from django.contrib.auth.decorators import user_passes_test
 from django.shortcuts import render
 from django.contrib.auth import authenticate, login, logout , decorators
 from django.http import HttpResponse, HttpResponseRedirect
@@ -13,6 +14,7 @@ from django.contrib import messages
 # data table aman
 
 @decorators.login_required(login_url='/login')
+
 def index(request):
 
     books = BookLogs.objects.all()
@@ -146,7 +148,6 @@ def register(request):
             return render(request, "suser/register.html",{
                 "message" : "Email already exist."
             })
-        login(request, user)
         return HttpResponseRedirect(reverse("index"))
     else:
         return render(request,"suser/register.html")
@@ -157,6 +158,7 @@ def logoutuser(request):
     return HttpResponseRedirect(reverse("index"))
 
 @decorators.login_required(login_url='/login')
+
 def bookcategory(request):
     if request.method == 'POST':
         cat = request.POST['category']
@@ -195,6 +197,7 @@ def bookcreate(request):
 
 
 @decorators.login_required(login_url='/login')
+
 def booklist(request):
     return render(request,"suser/booklist.html",{
         "books": BookModel.objects.all(),
@@ -236,6 +239,8 @@ def bookdetail(request):
     })
 
 @decorators.login_required(login_url='/login')
+@user_passes_test(lambda u: u.is_staff)
+@user_passes_test(lambda u: u.is_superuser)
 def day_wise(request):
     today = date.today()
     yesterday = date.today() - timedelta(days=1)
@@ -247,13 +252,13 @@ def day_wise(request):
         "afterdate": afterdate
     })
 
-@decorators.login_required(login_url='/login')
-def returnbook(request):
-    id = request.GET.get('id', None)
-    inven = BookLogs.objects.get(pk = id)
-    return render(request,"suser/returnbook.html",{
-        "book":inven,
-    })
+# @decorators.login_required(login_url='/login')
+# def returnbook(request):
+#     id = request.GET.get('id', None)
+#     inven = BookLogs.objects.get(pk = id)
+#     return render(request,"suser/returnbook.html",{
+#         "book":inven,
+#     })
 
 @decorators.login_required(login_url='/login')
 def Checkout(request):
@@ -263,6 +268,8 @@ def Checkout(request):
     })
 
 @decorators.login_required(login_url='/login')
+@user_passes_test(lambda u: u.is_staff)
+@user_passes_test(lambda u: u.is_superuser)
 def BookCheckout(request):
     if request.method == 'POST':
         n_ame = request.POST['user_name']
@@ -300,6 +307,8 @@ def Checkoutdone(request):
 
 
 @decorators.login_required(login_url='/login')
+@user_passes_test(lambda u: u.is_staff)
+@user_passes_test(lambda u: u.is_superuser)
 def rhere(request):
     id = request.GET.get('id', None)
     if id is not None:
@@ -321,12 +330,17 @@ def rhere(request):
     })
 
 @decorators.login_required(login_url='/login')
+@user_passes_test(lambda u: u.is_staff)
+@user_passes_test(lambda u: u.is_superuser)
+
 def userlist(request):
     return render(request, "suser/userlist.html",{
         'all_users': User.objects.all(),
     })
 
 @decorators.login_required(login_url='/login')
+@user_passes_test(lambda u: u.is_staff)
+@user_passes_test(lambda u: u.is_superuser)
 def userdetail(request):
     id = request.GET.get('id', None)
     if id is not None:

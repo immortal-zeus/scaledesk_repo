@@ -441,4 +441,57 @@ class DashChart(APIView):
         }
 
 
-        return Response(context) 
+        return Response(context)
+
+
+
+# class chartall(APIView):
+#
+#     def get(self,request):
+#         response = {}
+#         response['status'] = 200
+#         response['message'] = "Something is wrong."
+#
+#         try:
+#             temp_current = BookModel.objects.all()
+#             total_checkout = 0
+#             total_checkin  = 0
+#             for book in temp_current:
+#                 total_checkin+=book.current_count
+#                 total_checkout += book.no_of_issued
+#
+#
+#
+#             past_days = [date.today() - timedelta(days=i) for i in range(7)]
+#             # temp_notreturned = BookLogs.objects.all().filter(checkback__isnull=True, due_date__range=[past,today])
+#             # temp_returned = BookLogs.objects.all().filter(checkback__isnull=False, due_date__range=[past, today])
+#             # temp_issued = BookLogs.objects.all().filter(issue_day__range=[past, today])
+#             usersall = User.objects.all()
+#             for i in past_days:
+#                 for u in usersall:
+#                     temp = BookLogs.objects.all().filter(user_id = u, issue_day = i ).count()
+#
+#
+#
+#
+#
+#
+#             payload = []
+#             payload.append({
+#                 "piechart1":{
+#                 "totalcheckin": total_checkin,
+#                 "totalcheckout": total_checkout
+#                 }})
+#
+#             response['status'] = 200
+#             response['message'] = "Something is wrong."
+#             response['payload'] = payload
+#
+#             return  Response(response)
+#
+#             pass
+#         except Exception as e:
+#             print(e)
+#
+#
+# chartall = chartall.as_view()

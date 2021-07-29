@@ -16,7 +16,7 @@ urlpatterns = [
     path('checkoutdone', views.Checkoutdone, name='checkoutdone'),
     path('userlist',views.userlist,name='userlist'),
     path('daywise',views.day_wise, name='day'),
-    path('return',views.returnbook,name='returnB'),
+    # path('return',views.returnbook,name='returnB'),
     path('rhere',views.rhere, name='rhere'),
     path('userdetail',views.userdetail , name = 'userdetail'),
     path('api/',include('suser.api.urls')),
