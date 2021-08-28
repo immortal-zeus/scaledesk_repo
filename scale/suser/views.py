@@ -10,8 +10,6 @@ from django.contrib import messages
 
 # Create your views here.
 
-# data table aman
-
 @decorators.login_required(login_url='/login')
 def index(request):
 
@@ -113,6 +111,9 @@ def loginuser(request):
             password_p = request.POST['password']
             user = authenticate(request, username=email_p, password=password_p)
             if user is not None:
+                #If student can sign in they cannot
+                if user.is_staff == False:
+                    return HttpResponseRedirect(reverse("index"))
                 login(request, user)
                 return HttpResponseRedirect(reverse("index"))
             else:
@@ -150,6 +151,9 @@ def register(request):
             return render(request, "suser/register.html",{
                 "message" : "Email already exist."
             })
+        #If statudent can login ! they can not login
+        if is_what == 'student':
+            return HttpResponseRedirect(reverse("index"))
         login(request, user)
         return HttpResponseRedirect(reverse("index"))
     else:
@@ -157,8 +161,8 @@ def register(request):
 
 
 def logoutuser(request):
-    # logout(request)
-    return HttpResponseRedirect('index')
+    logout(request)
+    return HttpResponseRedirect('/')
 
 @decorators.login_required(login_url='/login')
 def bookcategory(request):
