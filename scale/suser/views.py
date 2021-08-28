@@ -157,8 +157,8 @@ def register(request):
 
 
 def logoutuser(request):
-    logout(request)
-    return HttpResponseRedirect(reverse("index"))
+    # logout(request)
+    return HttpResponseRedirect('index')
 
 @decorators.login_required(login_url='/login')
 def bookcategory(request):
@@ -206,7 +206,6 @@ def booklist(request):
 
 @decorators.login_required(login_url='/login')
 def bookdetail(request):
-    #suraj : wrtie code here
     book_id = request.GET.get('bookid', None)
     book = BookModel.objects.get(pk = book_id)
     book_inven = BookInventry.objects.all().filter(book = book, issued = True )
